@@ -37,7 +37,8 @@
   // Load item CSS when held item is present
   afterUpdate(() => {
     if (held && held.sprite) {
-      deferStyles(`/assets/items.css?i=${held.sprite}`)
+      const timestamp = Date.now();
+      deferStyles(`/assets/items.css?i=${held.sprite}&v=${timestamp}`)
     }
   })
 

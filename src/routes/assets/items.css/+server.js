@@ -16,13 +16,15 @@ export async function GET({ url }) {
     const response = await fetch(productionUrl);
     const css = await response.text();
     
-    return new Response(css, {
-      status: 200,
-      headers: {
-        'Cache-Control': 'public, max-age=31536000',
-        'Content-Type': 'text/css'
-      }
-    });
+             return new Response(css, {
+               status: 200,
+               headers: {
+                 'Cache-Control': 'no-cache, no-store, must-revalidate',
+                 'Pragma': 'no-cache',
+                 'Expires': '0',
+                 'Content-Type': 'text/css'
+               }
+             });
   } catch (error) {
     console.error('Error fetching item CSS from production:', error);
     
@@ -48,7 +50,9 @@ export async function GET({ url }) {
     return new Response(fallbackCss, {
       status: 200,
       headers: {
-        'Cache-Control': 'public, max-age=3600',
+        'Cache-Control': 'no-cache, no-store, must-revalidate',
+        'Pragma': 'no-cache',
+        'Expires': '0',
         'Content-Type': 'text/css'
       }
     });

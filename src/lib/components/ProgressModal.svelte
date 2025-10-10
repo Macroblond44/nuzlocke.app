@@ -23,12 +23,17 @@
   import { toList, regionise, capitalise } from '$utils/string'
   import { locid } from '$utils/pokemon'
   import { nonnull } from '$utils/obj'
+  import { getSetting } from '$lib/components/Settings/_data'
+  import { parse, activeGame, savedGames } from '$lib/store'
 
   const { getPkmn } = getContext('game')
   const { close } = getContext('simple-modal')
 
   let tab = mode === MODES.build ? 0 : 1,
     tabs = ['Team', 'Compare']
+  
+  let recommendationMethod = 'basic' // 'basic' or 'advanced'
+  let defaultRecommendationSetting = 0 // 0 = Basic, 1 = Advanced
 
   // Util Functions
   const makeTeam = (locs, result) =>
@@ -125,12 +130,46 @@
 
   let loading = true
   let analysisResult
+  
+  // Load default recommendation method from settings
+  savedGames.subscribe(parse(saves => {
+    const { settings } = saves[$activeGame] || {}
+    const settingValue = (settings || '011101000')[getSetting('recommendation-method')]
+    defaultRecommendationSetting = parseInt(settingValue) || 0
+    recommendationMethod = defaultRecommendationSetting === 1 ? 'advanced' : 'basic'
+  }))
+
+  let validationError = null
+
   onMount(async () => {
     setup(async (_, boxData) => {
       const boxMons = await fetchPkmnSet(boxData)
       const gymMons = await fetchPkmnSet(boss.pokemon, 'name')
 
-      const advice = calcAdvice(boxMons, gymMons)
+      let advice
+      try {
+        if (recommendationMethod === 'advanced') {
+          // Use advanced recommendations API
+          advice = await getAdvancedRecommendations(boxMons, gymMons)
+          validationError = null // Clear any previous errors
+        } else {
+          // Use basic recommendations
+          advice = calcAdvice(boxMons, gymMons)
+          validationError = null // Clear any previous errors
+        }
+      } catch (error) {
+        // If it's a validation error, store it and fallback to basic
+        if (error.message && error.message.includes('Cannot use advanced recommendations')) {
+          validationError = error.message
+          console.warn('Validation failed, using basic recommendations:', error.message)
+          advice = calcAdvice(boxMons, gymMons)
+          // Also switch back to basic mode
+          recommendationMethod = 'basic'
+        } else {
+          throw error // Re-throw other errors
+        }
+      }
+      
       analysisResult = {
         ...advice,
         box: boxMons,
@@ -141,6 +180,129 @@
       loading = false
     })
   })
+
+  async function getAdvancedRecommendations(boxMons, gymMons) {
+    try {
+      // Validate that Pokémon have required data for advanced calculations
+      const missingData = []
+      
+      for (const pokemon of boxMons) {
+        const hasAbility = pokemon.original?.ability
+        const hasMoves = (pokemon.original?.moves || []).length > 0
+        
+        if (!hasAbility && !hasMoves) {
+          missingData.push({
+            name: pokemon.name || pokemon.alias,
+            missing: 'ability and moves'
+          })
+        } else if (!hasAbility) {
+          missingData.push({
+            name: pokemon.name || pokemon.alias,
+            missing: 'ability'
+          })
+        } else if (!hasMoves) {
+          missingData.push({
+            name: pokemon.name || pokemon.alias,
+            missing: 'moves'
+          })
+        }
+      }
+      
+      // If any Pokémon are missing data, throw an error with details
+      if (missingData.length > 0) {
+        const errorMsg = missingData.map(p => `${p.name} (missing ${p.missing})`).join(', ')
+        throw new Error(`Cannot use advanced recommendations. The following Pokémon need to be configured: ${errorMsg}. Please click on the Status or Nature field to open the configuration modal and add missing data.`)
+      }
+      
+      // Prepare data for the advanced recommendations API
+      const userPokemon = boxMons.map(pokemon => ({
+        name: pokemon.alias || pokemon.name,
+        level: pokemon.original?.level || 50,
+        ability: pokemon.original?.ability || pokemon.abilities?.[0]?.name || 'unknown',
+        nature: pokemon.original?.nature || 'Hardy',
+        moves: (pokemon.original?.moves || pokemon.moves || []).map(m => typeof m === 'string' ? m : (m.name || m)),
+        item: pokemon.original?.held?.name || pokemon.original?.held || 'none',
+        evs: pokemon.original?.evs || { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
+        ivs: pokemon.original?.ivs || { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 }
+      }))
+
+      const rivalPokemon = gymMons.map(pokemon => ({
+        name: pokemon.alias || pokemon.name,
+        level: pokemon.original?.level || 50,
+        ability: pokemon.original?.ability || pokemon.abilities?.[0]?.name || 'unknown',
+        nature: pokemon.original?.nature || 'Hardy',
+        moves: (pokemon.original?.moves || pokemon.moves || []).map(m => typeof m === 'string' ? m : (m.name || m)),
+        item: pokemon.original?.held?.name || pokemon.original?.held || 'none',
+        evs: pokemon.original?.evs || { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
+        ivs: pokemon.original?.ivs || { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 }
+      }))
+
+      const response = await fetch('/api/recommendations/advanced.json', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          userPokemon,
+          rivalPokemon,
+          gameMode: 'normal'
+        })
+      })
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+
+      const data = await response.json()
+      
+      // Transform advanced recommendations to match basic format
+      const recommendations = data.recommendations.map(rec => {
+        const userPkmn = boxMons.find(p => (p.alias || p.name) === rec.pokemon)
+        return {
+          name: rec.pokemon,
+          alias: rec.pokemon,
+          types: userPkmn?.types || [],
+          score: rec.overallScore,
+          matchups: rec.matchups || [],
+          calculationDetails: rec, // Store full rec for debugging
+          // Add basic format compatibility
+          offAdv: rec.overallScore,
+          defAdv: 0,
+          offTypeAdv: rec.overallScore,
+          defTypeAdv: 0,
+          offStatAdv: 0,
+          defStatAdv: 0,
+          weakPct: 0,
+          resistPct: 0,
+          immunePct: 0
+        }
+      })
+
+      // IMPORTANT: Even in advanced mode, we need to calculate basic data (weakness, dmg, moves)
+      // because CompareCard and Info.svelte components require these fields
+      const basicAdvice = calcAdvice(boxMons, gymMons)
+
+      return {
+        ...basicAdvice, // Include weakness, dmg, moves, calc
+        summary: {
+          ...basicAdvice.summary,
+          recommendations // Override recommendations with advanced ones
+        }
+      }
+
+    } catch (error) {
+      console.error('Error fetching advanced recommendations:', error)
+      
+      // If it's a validation error, re-throw it to be handled by the UI
+      if (error.message && error.message.includes('Cannot use advanced recommendations')) {
+        throw error
+      }
+      
+      // For other errors, fallback to basic recommendations
+      console.warn('Falling back to basic recommendations due to error:', error.message)
+      return calcAdvice(boxMons, gymMons)
+    }
+  }
 </script>
 
 {#if loading}

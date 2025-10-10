@@ -43,12 +43,36 @@
 
   import { createEventDispatcher, onMount, getContext } from 'svelte'
   import RouteRecommendations from './RouteRecommendations.svelte'
+  import PokemonConfigModal from './PokemonConfigModal.svelte'
 
-  let selected, nickname, status, nature, hidden, death
+  let selected, nickname, status, nature, ability, hidden, death
   let prevstatus = 'loading'
+  let showConfigModal = false
 
   // Search text bindings for ACs
-  let search, statusSearch, natureSearch
+  let search, statusSearch, natureSearch, abilitySearch
+  
+  // Available abilities for the selected Pokemon
+  let availableAbilities = []
+  
+  // Fetch abilities when Pokemon is selected
+  $: if (selected?.alias) {
+    // Pass the game parameter to get the correct data source
+    // For Radical Red games, this will use Radical Red data
+    // For other games, it will use PokeAPI
+    const gameParam = gameKey ? `?game=${gameKey}` : '';
+    fetch(`/api/pokemon/${selected.alias}/abilities.json${gameParam}`)
+      .then(res => res.json())
+      .then(abilities => {
+        availableAbilities = abilities
+        // If no ability is selected yet but we have abilities, don't auto-select
+        // Let the user choose manually
+      })
+      .catch(err => {
+        console.error('Error fetching abilities:', err)
+        availableAbilities = []
+      })
+  }
 
   export let encounters = []
   let encounterItems = []
@@ -131,6 +155,7 @@
 
         status = pkmn.status ? NuzlockeStates[pkmn.status] : null
         nature = pkmn.nature ? NaturesMap[pkmn.nature] : null
+        ability = pkmn.ability ? { id: pkmn.ability, label: pkmn.ability } : null
         hidden = pkmn.hidden
         nickname = pkmn.nickname
         death = pkmn.death
@@ -148,6 +173,7 @@
       pokemon: selected?.alias,
       status: status?.id,
       nature: nature?.id,
+      ability: ability?.id,
       location: locationName || location,
       ...(nickname ? { nickname } : {}),
       ...(hidden ? { hidden: true } : {}),
@@ -204,14 +230,28 @@
   }
 
   function handleClear() {
-    status = nickname = selected = death = resetd = null
-    search = statusSearch = natureSearch = null
+    status = nickname = selected = death = resetd = nature = ability = null
+    search = statusSearch = natureSearch = abilitySearch = null
+    availableAbilities = []
     store.update(
       patch({
         [location]: {},
         __team: team.filter((i) => i !== location).slice(0, 6)
       })
     )
+  }
+  
+  function handleModalSave(event) {
+    const { nickname: nick, status: stat, nature: nat, ability: abil } = event.detail
+    nickname = nick
+    status = Object.values(NuzlockeStates).find(s => s.id === stat) || status
+    nature = Natures.find(n => n.id === nat) || nature
+    ability = abil ? { id: abil, name: abil.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') } : ability
+    showConfigModal = false
+  }
+  
+  function handleModalClose() {
+    showConfigModal = false
   }
 
   let statusComplete = false
@@ -282,7 +322,7 @@
   <div
     class:lg:grid-cols-8={nicknames}
     class:lg:grid-cols-6={!nicknames}
-    class="relative flex grid w-full grid-cols-2 gap-y-3 gap-x-2 md:grid-cols-4 md:gap-y-2 lg:grid-cols-8 lg:gap-y-0"
+    class="relative flex grid w-full grid-cols-2 gap-y-3 gap-x-2 md:grid-cols-4 md:gap-y-2 lg:gap-y-0"
   >
     <span class="location group relative z-50">
       {#if $$slots.location}
@@ -398,18 +438,26 @@
       </SettingsWrapper>
     </SettingsWrapper>
 
+    <!-- Nickname field (clickable to open modal) -->
     <SettingsWrapper id="nickname-clause" on="1">
-      <Input
-        rounded
-        bind:value={nickname}
-        name="{location} Nickname"
-        placeholder="Nickname"
-        className="col-span-2 {!selected || hidden || status?.id === 4
+      <div
+        on:click={() => selected && !hidden && (showConfigModal = true)}
+        class="col-span-2 {!selected || hidden || status?.id === 4
           ? 'hidden sm:block'
-          : ''}"
-      />
+          : ''} cursor-pointer"
+      >
+        <Input
+          rounded
+          value={nickname || ''}
+          name="{location} Nickname"
+          placeholder="Nickname"
+          className="pointer-events-none"
+          readonly
+        />
+      </div>
     </SettingsWrapper>
 
+    <!-- Status field (clickable to open modal) -->
     <SettingsWrapper id="permadeath" on="1" condition={status?.id === 5}>
       <div
         class="flex h-10 cursor-not-allowed items-center rounded-lg border-2 text-sm text-gray-800 shadow-sm dark:border-gray-600 dark:text-gray-200"
@@ -423,91 +471,101 @@
       </div>
 
       <svelte:fragment slot="else">
-        <AutoCompleteV2
-          itemF={(_) => Object.values(NuzlockeStates)}
-          labelF={(_) => _.state}
-          inset={status ? '2rem' : null}
-          bind:search={statusSearch}
-          bind:selected={status}
-          id="{location} Status"
-          name="{location} Status"
-          placeholder="Status"
+        <div
+          on:click={() => selected && !hidden && (showConfigModal = true)}
           class="{!selected || hidden ? 'hidden sm:block' : ''} {status?.id ===
           4
             ? 'col-span-2 sm:col-span-1'
-            : 'col-span-1'}"
+            : 'col-span-1'} cursor-pointer"
         >
-          <svelte:fragment slot="icon" let:iconClass let:selected>
-            {#if selected}
+          <AutoCompleteV2
+            itemF={(_) => Object.values(NuzlockeStates)}
+            labelF={(_) => _.state}
+            inset={status ? '2rem' : null}
+            bind:search={statusSearch}
+            bind:selected={status}
+            id="{location} Status"
+            name="{location} Status"
+            placeholder="Status"
+            class="pointer-events-none"
+          >
+            <svelte:fragment slot="icon" let:iconClass let:selected>
+              {#if selected}
+                <Icon
+                  inline={true}
+                  class="{iconClass} left-3 fill-current"
+                  icon={selected.icon}
+                />
+              {/if}
+            </svelte:fragment>
+
+            <div
+              class="inline-flex items-center py-2 pr-3 pl-1 md:py-3"
+              slot="option"
+              let:option
+              let:label
+            >
               <Icon
                 inline={true}
-                class="{iconClass} left-3 fill-current"
-                icon={selected.icon}
+                icon={option.icon}
+                class="mr-2 transform fill-current md:scale-125"
               />
-            {/if}
-          </svelte:fragment>
-
-          <div
-            on:click={handleStatus(option.id)}
-            class="inline-flex items-center py-2 pr-3 pl-1 md:py-3"
-            slot="option"
-            let:option
-            let:label
-          >
-            <Icon
-              inline={true}
-              icon={option.icon}
-              class="mr-2 transform fill-current md:scale-125"
-            />
-            {@html label}
-          </div>
-        </AutoCompleteV2>
+              {@html label}
+            </div>
+          </AutoCompleteV2>
+        </div>
       </svelte:fragment>
     </SettingsWrapper>
 
-    <AutoCompleteV2
-      itemF={(_) => Natures}
-      max={Natures.length}
-      bind:search={natureSearch}
-      bind:selected={nature}
-      id="{location} Nature"
-      name="{location} Nature"
-      placeholder="Nature"
+    <!-- Nature field (clickable to open modal) -->
+    <div
+      on:click={() => selected && !hidden && (showConfigModal = true)}
       class="col-span-1 {!selected || status?.id === 4 || hidden
         ? 'hidden sm:block'
-        : ''}"
+        : ''} cursor-pointer"
     >
-      <div
-        class="group -mx-1 flex inline-flex w-full items-center justify-between py-2 px-1 md:py-3"
-        slot="option"
-        let:option
-        let:label
+      <AutoCompleteV2
+        itemF={(_) => Natures}
+        max={Natures.length}
+        bind:search={natureSearch}
+        bind:selected={nature}
+        id="{location} Nature"
+        name="{location} Nature"
+        placeholder="Nature"
+        class="pointer-events-none"
       >
-        <span>{@html label}</span>
-        {#if option.value.length}
-          <span
-            class="-my-4 -mr-3 flex items-end gap-x-2 text-tiny text-xs sm:flex-col sm:gap-x-0"
-          >
+        <div
+          class="group -mx-1 flex inline-flex w-full items-center justify-between py-2 px-1 md:py-3"
+          slot="option"
+          let:option
+          let:label
+        >
+          <span>{@html label}</span>
+          {#if option.value.length}
             <span
-              class="inline-flex items-center justify-end text-orange-400 dark:group-hover:text-orange-800"
+              class="-my-4 -mr-3 flex items-end gap-x-2 text-tiny text-xs sm:flex-col sm:gap-x-0"
             >
-              {option.value[0]}
-              <Icon inline={true} icon={Chevron} class="fill-current" />
+              <span
+                class="inline-flex items-center justify-end text-orange-400 dark:group-hover:text-orange-800"
+              >
+                {option.value[0]}
+                <Icon inline={true} icon={Chevron} class="fill-current" />
+              </span>
+              <span
+                class="inline-flex items-center text-blue-300 dark:group-hover:text-blue-600"
+              >
+                {option.value[1]}
+                <Icon
+                  inline={true}
+                  icon={Chevron}
+                  class="rotate-180 transform fill-current"
+                />
+              </span>
             </span>
-            <span
-              class="inline-flex items-center text-blue-300 dark:group-hover:text-blue-600"
-            >
-              {option.value[1]}
-              <Icon
-                inline={true}
-                icon={Chevron}
-                class="rotate-180 transform fill-current"
-              />
-            </span>
-          </span>
-        {/if}
-      </div>
-    </AutoCompleteV2>
+          {/if}
+        </div>
+      </AutoCompleteV2>
+    </div>
 
     <span class="inline-flex gap-x-2 text-left">
       {#if selected && status && status.id !== 4 && status.id !== 5}
@@ -708,6 +766,18 @@
     {encounters}
     {gameKey}
     {starter}
+  />
+{/if}
+
+<!-- Pokemon Config Modal -->
+{#if showConfigModal}
+  <PokemonConfigModal
+    pokemon={selected}
+    {location}
+    {gameKey}
+    initialData={{ nickname, status: status?.id, nature: nature?.id, ability: ability?.id || ability }}
+    on:save={handleModalSave}
+    on:close={handleModalClose}
   />
 {/if}
 

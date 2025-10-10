@@ -422,12 +422,19 @@
                   ...Object.values(Pokemon[p.pokemon].baseStats)
                 )}
                 moves={[]}
-                ability={p.nickname
+                ability={p.ability
                   ? {
-                      name:
-                        p.nickname + ' the ' + (p.nature || '').toLowerCase()
+                      name: p.ability
+                        .split('-')
+                        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+                        .join(' ')
                     }
-                  : null}
+                  : (p.nickname
+                      ? {
+                          name:
+                            p.nickname + ' the ' + (p.nature || '').toLowerCase()
+                        }
+                      : null)}
                 name={Pokemon[p.pokemon].name}
                 stats={Pokemon[p.pokemon].baseStats}
                 nature={p.nature}

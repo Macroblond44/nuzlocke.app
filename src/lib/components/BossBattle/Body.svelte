@@ -89,12 +89,12 @@
       </h2>
 
       <div slot="item" class="flex w-auto flex-wrap">
-        <div class="md:min-w-1/2 w-full md:flex-1">
-          <ul class="my-2 flex justify-around gap-x-6 md:justify-start">
-            {#each recommendations.slice(0, 3) as poke, i}
-              <Recommendation {...poke} {i} />
-            {/each}
-          </ul>
+          <div class="md:min-w-1/2 w-full md:flex-1">
+            <ul class="my-2 flex flex-wrap justify-around gap-x-6 gap-y-4 md:justify-start">
+              {#each recommendations.slice(0, 6) as poke, i}
+                <Recommendation {...poke} {i} />
+              {/each}
+            </ul>
           {#if advice.dmgclass}
             {@const dclass = advice.dmgclass[0]}
             {@const defclass =

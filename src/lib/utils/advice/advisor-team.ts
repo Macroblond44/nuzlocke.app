@@ -159,7 +159,7 @@ export default (box, boss) => {
     })
 
   return {
-    recommendations: recommendedMons.slice(0, 3),
+    recommendations: recommendedMons.slice(0, 6),
     advice: {
       dmgclass:
         [...new Set(bossMoveClass)].length === 1 ? [bossMoveClass[0]] : null,

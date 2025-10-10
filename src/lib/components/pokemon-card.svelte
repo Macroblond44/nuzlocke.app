@@ -15,6 +15,7 @@
 
   import { capitalise, regionise } from '$lib/utils/string'
   import { isEmpty } from '$lib/utils/obj'
+  import deferStyles from '$lib/utils/defer-styles'
 
   import { PIcon, Icon, Tooltip } from '$c/core'
 
@@ -29,8 +30,16 @@
 
   import { UNOWN } from '$utils/rewrites'
   import { Stars as Pattern } from '$utils/pattern'
+  import { afterUpdate } from 'svelte'
 
   const canonname = name.replace(/-(Alola|Galar)/, '')
+
+  // Load item CSS when held item is present
+  afterUpdate(() => {
+    if (held && held.sprite) {
+      deferStyles(`/assets/items.css?i=${held.sprite}`)
+    }
+  })
 
   const anim = ['bob'][Math.floor(Math.random() * 1)]
   const animDur = Math.floor(Math.random() * 4) + 4

@@ -79,7 +79,9 @@
   })
 
   afterUpdate(() => {
-    deferStyles(`/assets/items/${gameKey}.css`)
+    // TODO: Fix /assets/items/[game].css endpoint - currently failing due to _data.js
+    // Using global items CSS instead for now
+    // deferStyles(`/assets/items/${gameKey}.css`)
   })
 
   const setup = () =>

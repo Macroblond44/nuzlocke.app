@@ -111,6 +111,7 @@ export { default as Ruins } from '@iconify-icons/tabler/tower' // Castle / Ruins
 export { default as Forest } from '@iconify-icons/tabler/trees' // Forest
 export { default as Trophy } from '@iconify-icons/tabler/trophy' // Route
 export { default as Shiny } from '@iconify-icons/wi/stars'
+export { default as Target } from '@iconify-icons/ri/focus-3-fill'
 export * as Icon from '@iconify/svelte/dist/OfflineIcon.svelte'
 
 // ---- TODO:

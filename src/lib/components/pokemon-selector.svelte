@@ -4,7 +4,9 @@
     location,
     locationName = '',
     type = '',
-    infolink = ''
+    infolink = '',
+    gameKey = '',
+    starter = 'fire'
 
   import { nonnull, equal as oEqual } from '$utils/obj'
 
@@ -35,10 +37,12 @@
     Dots,
     Map,
     Search,
-    LongGrass
+    LongGrass,
+    Target
   } from '$icons'
 
   import { createEventDispatcher, onMount, getContext } from 'svelte'
+  import RouteRecommendations from './RouteRecommendations.svelte'
 
   let selected, nickname, status, nature, hidden, death
   let prevstatus = 'loading'
@@ -85,6 +89,13 @@
     misslines = new Set()
 
   let team, inteam
+  
+  // Route recommendations modal state
+  let showRouteRecommendations = false
+  
+  function openRouteRecommendations() {
+    showRouteRecommendations = true
+  }
 
   getTeams((t) => (team = t.team))
 
@@ -674,11 +685,31 @@
               </a>
             </li>
           {/if}
+
+          {#if encounters && encounters.length > 0 && gameKey}
+            <li>
+              <button on:click={openRouteRecommendations}>
+                <Icon inline={true} icon={Target} class="mr-2 fill-current" />
+                View Recommendations
+              </button>
+            </li>
+          {/if}
         </ul>
       </Popover>
     </span>
   </div>
 </SettingsWrapper>
+
+<!-- Route Recommendations Modal -->
+{#if showRouteRecommendations && gameKey && encounters && encounters.length > 0}
+  <RouteRecommendations
+    bind:open={showRouteRecommendations}
+    routeName={locationName || location}
+    {encounters}
+    {gameKey}
+    {starter}
+  />
+{/if}
 
 <style lang="postcss">
   .dupe {

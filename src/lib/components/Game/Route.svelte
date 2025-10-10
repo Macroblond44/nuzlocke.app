@@ -138,6 +138,8 @@
           type="starter"
           location="Starter"
           locationName="Starter"
+          gameKey={key}
+          {starter}
           on:new={onnewlocation}
         >
           <div
@@ -167,6 +169,8 @@
           infolink={toDbLocation(key, p.name)}
           location={p.name}
           encounters={p.encounters}
+          gameKey={key}
+          {starter}
           on:hide={onhidelocation}
           on:new={onnewlocation}
         />

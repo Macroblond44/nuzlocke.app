@@ -1,9 +1,10 @@
 <script>
   import { Recommendation, BoxTeam, Advice } from './'
+  import RecommendationDetails from './RecommendationDetails.svelte'
 
   import TypeLogo from '$c/type-logo.svelte'
   import { Icon, Tooltip, Accordion } from '$c/core'
-  import { Info } from '$icons'
+  import { Info, Settings } from '$icons'
 
   import { summarise } from '$utils/types'
   import { capitalise } from '$utils/string'
@@ -13,6 +14,12 @@
     box = [],
     recommendations = [],
     advice = {}
+
+  let showDebugModal = false
+
+  function handleCloseDebug() {
+    showDebugModal = false
+  }
 </script>
 
 <div
@@ -118,9 +125,29 @@
       </div>
     </Accordion>
 
+    <!-- Debug Button -->
+    <div class="mt-4 pt-4 border-t border-gray-200 dark:border-gray-600">
+      <button
+        on:click={() => showDebugModal = true}
+        class="flex items-center gap-2 px-3 py-2 text-sm text-gray-600 dark:text-gray-400 hover:text-gray-800 dark:hover:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+      >
+        <Icon icon={Settings} class="w-4 h-4" />
+        Show calculation details
+      </button>
+    </div>
+
     <slot />
   </div>
 </div>
+
+<!-- Debug Modal -->
+<RecommendationDetails
+  bind:open={showDebugModal}
+  {recommendations}
+  bossTeam={team}
+  {advice}
+  on:close={handleCloseDebug}
+/>
 
 <style>
   p {

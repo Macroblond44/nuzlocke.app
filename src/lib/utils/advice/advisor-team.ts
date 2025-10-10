@@ -54,11 +54,49 @@ export default (box, boss) => {
        Map over each of the box pokemon types as STAB bonuses
        and calculate an "offensive" score based on usage of STAB moves
      */
-      const offAdvantageScore = defTypes.reduce((acc, it) => {
-        if (bossTeamWeak4x[it]) return acc + bossTeamWeak4x[it] * 4
-        if (bossTeamWeak[it]) return acc + bossTeamWeak[it] * 2
-        if (bossTeamResist[it]) return acc - bossTeamResist[it]
-        if (bossTeamImmunity[it]) return acc - bossTeamImmunity[it] * 4
+      // Generate offensive breakdown
+      const offensiveBreakdown: any[] = []
+      const offAdvantageScore = defTypes.reduce((acc, myType) => {
+        boss.forEach((bossMon) => {
+          const bossTypes = bossMon.types
+          const effectiveness = moveResistance(myType, bossTypes)
+          let score = 0
+          let label = ''
+
+          if (effectiveness === 4) {
+            score = 4
+            label = '4x effective'
+          } else if (effectiveness === 2) {
+            score = 2
+            label = '2x effective'
+          } else if (effectiveness === 0.5) {
+            score = -1
+            label = '0.5x effective'
+          } else if (effectiveness === 0.25) {
+            score = -2
+            label = '0.25x effective'
+          } else if (effectiveness === 0) {
+            score = -4
+            label = 'immune'
+          } else {
+            score = 0
+            label = '1x neutral'
+          }
+
+          offensiveBreakdown.push({
+            attackType: myType,
+            defenderName: bossMon.name || bossMon.alias,
+            defenderTypes: bossTypes,
+            effectiveness,
+            score,
+            label
+          })
+        })
+
+        if (bossTeamWeak4x[myType]) return acc + bossTeamWeak4x[myType] * 4
+        if (bossTeamWeak[myType]) return acc + bossTeamWeak[myType] * 2
+        if (bossTeamResist[myType]) return acc - bossTeamResist[myType]
+        if (bossTeamImmunity[myType]) return acc - bossTeamImmunity[myType] * 4
         return acc
       }, 0)
 
@@ -68,24 +106,52 @@ export default (box, boss) => {
     */
 
       if (debug.includes(defName)) console.log(defName)
-      const defAdvantageScore = bossMoveTypes.reduce((acc, type) => {
+      
+      // Generate defensive breakdown
+      const defensiveBreakdown: any[] = []
+      const defAdvantageScore = bossMoves.reduce((acc, move) => {
+        const type = move.type
         const damageMod = moveResistance(type, defTypes)
         if (debug.includes(defName)) console.log(type, defTypes, damageMod, acc)
 
+        let score = 0
+        let label = ''
+
         switch (damageMod) {
           case 0:
-            return acc + 8
+            score = 8
+            label = 'immune'
+            break
           case 0.25:
-            return acc + 4
+            score = 4
+            label = '0.25x resistant'
+            break
           case 0.5:
-            return acc + 2
+            score = 2
+            label = '0.5x resistant'
+            break
           case 2:
-            return acc - 4
+            score = -4
+            label = '2x weak'
+            break
           case 4:
-            return acc - 2
+            score = -8
+            label = '4x weak'
+            break
           default:
-            return acc
+            score = 0
+            label = '1x neutral'
         }
+
+        defensiveBreakdown.push({
+          moveType: type,
+          moveName: move.name,
+          effectiveness: damageMod,
+          score,
+          label
+        })
+
+        return acc + score
       }, 0)
 
       if (debug.includes(defName))
@@ -114,6 +180,8 @@ export default (box, boss) => {
 
       return {
         name: defName,
+        alias: mon.alias,
+        types: defTypes,
         offTypeAdv: offAdvantageScore,
         defTypeAdv: defAdvantageScore,
         defStatAdv: defStatAdvantageScore,
@@ -137,7 +205,12 @@ export default (box, boss) => {
           bossMoveTypes,
           defTypes,
           debug.includes(defName)
-        )
+        ),
+        // Add calculation details for the modal
+        calculationDetails: {
+          offensiveBreakdown,
+          defensiveBreakdown
+        }
       }
     })
     .map((i) => {

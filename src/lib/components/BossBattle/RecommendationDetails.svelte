@@ -3,7 +3,7 @@
   import { capitalise, regionise } from '$utils/string'
   import { createEventDispatcher } from 'svelte'
   import { Icon } from '$c/core'
-  import { X, Settings, Shield, Sword, BarChart } from '$icons'
+  import { X, Settings, Shield, Sword, BarChart, Info } from '$icons'
 
   export let recommendations = []
   export let bossTeam = []
@@ -11,6 +11,10 @@
   export let open = false
 
   const dispatch = createEventDispatcher()
+
+  // State for showing detailed calculations
+  let showDetailedCalculations = false
+  let selectedPokemon = null
 
   function closeModal() {
     open = false
@@ -27,25 +31,76 @@
     return 'text-gray-600 dark:text-gray-400'
   }
 
-  function getTypeEffectiveness(attackerType, defenderTypes) {
-    // Simplified type effectiveness calculation
-    const typeChart = {
-      grass: { water: 2, ground: 2, rock: 2, fire: 0.5, grass: 0.5, poison: 0.5, flying: 0.5, bug: 0.5, dragon: 0.5, steel: 0.5 },
-      water: { fire: 2, ground: 2, rock: 2, water: 0.5, grass: 0.5, dragon: 0.5 },
-      fire: { grass: 2, ice: 2, bug: 2, steel: 2, fire: 0.5, water: 0.5, rock: 0.5, dragon: 0.5 },
-      electric: { water: 2, flying: 2, electric: 0.5, grass: 0.5, dragon: 0.5, ground: 0 },
-      fighting: { normal: 2, ice: 2, rock: 2, dark: 2, steel: 2, poison: 0.5, flying: 0.5, psychic: 0.5, bug: 0.5, fairy: 0.5, ghost: 0 },
-      rock: { fire: 2, ice: 2, flying: 2, bug: 2, fighting: 0.5, ground: 0.5, steel: 0.5 },
-      ground: { fire: 2, electric: 2, poison: 2, rock: 2, steel: 2, grass: 0.5, bug: 0.5, flying: 0 },
-      // Add more types as needed
+  function toggleDetailedCalculations(pokemon) {
+    if (selectedPokemon === pokemon.name) {
+      selectedPokemon = null
+      showDetailedCalculations = false
+    } else {
+      selectedPokemon = pokemon.name
+      showDetailedCalculations = true
     }
+  }
+
+  // Get offensive breakdown from pre-calculated data
+  function getOffensiveBreakdown(pokemon) {
+    const breakdown = pokemon.calculationDetails?.offensiveBreakdown || []
+    const totalScore = pokemon.offTypeAdv || 0
     
-    if (!typeChart[attackerType]) return 1
+    // Format defender types for display
+    const formattedBreakdown = breakdown.map(item => ({
+      ...item,
+      defenderTypes: (item.defenderTypes || []).map(t => capitalise(t)).join('/')
+    }))
     
-    return defenderTypes.reduce((total, type) => {
-      const effectiveness = typeChart[attackerType][type] || 1
-      return total * effectiveness
-    }, 1)
+    // Filter out neutral matchups if there are too many
+    const myTypes = pokemon.types || []
+    const shouldShowNeutral = myTypes.length * bossTeam.length <= 8
+    
+    return {
+      breakdown: shouldShowNeutral 
+        ? formattedBreakdown 
+        : formattedBreakdown.filter(item => item.score !== 0),
+      totalScore
+    }
+  }
+
+  // Get defensive breakdown from pre-calculated data
+  function getDefensiveBreakdown(pokemon) {
+    const breakdown = pokemon.calculationDetails?.defensiveBreakdown || []
+    const totalScore = pokemon.defTypeAdv || 0
+    
+    // Filter out neutral matchups if there are too many
+    const shouldShowNeutral = breakdown.length <= 8
+    
+    return {
+      breakdown: shouldShowNeutral 
+        ? breakdown 
+        : breakdown.filter(item => item.score !== 0),
+      totalScore
+    }
+  }
+
+  // Get boss team types for analysis
+  function getBossTeamTypes() {
+    return [...new Set(bossTeam.map(poke => poke.types || []).flat())]
+  }
+
+  // Get boss team moves for detailed analysis
+  function getBossMoves() {
+    return bossTeam
+      .map(poke => poke.original?.moves || [])
+      .flat()
+      .filter(move => move.damage_class !== 'status')
+  }
+
+  // Get boss team stats for display
+  function getBossStats() {
+    return bossTeam.map(poke => ({
+      name: poke.name || poke.alias,
+      types: poke.types || [],
+      moves: (poke.original?.moves || []).filter(m => m.damage_class !== 'status'),
+      stats: poke.original?.stats || poke.baseStats || {}
+    }))
   }
 </script>
 
@@ -107,16 +162,25 @@
           
           {#each recommendations as pokemon, index}
             <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
-              <div class="flex items-center gap-4 mb-4">
-                <PIcon name={pokemon.name} class="w-12 h-12" />
-                <div>
-                  <h4 class="text-lg font-semibold text-gray-900 dark:text-white">
-                    {regionise(capitalise(pokemon.name))}
-                  </h4>
-                  <p class="text-sm text-gray-600 dark:text-gray-400">
-                    Rank #{index + 1}
-                  </p>
+              <div class="flex items-center justify-between mb-4">
+                <div class="flex items-center gap-4">
+                  <PIcon name={pokemon.name} class="w-12 h-12" />
+                  <div>
+                    <h4 class="text-lg font-semibold text-gray-900 dark:text-white">
+                      {regionise(capitalise(pokemon.name))}
+                    </h4>
+                    <p class="text-sm text-gray-600 dark:text-gray-400">
+                      Rank #{index + 1}
+                    </p>
+                  </div>
                 </div>
+                <button
+                  on:click={() => toggleDetailedCalculations(pokemon)}
+                  class="flex items-center gap-2 px-3 py-2 text-sm bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded-lg hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
+                >
+                  <Icon icon={Settings} class="w-4 h-4" />
+                  {selectedPokemon === pokemon.name ? 'Hide Details' : 'Show Calculations'}
+                </button>
               </div>
 
               <!-- Score Breakdown -->
@@ -207,6 +271,122 @@
                   </div>
                 </div>
               </div>
+
+                    <!-- Detailed Calculations -->
+                    {#if selectedPokemon === pokemon.name && showDetailedCalculations}
+                      {@const offTypeCalc = getOffensiveBreakdown(pokemon)}
+                      {@const defTypeCalc = getDefensiveBreakdown(pokemon)}
+                
+                <div class="mt-6 pt-6 border-t border-gray-200 dark:border-gray-600">
+                  <h5 class="font-medium text-gray-900 dark:text-white flex items-center gap-2 mb-4">
+                    <Icon icon={Info} class="w-4 h-4 text-blue-500" />
+                    Detailed Calculations for {regionise(capitalise(pokemon.name))}
+                  </h5>
+                  
+                  <div class="space-y-6">
+                    <!-- Offensive Type Advantage Calculations -->
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                      <h6 class="font-medium text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                        <Icon icon={Sword} class="w-4 h-4 text-red-500" />
+                        Offensive Type Advantage: {formatScore(pokemon.offTypeAdv)}
+                      </h6>
+                      <p class="text-xs text-gray-600 dark:text-gray-400 mb-3">
+                        <strong>Your types:</strong> {(pokemon.types || []).map(t => capitalise(t)).join(', ') || 'Unknown'}
+                      </p>
+                      
+                      {#if offTypeCalc.breakdown.length > 0}
+                        <div class="space-y-1">
+                          {#each offTypeCalc.breakdown as calc}
+                            <div class="flex justify-between items-center p-2 bg-white dark:bg-gray-600 rounded text-xs">
+                              <span class="text-gray-700 dark:text-gray-300">
+                                <span class="font-medium">{capitalise(calc.attackType)}</span> vs <strong>{regionise(capitalise(calc.defenderName))}</strong> <span class="text-gray-500">({calc.defenderTypes})</span>
+                              </span>
+                              <span class="font-mono flex items-center gap-2">
+                                <span class="text-gray-500 dark:text-gray-400">{calc.effectiveness}x</span>
+                                <span class="{getScoreColor(calc.score)} font-medium">{formatScore(calc.score)}</span>
+                              </span>
+                            </div>
+                          {/each}
+                          <div class="flex justify-between items-center p-2 bg-blue-100 dark:bg-blue-800 rounded font-medium text-sm mt-3">
+                            <span>Total:</span>
+                            <span class={getScoreColor(offTypeCalc.totalScore)}>{formatScore(offTypeCalc.totalScore)}</span>
+                          </div>
+                        </div>
+                      {:else}
+                        <p class="text-sm text-gray-500 dark:text-gray-400 italic">No type matchups</p>
+                      {/if}
+                    </div>
+
+                    <!-- Defensive Type Resistance Calculations -->
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                      <h6 class="font-medium text-gray-900 dark:text-white mb-3 flex items-center gap-2">
+                        <Icon icon={Shield} class="w-4 h-4 text-blue-500" />
+                        Defensive Type Resistance: {formatScore(pokemon.defTypeAdv)}
+                      </h6>
+                      <p class="text-xs text-gray-600 dark:text-gray-400 mb-3">
+                        <strong>Your types:</strong> {(pokemon.types || []).map(t => capitalise(t)).join(', ') || 'Unknown'}
+                      </p>
+                      
+                      {#if defTypeCalc.breakdown.length > 0}
+                        <div class="space-y-1">
+                          {#each defTypeCalc.breakdown as calc}
+                            <div class="flex justify-between items-center p-2 bg-white dark:bg-gray-600 rounded text-xs">
+                              <span class="text-gray-700 dark:text-gray-300">
+                                <strong>{capitalise(calc.moveName.replace(/-/g, ' '))}</strong> <span class="text-gray-500">({capitalise(calc.moveType)})</span>
+                              </span>
+                              <span class="font-mono flex items-center gap-2">
+                                <span class="text-gray-500 dark:text-gray-400">{calc.effectiveness}x</span>
+                                <span class="{getScoreColor(calc.score)} font-medium">{formatScore(calc.score)}</span>
+                              </span>
+                            </div>
+                          {/each}
+                          <div class="flex justify-between items-center p-2 bg-blue-100 dark:bg-blue-800 rounded font-medium text-sm mt-3">
+                            <span>Total:</span>
+                            <span class={getScoreColor(defTypeCalc.totalScore)}>{formatScore(defTypeCalc.totalScore)}</span>
+                          </div>
+                        </div>
+                      {:else}
+                        <p class="text-sm text-gray-500 dark:text-gray-400 italic">No boss moves for analysis</p>
+                      {/if}
+                    </div>
+
+                    <!-- Stat Scores Summary -->
+                    <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
+                      <h6 class="font-medium text-gray-900 dark:text-white mb-3">
+                        Stat Scores
+                      </h6>
+                      <div class="space-y-2 text-sm">
+                        <div class="flex justify-between items-center p-2 bg-white dark:bg-gray-600 rounded">
+                          <span class="text-gray-700 dark:text-gray-300">Offensive Stat Advantage</span>
+                          <span class={getScoreColor(pokemon.offStatAdv)}>{formatScore(pokemon.offStatAdv)}</span>
+                        </div>
+                        <div class="flex justify-between items-center p-2 bg-white dark:bg-gray-600 rounded">
+                          <span class="text-gray-700 dark:text-gray-300">Defensive Stat Advantage</span>
+                          <span class={getScoreColor(pokemon.defStatAdv)}>{formatScore(pokemon.defStatAdv)}</span>
+                        </div>
+                        <p class="text-xs text-gray-500 dark:text-gray-400 italic mt-2">
+                          Stat scores compare your Pokémon's Attack/Defense against the boss team's stats
+                        </p>
+                      </div>
+                    </div>
+
+                    <!-- Final Calculation -->
+                    <div class="bg-blue-50 dark:bg-blue-900/20 p-4 rounded-lg">
+                      <h6 class="font-medium text-blue-900 dark:text-blue-100 mb-2">
+                        Final Scores
+                      </h6>
+                      <div class="text-sm text-blue-800 dark:text-blue-200 space-y-2">
+                        <div class="p-3 bg-white/50 dark:bg-white/10 rounded">
+                          <strong>Total Offensive:</strong> {formatScore(pokemon.offTypeAdv)} (type) × {formatScore(pokemon.offStatAdv)} (stats) = <span class={getScoreColor(pokemon.offAdv)}>{formatScore(pokemon.offAdv)}</span>
+                        </div>
+                        <div class="p-3 bg-white/50 dark:bg-white/10 rounded">
+                          <strong>Total Defensive:</strong> {formatScore(pokemon.defTypeAdv)} (type) × {formatScore(pokemon.defStatAdv)} (stats) = <span class={getScoreColor(pokemon.defAdv)}>{formatScore(pokemon.defAdv)}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              {/if}
             </div>
           {/each}
         </div>

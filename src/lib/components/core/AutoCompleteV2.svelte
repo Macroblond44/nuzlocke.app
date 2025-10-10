@@ -24,9 +24,12 @@
   const debouncedItemF = debouncePromise(itemF, search?.length ? delay : 0)
 
   function filterF(items, search) {
-    const filteredItems = matchSorter(items, search ?? '', {
-      keys: [(item) => labelF(item)]
-    })
+    // If there's no search term, preserve the original order
+    const filteredItems = search && search.trim() 
+      ? matchSorter(items, search, {
+          keys: [(item) => labelF(item)]
+        })
+      : items
 
     const slicedItems = filteredItems.slice(0, max)
     return {
@@ -272,12 +275,12 @@
     padding: 0;
     margin: 0;
     position: absolute;
-    z-index: 4000;
+    z-index: 9999;
     bottom: -8px;
     transform: translateY(100%);
 
     max-height: 420px;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
 
   small {

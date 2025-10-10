@@ -48,6 +48,7 @@
   let selected, nickname, status, nature, ability, hidden, death
   let prevstatus = 'loading'
   let showConfigModal = false
+  let moves = []
 
   // Search text bindings for ACs
   let search, statusSearch, natureSearch, abilitySearch
@@ -156,6 +157,7 @@
         status = pkmn.status ? NuzlockeStates[pkmn.status] : null
         nature = pkmn.nature ? NaturesMap[pkmn.nature] : null
         ability = pkmn.ability ? { id: pkmn.ability, label: pkmn.ability } : null
+        moves = pkmn.moves || []
         hidden = pkmn.hidden
         nickname = pkmn.nickname
         death = pkmn.death
@@ -177,7 +179,8 @@
       location: locationName || location,
       ...(nickname ? { nickname } : {}),
       ...(hidden ? { hidden: true } : {}),
-      ...(status?.id === 5 && death ? { death } : {})
+      ...(status?.id === 5 && death ? { death } : {}),
+      ...(moves && moves.length > 0 ? { moves } : {})
     })
 
     if (selected && !oEqual(topatch, resetd)) {
@@ -231,6 +234,7 @@
 
   function handleClear() {
     status = nickname = selected = death = resetd = nature = ability = null
+    moves = []
     search = statusSearch = natureSearch = abilitySearch = null
     availableAbilities = []
     store.update(
@@ -242,11 +246,12 @@
   }
   
   function handleModalSave(event) {
-    const { nickname: nick, status: stat, nature: nat, ability: abil } = event.detail
+    const { nickname: nick, status: stat, nature: nat, ability: abil, moves: movesData } = event.detail
     nickname = nick
     status = Object.values(NuzlockeStates).find(s => s.id === stat) || status
     nature = Natures.find(n => n.id === nat) || nature
     ability = abil ? { id: abil, name: abil.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') } : ability
+    moves = movesData || []
     showConfigModal = false
   }
   
@@ -775,7 +780,7 @@
     pokemon={selected}
     {location}
     {gameKey}
-    initialData={{ nickname, status: status?.id, nature: nature?.id, ability: ability?.id || ability }}
+    initialData={{ nickname, status: status?.id, nature: nature?.id, ability: ability?.id || ability, moves }}
     on:save={handleModalSave}
     on:close={handleModalClose}
   />

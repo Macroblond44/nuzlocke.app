@@ -421,7 +421,7 @@
                   150,
                   ...Object.values(Pokemon[p.pokemon].baseStats)
                 )}
-                moves={[]}
+                moves={p.moves || []}
                 ability={p.ability
                   ? {
                       name: p.ability

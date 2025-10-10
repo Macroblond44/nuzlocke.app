@@ -111,7 +111,9 @@ export function getPokemonMoves(pokemonName) {
       level,
       ...formatMove(moveData, moveId)
     } : null;
-  }).filter(m => m);
+  })
+  .filter(m => m)
+  .sort((a, b) => a.level - b.level); // Sort by level in ascending order
   
   // TM moves (array of moveIds that match TM list)
   // TODO: Implement TM move extraction
@@ -131,19 +133,43 @@ export function getPokemonMoves(pokemonName) {
 }
 
 /**
- * Format move data to standard structure
+ * Type ID to name mapping
+ */
+const TYPE_NAMES = [
+  'normal', 'fighting', 'flying', 'poison', 'ground', 'rock', 'bug', 'ghost',
+  'steel', 'fire', 'water', 'grass', 'electric', 'psychic', 'ice', 'dragon',
+  'dark', 'fairy', 'stellar'
+];
+
+/**
+ * Split ID to damage class mapping
+ * 0 = physical, 1 = special, 2 = status
+ */
+const DAMAGE_CLASS_NAMES = ['physical', 'special', 'status'];
+
+/**
+ * Format move data to standard structure expected by MoveCard
  */
 function formatMove(moveData, moveId) {
-  const moveName = moveData.names?.[0] || `Move_${moveId}`;
+  const types = pokemonData.radred?.types || {};
+  const moveName = moveData.name || `Move_${moveId}`;
+  
+  // Get type name from type ID
+  const typeData = types[moveData.type];
+  const typeName = typeData?.name?.toLowerCase() || TYPE_NAMES[moveData.type] || 'normal';
+  
+  // Get damage class from split (0=physical, 1=special, 2=status)
+  const damageClass = DAMAGE_CLASS_NAMES[moveData.split] || 'status';
   
   return {
     id: moveName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
     name: moveName,
-    type: moveData.type || 'normal',
+    type: typeName,
     power: moveData.power || null,
     accuracy: moveData.accuracy || null,
     pp: moveData.pp || null,
-    damageClass: moveData.damageClass || 'status',
+    damage_class: damageClass,
+    priority: moveData.priority || 0,
     effect: moveData.description || ''
   };
 }

@@ -31,17 +31,25 @@
     }
   }
   
+  // Handle moves - array of move objects
+  let moves = initialData.moves || []
+  let selectedMoves = [...moves] // Copy to avoid mutating initialData
+  
   // Search bindings
   let statusSearch = ''
   let natureSearch = ''
   let abilitySearch = ''
+  let moveSearches = ['', '', '', ''] // Search text for each of the 4 move slots
   
-  // Available abilities for the selected Pokemon
+  // Available data for the selected Pokemon
   let availableAbilities = []
+  let availableMoves = []
   
-  // Fetch abilities when Pokemon is selected
+  // Fetch abilities and moves when Pokemon is selected
   $: if (pokemon?.alias) {
     const gameParam = gameKey ? `?game=${gameKey}` : '';
+    
+    // Fetch abilities
     fetch(`/api/pokemon/${pokemon.alias}/abilities.json${gameParam}`)
       .then(res => res.json())
       .then(abilities => {
@@ -51,6 +59,18 @@
         console.error('Error fetching abilities:', err)
         availableAbilities = []
       })
+    
+      // Fetch moves
+      fetch(`/api/pokemon/${pokemon.alias}/moves.json${gameParam}`)
+        .then(res => res.json())
+        .then(data => {
+          // Use only level-up moves, already sorted by level in ascending order from the API
+          availableMoves = data.levelUp || []
+        })
+        .catch(err => {
+          console.error('Error fetching moves:', err)
+          availableMoves = []
+        })
   }
   
   function formatAbilityName(abilityId) {
@@ -61,11 +81,15 @@
   }
   
   function handleSave() {
+    // Filter out null/undefined moves
+    const validMoves = selectedMoves.filter(m => m && m.id)
+    
     dispatch('save', {
       nickname,
       status: status?.id,
       nature: nature?.id,
-      ability: ability?.id
+      ability: ability?.id,
+      moves: validMoves
     })
   }
   
@@ -83,7 +107,7 @@
   >
     <!-- Modal content -->
     <div
-      class="relative w-full max-w-md rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800"
+      class="relative w-full max-w-md max-h-[90vh] overflow-y-auto rounded-lg bg-white p-6 shadow-xl dark:bg-gray-800"
       on:click|stopPropagation
       transition:fly={{ y: 20, duration: 300 }}
     >
@@ -228,6 +252,43 @@
               {/if}
             </div>
           </AutoCompleteV2>
+        </div>
+        
+        <!-- Moves (4 slots) -->
+        <div>
+          <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Moves (up to 4)
+          </label>
+          <div class="space-y-2">
+            {#each [0, 1, 2, 3] as i}
+              <AutoCompleteV2
+                itemF={(_) => availableMoves}
+                labelF={(move) => move.name}
+                max={20}
+                bind:search={moveSearches[i]}
+                bind:selected={selectedMoves[i]}
+                id="{location} Move {i + 1} Modal"
+                name="{location} Move {i + 1} Modal"
+                placeholder="Move {i + 1}..."
+                class="w-full"
+                disabled={availableMoves.length === 0}
+              >
+                <div
+                  class="group -mx-1 flex w-full items-center justify-between py-2 px-1 md:py-3"
+                  slot="option"
+                  let:option
+                  let:label
+                >
+                  <span>{@html label}</span>
+                  {#if option.level}
+                    <span class="text-xs text-gray-500 dark:text-gray-400">
+                      Lv. {option.level}
+                    </span>
+                  {/if}
+                </div>
+              </AutoCompleteV2>
+            {/each}
+          </div>
         </div>
       </div>
       

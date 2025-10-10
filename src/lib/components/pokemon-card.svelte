@@ -53,7 +53,7 @@
   {@const color2 = color(types[1] || types[0], themeId)}
   {@const pattern = Pattern(color2)}
   <div
-    class="card relative flex flex-col rounded-lg border bg-white dark:border-gray-900 dark:bg-gray-900 dark:shadow-lg {$$restProps.class ||
+    class="card relative flex flex-col rounded-lg border bg-white dark:border-gray-900 dark:bg-gray-900 dark:shadow-lg h-full {$$restProps.class ||
       ''}"
   >
     <div

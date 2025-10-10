@@ -13,8 +13,8 @@
   },
   "devDependencies": {
     "@iconify-icons/mdi": "^1.2.34",
-    "@sveltejs/adapter-vercel": "next",
-    "@sveltejs/kit": "next",
+    "@sveltejs/adapter-vercel": "1.0.0-next.84",
+    "@sveltejs/kit": "1.0.0-next.570",
     "@tailwindcss/line-clamp": "^0.4.2",
     "autoprefixer": "^10.4.7",
     "cssnano": "^5.0.8",
@@ -44,7 +44,6 @@
     "@iconify-icons/tabler": "^1.2.68",
     "@iconify-icons/wi": "^1.2.3",
     "@iconify/svelte": "^3.0.1",
-    "@sentry/svelte": "^7.47.0",
     "@smogon/calc": "^0.6.0",
     "clean-css": "^5.2.2",
     "dayjs": "^1.10.7",

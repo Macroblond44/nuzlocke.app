@@ -108,8 +108,18 @@
   }
 
   async function fetchPkmnSet(mons, key = 'pokemon') {
+    // Debug: Log what names we're looking up
+    const names = mons.map((m) => m[key])
+    console.log('fetchPkmnSet looking up:', key, names)
+    
     return await Promise.all(
-      mons.map((m) => getPkmn(m[key]).then((res) => ({ original: m, ...res })))
+      mons.map((m) => getPkmn(m[key]).then((res) => {
+        // Debug: Log what we got back
+        if (m[key] && m[key].includes('alola')) {
+          console.log('Got back for', m[key], ':', { alias: res?.alias, types: res?.types })
+        }
+        return { original: m, ...res }
+      }))
     )
   }
 

@@ -33,7 +33,12 @@
     getPkmn: (id) =>
       fetchData().then((p = {}) => {
         const nid = normalise(id)
-        return p.idMap[nid] || p.aliasMap[nid] || p.nameMap[nid]
+        const result = p.idMap[nid] || p.aliasMap[nid] || p.nameMap[nid]
+        // Debug: Log Pokemon lookup for regional forms
+        if (id && id.includes('alola')) {
+          console.log('getPkmn debug:', { original: id, normalized: nid, found: result?.alias, types: result?.types })
+        }
+        return result
       }),
     getPkmns: (ids = []) =>
       fetchData().then((p = {}) => {

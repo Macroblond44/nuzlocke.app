@@ -4,6 +4,9 @@ import { weaknesses } from './types'
 const debug = []
 
 export default (box, boss) => {
+  // Debug: Log boss team Pokemon names and types
+  console.log('Boss team:', JSON.stringify(boss.map(p => ({ name: p.name, alias: p.alias, types: p.types })), null, 2))
+  
   const bossMoves = boss
     .map((poke) => poke.original.moves)
     .flat()

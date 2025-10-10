@@ -224,6 +224,12 @@ export default (box, boss) => {
     //     a.offAdv >= 0 && a.defAdv >= 0 && a.weakPct < 0.5 && a.resistPct >= 0
     // )
     .sort((a, b) => {
+      // Priority 1: Both offensive and defensive scores are positive (viable Pokemon)
+      const aViable = a.offAdv >= 0 && a.defAdv >= 0
+      const bViable = b.offAdv >= 0 && b.defAdv >= 0
+      if (aViable !== bViable) return bViable ? 1 : -1
+      
+      // Original sorting logic (offensive first, then defensive, then percentages)
       return (
         b.offAdv - a.offAdv ||
         b.defAdv - a.defAdv ||

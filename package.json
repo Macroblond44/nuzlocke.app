@@ -80,7 +80,7 @@
   },
   "version": "1.0.0",
   "main": "index.js",
-  "repository": "https://github.com/domtronn/dc-nuzlocke",
-  "author": "domtronn <dgc336@gmail.com>",
-  "license": "MIT"
+  "repository": "https://github.com/Macroblond44/nuzlocke.app",
+  "author": "Macroblond44 <yeraymd44@gmail.com>",
+  "license": "BSD-3-Clause"
 }

@@ -1,16 +1,6 @@
-# Nuzlock tracker
+# Nuzlocke Tracker
 
-<a href="https://www.buymeacoffee.com/nuzlocketracker" target="_blank">
-<img
-    src="https://www.buymeacoffee.com/assets/img/custom_images/yellow_img.png" 
-    alt="Buy Me A Coffee" 
-    style="height: 41px !important;width: 174px !important;box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;-webkit-box-shadow: 0px 3px 2px 0px rgba(190, 190, 190, 0.5) !important;" 
-/>
-</a>
-
-This project is designed for tracking Nuzlocke runs, the Pokemon
-you've encountered and their status. But it also provides information
-and adivce for Bosses you face. 
+This project is a fork of the original [nuzlocke.app](https://github.com/domtronn/nuzlocke.app) designed for tracking Nuzlocke runs, the Pokemon you've encountered and their status. It also provides information and advice for Bosses you face. 
 
 ### Contributing
 
@@ -81,13 +71,29 @@ them out and thank their creators.
 - [Nuzlog](https://techyfatih.github.io/Nuzlog/) - A journal, team and item manager
 - [Nuzlocke Generator](https://nuzlocke-generator.herokuapp.com/) - Image creator for runs 
 
-### Useful links
+## Development
 
-- [Sentry](https://sentry.io/organizations/nuzlocke-tracker/issues/?project=6109144) - Sentry error tracking
-- [Analytics](https://nuzlocke-analytics.vercel.app/) - Page views and click trackingc
-- [Updates & Support](https://www.buymeacoffee.com/dashboard) - Follow feature updates and support me
+### Local Setup
+
+```bash
+# Install dependencies
+npm install
+# or
+yarn install
+
+# Run development server
+npm run dev
+# or
+yarn dev
+```
+
+The application will be available at `http://localhost:5173`
+
+### Useful Links
+
 - [PixelIt](https://giventofly.github.io/pixelit/#tryit) - A Pixelator for making custom assets
 - [Usprited](https://github.com/linuxenko/usprited) - A sprite sheet editor & CSS generator
+- [Original Project](https://github.com/domtronn/nuzlocke.app) - Original nuzlocke.app by @domtronn
 
 <!-- https://www.fiverr.com/kohari_nk/make-pixel-16x16-icon?context_referrer=search_gigs&source=top-bar&ref_ctx_id=cf16eab512166c55524582f57bd11493&pckg_id=1&pos=4&context_type=auto&funnel=cf16eab512166c55524582f57bd11493&imp_id=0d9b6187-ef6d-4936-b92e-b8ca99a75986 -->
 

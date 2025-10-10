@@ -4,7 +4,7 @@
 
   import { Footer } from '$c/navs'
 
-  import PokemonCard from '$lib/components/pokemon-card.svelte'
+  import PokemonCardWithMoves from '$lib/components/PokemonCardWithMoves.svelte'
 
   import { Settings } from '$lib/components/Settings'
   import { Loader, PIcon, IconButton, Tooltip, Toggle, Icon } from '$c/core'
@@ -75,6 +75,7 @@
   let ogbox = [],
     box = [],
     Pokemon = {}
+  
   getBox((b) => {
     ogbox = box = b
     getPkmns(box.map((i) => i.pokemon)).then((data) => {
@@ -373,24 +374,7 @@
         </div>
 
         <div
-          class:grid-cols-1={!minimal}
-          class:grid-cols-2={minimal}
-          class:sm:grid-cols-2={!minimal}
-          class:sm:grid-cols-3={minimal}
-          class:md:grid-cols-4={minimal}
-          class:lg:grid-cols-3={!minimal}
-          class:lg:grid-cols-5={minimal}
-          class:xl:grid-cols-4={!minimal}
-          class:xl:grid-cols-5={minimal}
-          class:gap-y-6={minimal}
-          class:gap-x-3={minimal}
-          class:gap-x-4={!minimal}
-          class:gap-y-8={!minimal}
-          class:xl:grid-cols-3={!minimal &&
-            (stat === 'team' || type.startsWith('badge:'))}
-          class:xl:grid-cols-6={minimal &&
-            (stat === 'team' || type.startsWith('badge:'))}
-          class="mt-6 grid"
+          class="mt-8 grid gap-y-10 md:grid-cols-2 md:gap-x-2 lg:grid-cols-2 lg:gap-x-6"
         >
           {#if box.length === 0}
             <span
@@ -410,7 +394,7 @@
                 name={p.pokemon}
               />
 
-              <PokemonCard
+              <PokemonCardWithMoves
                 {minimal}
                 sprite={createImgUrl(Pokemon[p.pokemon], {
                   shiny: p.status === 6,
@@ -429,12 +413,7 @@
                         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
                         .join(' ')
                     }
-                  : (p.nickname
-                      ? {
-                          name:
-                            p.nickname + ' the ' + (p.nature || '').toLowerCase()
-                        }
-                      : null)}
+                  : null}
                 name={Pokemon[p.pokemon].name}
                 stats={Pokemon[p.pokemon].baseStats}
                 nature={p.nature}
@@ -578,7 +557,7 @@
                     {/if}
                   </div>
                 </span>
-              </PokemonCard>
+              </PokemonCardWithMoves>
             </span>
           {/each}
         </div>

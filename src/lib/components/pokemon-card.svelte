@@ -11,7 +11,8 @@
     ability = '',
     stats,
     nature = undefined,
-    minimal = false
+    minimal = false,
+    movesCols = 2
 
   import { capitalise, regionise } from '$lib/utils/string'
   import { isEmpty } from '$lib/utils/obj'
@@ -165,7 +166,9 @@
       >
         {#if moves && moves.length}
           <div
-            class="my-3 ml-4 grid flex-2 grid-cols-2 gap-x-4 gap-y-0 lg:gap-y-3"
+            class="my-3 ml-4 grid flex-2 gap-x-4 gap-y-0 lg:gap-y-3"
+            class:grid-cols-2={movesCols === 2}
+            class:grid-cols-4={movesCols === 4}
           >
             {#each moves.filter((m) => !isEmpty(m)) as m}
               <MoveCard {...m} stab={types.includes(m.type)} />

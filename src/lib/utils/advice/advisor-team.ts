@@ -144,10 +144,12 @@ export default (box, boss) => {
       if (debug.includes(i.name)) console.log(i)
       return i
     })
-    .filter(
-      (a) =>
-        a.offAdv >= 0 && a.defAdv >= 0 && a.weakPct < 0.5 && a.resistPct >= 0
-    )
+    // Filter disabled: show all Pokemon regardless of scores
+    // Uncomment to re-enable filtering of Pokemon with negative scores or high weakness percentage:
+    // .filter(
+    //   (a) =>
+    //     a.offAdv >= 0 && a.defAdv >= 0 && a.weakPct < 0.5 && a.resistPct >= 0
+    // )
     .sort((a, b) => {
       return (
         b.offAdv - a.offAdv ||

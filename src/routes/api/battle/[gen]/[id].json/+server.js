@@ -111,7 +111,8 @@ const toPokemon = (p, patches = {}) => {
     /\/sprites\/pokemon\/([0-9]+)/.exec(p?.sprites?.front_default) || []
 
   const result = nonnull({
-    name: p?.species?.name || p,
+    name: p?.name || p?.species?.name || p,
+    alias: (p?.name !== p?.species?.name) ? p?.name : null,
     sprite: sprite,
     imgUrl: patch?.imgUrl,
     types: patch.types || toTypes(p.types),

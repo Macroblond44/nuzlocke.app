@@ -33,6 +33,10 @@ export async function POST({ request }) {
     
     console.log(`[Advanced Recommendations] Calculating matchups for ${userPokemon.length} user Pokémon vs ${rivalPokemon.length} rival Pokémon`);
     
+    // Calculate level cap (max level of rival Pokémon) for Nuzlocke rules
+    const levelCap = Math.max(...rivalPokemon.map(p => parseInt(p.level) || 50));
+    console.log(`[Level Cap] Applying Nuzlocke level cap: ${levelCap}`);
+    
     // Use Generation 8 as base (similar to Radical Red mechanics)
     const gen = Generations.get(8);
     
@@ -40,10 +44,17 @@ export async function POST({ request }) {
     
     // Calculate matchups for each user Pokémon against each rival Pokémon
     for (const userMon of userPokemon) {
+      // Apply level cap to user Pokémon
+      const cappedLevel = Math.min(userMon.level || 50, levelCap);
+      const userMonCapped = { ...userMon, level: cappedLevel };
+      
+      if (userMon.level !== cappedLevel) {
+        console.log(`[Level Cap] ${userMon.name}: ${userMon.level} → ${cappedLevel}`);
+      }
       const matchups = [];
       
       for (const rivalMon of rivalPokemon) {
-        const matchup = calculateMatchup(gen, userMon, rivalMon);
+        const matchup = calculateMatchup(gen, userMonCapped, rivalMon);
         matchups.push({
           // Rival Pokémon info
           rivalPokemon: rivalMon.name,  // Changed from rivalName to rivalPokemon
@@ -53,11 +64,11 @@ export async function POST({ request }) {
           rivalItem: rivalMon.item,
           rivalMoves: rivalMon.moves?.map(m => typeof m === 'string' ? m : (m.name || m)) || [],
           // User Pokémon info
-          userLevel: userMon.level,
-          userAbility: userMon.ability,
-          userNature: userMon.nature,
-          userItem: userMon.item,
-          userMoves: userMon.moves || [],
+          userLevel: userMonCapped.level,
+          userAbility: userMonCapped.ability,
+          userNature: userMonCapped.nature,
+          userItem: userMonCapped.item,
+          userMoves: userMonCapped.moves || [],
           // Calculation results
           ...matchup,
           // Ensure damagePercentage exists (alias for damagePercent)
@@ -75,7 +86,8 @@ export async function POST({ request }) {
       
       recommendations.push({
         pokemon: userMon.name,
-        level: userMon.level,
+        level: cappedLevel, // Use capped level for display
+        originalLevel: userMon.level, // Store original level for reference
         matchups: matchups, // Return ALL matchups (not just top 3)
         overallScore: calculateOverallScore(matchups)
       });
@@ -87,6 +99,7 @@ export async function POST({ request }) {
     return new Response(JSON.stringify({
       recommendations,
       method: 'advanced',
+      levelCap: levelCap,
       timestamp: new Date().toISOString()
     }), {
       status: 200,

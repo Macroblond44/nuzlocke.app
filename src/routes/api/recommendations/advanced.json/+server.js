@@ -50,10 +50,11 @@ const SCORE_LOSS = 0;
 export async function POST({ request }) {
   try {
     const body = await request.json();
-    const { userPokemon, rivalPokemon, game } = body;
+    let { userPokemon, rivalPokemon, game, gameMode } = body;
     
     console.log('[Request] Received body keys:', Object.keys(body));
     console.log('[Request] Game parameter:', game, 'Type:', typeof game);
+    console.log('[Request] Game mode:', gameMode);
     
     if (!userPokemon || !rivalPokemon) {
       return new Response(JSON.stringify({ 
@@ -77,6 +78,81 @@ export async function POST({ request }) {
     // Calculate level cap (max level of rival Pokémon) for Nuzlocke rules
     const levelCap = Math.max(...rivalPokemon.map(p => parseInt(p.level) || 50));
     console.log(`[Level Cap] Applying Nuzlocke level cap: ${levelCap}`);
+    
+    // If this is route mode, we need to fetch moves and abilities for route Pokémon
+    if (gameMode === 'route') {
+      console.log('[Route Mode] Fetching moves and abilities for route Pokémon...');
+      console.log('[Route Mode] Using game-specific data for:', game);
+      
+      const baseUrl = process.env.NODE_ENV === 'development' 
+        ? 'http://localhost:5173' 
+        : 'https://nuzlocke.app';
+      
+      const gameParam = game ? `?game=${game}` : '';
+      
+      userPokemon = await Promise.all(userPokemon.map(async (pokemon) => {
+        try {
+          const pokemonName = pokemon.name.toLowerCase();
+          console.log(`[Route Mode] Processing ${pokemonName}...`);
+          
+          // Fetch abilities using the same endpoint as PokemonConfigModal
+          const abilitiesUrl = `${baseUrl}/api/pokemon/${pokemonName}/abilities.json${gameParam}`;
+          const abilitiesResponse = await fetch(abilitiesUrl);
+          
+          if (!abilitiesResponse.ok) {
+            throw new Error(`Failed to fetch abilities: ${abilitiesResponse.status}`);
+          }
+          
+          const abilitiesData = await abilitiesResponse.json();
+          console.log(`[Route Mode] ${pokemonName} - Abilities source: ${abilitiesResponse.headers.get('X-Data-Source')}`);
+          
+          // Get non-hidden abilities
+          const nonHiddenAbilities = abilitiesData.filter(a => !a.isHidden);
+          
+          // Select a random non-hidden ability
+          const selectedAbility = nonHiddenAbilities.length > 0
+            ? nonHiddenAbilities[Math.floor(Math.random() * nonHiddenAbilities.length)].id
+            : null;
+          
+          // Fetch moves using the same endpoint as PokemonConfigModal
+          const movesUrl = `${baseUrl}/api/pokemon/${pokemonName}/moves.json${gameParam}`;
+          const movesResponse = await fetch(movesUrl);
+          
+          if (!movesResponse.ok) {
+            throw new Error(`Failed to fetch moves: ${movesResponse.status}`);
+          }
+          
+          const movesData = await movesResponse.json();
+          console.log(`[Route Mode] ${pokemonName} - Moves source: ${movesResponse.headers.get('X-Data-Source')}`);
+          
+          // Filter moves learnable up to level cap and only attacking moves
+          const learnableMoves = (movesData.levelUp || [])
+            .filter(m => m.level <= levelCap && m.damage_class !== 'status')
+            .map(m => m.id || m.name);
+          
+          // Select 4 random attacking moves (or all if less than 4)
+          const selectedMoves = learnableMoves.length > 4
+            ? learnableMoves.sort(() => 0.5 - Math.random()).slice(0, 4)
+            : learnableMoves;
+          
+          console.log(`[Route Mode] ${pokemonName}: ${selectedMoves.length} moves (${selectedMoves.join(', ')}), ability: ${selectedAbility}`);
+          
+          return {
+            ...pokemon,
+            moves: selectedMoves,
+            ability: selectedAbility
+          };
+        } catch (error) {
+          console.error(`[Route Mode] Error fetching data for ${pokemon.name}:`, error.message);
+          // Return with default moves if fetch fails
+          return {
+            ...pokemon,
+            moves: ['Tackle'], // Fallback move
+            ability: null
+          };
+        }
+      }));
+    }
     
     const gen = Generations.get(genNumber);
     console.log(`[Generation] Using Generation ${gen.num}`);
@@ -131,12 +207,24 @@ export async function POST({ request }) {
       // Sort by win probability (descending)
       matchups.sort((a, b) => b.winProbability - a.winProbability);
       
+      // Calculate battle statistics
+      const wins = matchups.filter(m => m.userWins).length;
+      const losses = matchups.length - wins;
+      const winRate = matchups.length > 0 ? (wins / matchups.length) * 100 : 0;
+      const score = calculateOverallScore(matchups);
+      
       recommendations.push({
+        name: userMon.name, // Use 'name' for consistency with UI
         pokemon: userMon.name,
         level: cappedLevel, // Use capped level for display
         originalLevel: userMon.level, // Store original level for reference
         matchups: matchups, // Return ALL matchups (not just top 3)
-        overallScore: calculateOverallScore(matchups)
+        overallScore: score,
+        score: score, // Alias for consistency
+        wins: wins,
+        losses: losses,
+        winRate: winRate,
+        totalMatchups: matchups.length
       });
     }
     

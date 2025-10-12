@@ -4,6 +4,10 @@
   import { capitalise, regionise } from '$utils/string'
   import { X, Settings, Shield, Sword, BarChart, Info, Target } from '$icons'
   import advisorTeam from '$utils/advice/advisor-team'
+  import AdvancedRecommendationDetails from '$lib/components/BossBattle/AdvancedRecommendationDetails.svelte'
+  import { parse, activeGame, savedGames } from '$lib/store'
+  import { getSetting } from '$lib/components/Settings/_data'
+  import { createRecommendationManager, RECOMMENDATION_METHODS } from '$lib/utils/recommendations/recommendation-manager.js'
 
   export let open = false
   export let routeName = ''
@@ -24,6 +28,25 @@
   // State for detailed calculations
   let showDetailedCalculations = false
   let selectedPokemon = null
+  
+  // State for advanced modal
+  let showAdvancedModal = false
+  
+  // Recommendation manager instance
+  let recommendationManager = createRecommendationManager()
+
+  // Load default recommendation method from settings (only once)
+  let settingsLoaded = false
+  savedGames.subscribe(parse(saves => {
+    if (!settingsLoaded) {
+      const { settings } = saves[$activeGame] || {}
+      console.log('[Route Recommendations] Game settings:', settings)
+      
+      recommendationManager.updateMethodFromSettings(settings, getSetting)
+      console.log('[Route Recommendations] Final recommendation method:', recommendationManager.getCurrentMethod())
+      settingsLoaded = true
+    }
+  }))
 
   onMount(async () => {
     // Fetch league data to populate boss list
@@ -48,8 +71,13 @@
   })
 
   async function loadBoss(bossId) {
+    console.log('[Route Recommendations] Loading boss:', bossId)
+    console.log('[Route Recommendations] Current recommendation method:', recommendationManager.getCurrentMethod())
+    console.log('[Route Recommendations] Encounter pokemon count:', encounterPokemon.length)
+    
     loading = true
     selectedBoss = availableBosses.find(b => b.id === bossId)
+    console.log('[Route Recommendations] Selected boss:', selectedBoss)
     
     // Fetch full Pokemon data for boss team using individual getPkmn calls
     bossTeam = await Promise.all(
@@ -63,13 +91,47 @@
         }
       })
     )
+    console.log('[Route Recommendations] Boss team loaded:', bossTeam.length, 'pokemon')
 
-    // Run recommendation algorithm
-    const result = advisorTeam(encounterPokemon, bossTeam)
-    recommendations = result.recommendations
-    advice = result.advice
+    // Run recommendation algorithm based on method
+    if (recommendationManager.isAdvanced()) {
+      console.log('[Route Recommendations] Using advanced recommendations')
+      try {
+        const result = await recommendationManager.loadAdvancedRecommendationsForRoute(
+          encounterPokemon, 
+          bossTeam, 
+          gameKey
+        )
+        console.log('[Route Recommendations] Advanced recommendations result:', result.length, 'recommendations')
+        
+        // Don't auto-open the modal - let user click the button instead
+        // This prevents having two modals open at once
+      } catch (error) {
+        console.error('[Route Recommendations] Advanced recommendations error:', error.message)
+        // Fallback to basic recommendations on error
+        const result = advisorTeam(encounterPokemon, bossTeam)
+        recommendations = result.recommendations
+        advice = result.advice
+        console.log('[Route Recommendations] Fallback to basic recommendations:', recommendations.length, 'recommendations')
+      }
+    } else {
+      console.log('[Route Recommendations] Using basic recommendations')
+      const result = advisorTeam(encounterPokemon, bossTeam)
+      recommendations = result.recommendations
+      advice = result.advice
+      console.log('[Route Recommendations] Basic recommendations result:', recommendations.length, 'recommendations')
+    }
     
     loading = false
+  }
+
+  function toggleRecommendationMethod() {
+    recommendationManager.toggleMethod()
+    
+    // Reload boss data if a boss is selected
+    if (selectedBoss) {
+      loadBoss(selectedBoss.id)
+    }
   }
 
   function normaliseKey(name) {
@@ -80,17 +142,27 @@
     open = false
     selectedBoss = null
     recommendations = []
+    recommendationManager.reset()
     showDetailedCalculations = false
     selectedPokemon = null
   }
 
+
   function toggleDetailedCalculations(pokemon) {
-    if (selectedPokemon === pokemon.name) {
-      selectedPokemon = null
-      showDetailedCalculations = false
+    if (recommendationManager.isAdvanced()) {
+      // For advanced mode, open the advanced calculations modal
+      console.log('[Route Recommendations] Opening advanced modal for:', pokemon.name)
+      console.log('[Route Recommendations] Pokemon data:', pokemon)
+      recommendationManager.showAdvancedModal(pokemon)
     } else {
-      selectedPokemon = pokemon.name
-      showDetailedCalculations = true
+      // For basic mode, use the existing detailed calculations
+      if (selectedPokemon === pokemon.name) {
+        selectedPokemon = null
+        showDetailedCalculations = false
+      } else {
+        selectedPokemon = pokemon.name
+        showDetailedCalculations = true
+      }
     }
   }
 
@@ -163,12 +235,25 @@
             Route Recommendations: {routeName}
           </h2>
         </div>
-        <button 
-          on:click={closeModal}
-          class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-        >
-          <Icon icon={X} class="w-5 h-5" />
-        </button>
+        <div class="flex items-center gap-3">
+          {#if selectedBoss}
+            <button 
+              on:click={toggleRecommendationMethod}
+              class="px-4 py-2 text-sm font-medium rounded-lg transition-colors {recommendationManager.getCurrentMethod() === 'basic' 
+                ? 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-300' 
+                : 'bg-purple-100 text-purple-700 dark:bg-purple-900/30 dark:text-purple-300'}"
+            >
+              <Icon icon={recommendationManager.getCurrentMethod() === 'basic' ? BarChart : Info} class="w-4 h-4 mr-2" />
+              {recommendationManager.getCurrentMethod() === 'basic' ? 'Basic' : 'Advanced'}
+            </button>
+          {/if}
+          <button 
+            on:click={closeModal}
+            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+          >
+            <Icon icon={X} class="w-5 h-5" />
+          </button>
+        </div>
       </div>
 
       <!-- Content -->
@@ -278,11 +363,43 @@
             <!-- Recommendations List -->
             <div>
               <h4 class="text-md font-semibold mb-4 text-gray-900 dark:text-white flex items-center gap-2">
-                <Icon icon={BarChart} class="text-green-600 dark:text-green-400" />
+                <Icon icon={recommendationManager.getCurrentMethod() === 'basic' ? BarChart : Info} class="text-green-600 dark:text-green-400" />
                 Recommended Pokémon from {routeName}
+                {#if recommendationManager.getCurrentMethod() === 'advanced'}
+                  <button
+                    on:click={() => {
+                      console.log('[Route Recommendations] Header button clicked')
+                      console.log('[Route Recommendations] Advanced recommendations:', recommendationManager.getAdvancedRecommendations())
+                      showAdvancedModal = true
+                      console.log('[Route Recommendations] showAdvancedModal set to:', showAdvancedModal)
+                    }}
+                    class="text-sm bg-purple-100 dark:bg-purple-900/30 text-purple-700 dark:text-purple-300 px-2 py-1 rounded-full hover:bg-purple-200 dark:hover:bg-purple-900/50 transition-colors cursor-pointer"
+                    disabled={recommendationManager.isLoadingAdvanced() || recommendationManager.getAdvancedRecommendations().length === 0}
+                  >
+                    Advanced Analysis
+                  </button>
+                {/if}
               </h4>
               
-              {#if recommendations.length === 0}
+              {#if recommendationManager.isLoadingAdvanced()}
+                <div class="text-center py-8 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <p class="text-gray-600 dark:text-gray-400">
+                    Calculating advanced battle simulations...
+                  </p>
+                  <p class="text-sm text-gray-500 dark:text-gray-500 mt-2">
+                    This may take a moment as we simulate 1v1 battles for each Pokémon.
+                  </p>
+                </div>
+              {:else if recommendationManager.getCurrentMethod() === 'advanced' && recommendationManager.getAdvancedRecommendations().length === 0}
+                <div class="text-center py-8 bg-gray-50 dark:bg-gray-700 rounded-lg">
+                  <p class="text-gray-600 dark:text-gray-400">
+                    No advanced recommendations available.
+                  </p>
+                  <p class="text-sm text-gray-500 dark:text-gray-500 mt-2">
+                    Try switching to basic mode or select a different boss.
+                  </p>
+                </div>
+              {:else if recommendationManager.getCurrentMethod() === 'basic' && recommendations.length === 0}
                 <div class="text-center py-8 bg-gray-50 dark:bg-gray-700 rounded-lg">
                   <p class="text-gray-600 dark:text-gray-400">
                     No strong recommendations found for this matchup.
@@ -293,74 +410,113 @@
                 </div>
               {:else}
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-                  {#each recommendations as pokemon, index}
-                    <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 hover:shadow-md transition-shadow">
-                      <div class="flex items-center justify-between mb-3">
-                        <div class="flex items-center gap-3">
-                          <PIcon name={pokemon.name} class="w-12 h-12" />
+                  {#if recommendationManager.getCurrentMethod() === 'advanced'}
+                    <!-- Advanced mode: Show loading or message -->
+                    {#if recommendationManager.isLoadingAdvanced()}
+                      <div class="col-span-2 text-center py-8">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-purple-600 mx-auto mb-4"></div>
+                        <p class="text-gray-600 dark:text-gray-400">Loading advanced recommendations...</p>
+                      </div>
+                    {:else if recommendationManager.getAdvancedRecommendations().length > 0}
+                      <div class="col-span-2 text-center py-8">
+                        <div class="mb-4">
+                          <Icon icon={Target} class="w-12 h-12 text-green-500 mx-auto mb-2" />
+                          <h3 class="text-lg font-semibold text-gray-900 dark:text-white mb-2">
+                            Advanced Analysis Ready
+                          </h3>
+                          <p class="text-gray-600 dark:text-gray-400">
+                            Click "Advanced Analysis" above to view detailed 1v1 battle simulations
+                          </p>
+                          <button
+                            on:click={() => {
+                              console.log('[Route Recommendations] Opening advanced modal...')
+                              console.log('[Route Recommendations] Advanced recommendations:', recommendationManager.getAdvancedRecommendations())
+                              console.log('[Route Recommendations] Boss team:', bossTeam)
+                              showAdvancedModal = true
+                              console.log('[Route Recommendations] showAdvancedModal set to:', showAdvancedModal)
+                            }}
+                            class="mt-4 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-medium rounded-lg transition-colors"
+                          >
+                            View Advanced Analysis
+                          </button>
+                        </div>
+                      </div>
+                    {:else}
+                      <div class="col-span-2 text-center py-8">
+                        <p class="text-gray-600 dark:text-gray-400">
+                          No advanced recommendations available. Try selecting a different boss.
+                        </p>
+                      </div>
+                    {/if}
+                  {:else}
+                    {#each recommendations as pokemon, index}
+                      <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 hover:shadow-md transition-shadow">
+                        <div class="flex items-center justify-between mb-3">
+                          <div class="flex items-center gap-3">
+                            <PIcon name={pokemon.name} class="w-12 h-12" />
+                            <div>
+                              <h5 class="font-semibold text-gray-900 dark:text-white">
+                                {regionise(capitalise(pokemon.name))}
+                              </h5>
+                              <p class="text-xs text-gray-600 dark:text-gray-400">
+                                Rank #{index + 1}
+                              </p>
+                            </div>
+                          </div>
+                          <button
+                            on:click={() => toggleDetailedCalculations(pokemon)}
+                            class="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
+                          >
+                            {selectedPokemon === pokemon.name ? 'Hide' : 'Details'}
+                          </button>
+                        </div>
+
+                        <!-- Quick Summary -->
+                        <div class="grid grid-cols-2 gap-3 text-xs">
+                          <div class="bg-red-50 dark:bg-red-900/20 p-2 rounded">
+                            <div class="flex items-center gap-1 mb-1">
+                              <Icon icon={Sword} class="w-3 h-3 text-red-500" />
+                              <span class="font-medium text-gray-700 dark:text-gray-300">Offensive</span>
+                            </div>
+                            <div class={`text-lg font-bold ${getScoreColor(pokemon.offAdv)}`}>
+                              {formatScore(pokemon.offAdv)}
+                            </div>
+                          </div>
+                          <div class="bg-blue-50 dark:bg-blue-900/20 p-2 rounded">
+                            <div class="flex items-center gap-1 mb-1">
+                              <Icon icon={Shield} class="w-3 h-3 text-blue-500" />
+                              <span class="font-medium text-gray-700 dark:text-gray-300">Defensive</span>
+                            </div>
+                            <div class={`text-lg font-bold ${getScoreColor(pokemon.defAdv)}`}>
+                              {formatScore(pokemon.defAdv)}
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Effectiveness Percentages -->
+                        <div class="mt-3 grid grid-cols-3 gap-2 text-xs text-center">
                           <div>
-                            <h5 class="font-semibold text-gray-900 dark:text-white">
-                              {regionise(capitalise(pokemon.name))}
-                            </h5>
-                            <p class="text-xs text-gray-600 dark:text-gray-400">
-                              Rank #{index + 1}
-                            </p>
+                            <div class="font-semibold text-green-600 dark:text-green-400">
+                              {Math.round(pokemon.resistPct * 100)}%
+                            </div>
+                            <div class="text-gray-600 dark:text-gray-400">Resist</div>
+                          </div>
+                          <div>
+                            <div class="font-semibold text-red-600 dark:text-red-400">
+                              {Math.round(pokemon.weakPct * 100)}%
+                            </div>
+                            <div class="text-gray-600 dark:text-gray-400">Weak</div>
+                          </div>
+                          <div>
+                            <div class="font-semibold text-purple-600 dark:text-purple-400">
+                              {Math.round(pokemon.immunePct * 100)}%
+                            </div>
+                            <div class="text-gray-600 dark:text-gray-400">Immune</div>
                           </div>
                         </div>
-                        <button
-                          on:click={() => toggleDetailedCalculations(pokemon)}
-                          class="px-2 py-1 text-xs bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 rounded hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors"
-                        >
-                          {selectedPokemon === pokemon.name ? 'Hide' : 'Details'}
-                        </button>
-                      </div>
-
-                      <!-- Quick Summary -->
-                      <div class="grid grid-cols-2 gap-3 text-xs">
-                        <div class="bg-red-50 dark:bg-red-900/20 p-2 rounded">
-                          <div class="flex items-center gap-1 mb-1">
-                            <Icon icon={Sword} class="w-3 h-3 text-red-500" />
-                            <span class="font-medium text-gray-700 dark:text-gray-300">Offensive</span>
-                          </div>
-                          <div class={`text-lg font-bold ${getScoreColor(pokemon.offAdv)}`}>
-                            {formatScore(pokemon.offAdv)}
-                          </div>
-                        </div>
-                        <div class="bg-blue-50 dark:bg-blue-900/20 p-2 rounded">
-                          <div class="flex items-center gap-1 mb-1">
-                            <Icon icon={Shield} class="w-3 h-3 text-blue-500" />
-                            <span class="font-medium text-gray-700 dark:text-gray-300">Defensive</span>
-                          </div>
-                          <div class={`text-lg font-bold ${getScoreColor(pokemon.defAdv)}`}>
-                            {formatScore(pokemon.defAdv)}
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Effectiveness Percentages -->
-                      <div class="mt-3 grid grid-cols-3 gap-2 text-xs text-center">
-                        <div>
-                          <div class="font-semibold text-green-600 dark:text-green-400">
-                            {Math.round(pokemon.resistPct * 100)}%
-                          </div>
-                          <div class="text-gray-600 dark:text-gray-400">Resist</div>
-                        </div>
-                        <div>
-                          <div class="font-semibold text-red-600 dark:text-red-400">
-                            {Math.round(pokemon.weakPct * 100)}%
-                          </div>
-                          <div class="text-gray-600 dark:text-gray-400">Weak</div>
-                        </div>
-                        <div>
-                          <div class="font-semibold text-purple-600 dark:text-purple-400">
-                            {Math.round(pokemon.immunePct * 100)}%
-                          </div>
-                          <div class="text-gray-600 dark:text-gray-400">Immune</div>
-                        </div>
-                      </div>
-
-                      <!-- Detailed Calculations -->
-                      {#if selectedPokemon === pokemon.name && showDetailedCalculations}
+                        
+                        <!-- Detailed Calculations for Basic Mode -->
+                        {#if selectedPokemon === pokemon.name && showDetailedCalculations}
                         {@const offTypeCalc = getOffensiveBreakdown(pokemon)}
                         {@const defTypeCalc = getDefensiveBreakdown(pokemon)}
                         
@@ -444,9 +600,10 @@
                             </div>
                           </div>
                         </div>
-                      {/if}
-                    </div>
-                  {/each}
+                        {/if}
+                      </div>
+                    {/each}
+                  {/if}
                 </div>
 
                 <!-- Summary Info -->
@@ -472,4 +629,15 @@
   </div>
 {/if}
 
+<!-- Advanced Recommendation Details Modal -->
+{#if showAdvancedModal}
+  <AdvancedRecommendationDetails
+    open={showAdvancedModal}
+    on:close={() => showAdvancedModal = false}
+    recommendations={recommendationManager.getAdvancedRecommendations()}
+    bossTeam={bossTeam}
+    userTeam={[]}
+    gameMode="route"
+  />
+{/if}
 

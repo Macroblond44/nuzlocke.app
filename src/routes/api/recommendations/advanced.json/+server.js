@@ -52,10 +52,23 @@ const DEFAULT_CALC_GEN = 9; // Modern romhacks use Gen 9
 // KO Analysis constants
 const GUARANTEED_KO_THRESHOLD = 100; // 100% chance = guaranteed
 const SINGLE_MOVE_THRESHOLD = 1; // For single move vs multi-move logic
+const PERCENTAGE_DECIMAL_PLACES = 1; // Round percentages to 1 decimal place
 
 // ========== SCORING WEIGHTS ==========
 const SCORE_WIN = 1;
 const SCORE_LOSS = 0;
+
+// ========== HELPER FUNCTIONS ==========
+
+/**
+ * Round percentage to specified decimal places
+ * @param {number} probability - Probability value (0-1)
+ * @returns {number} Rounded percentage
+ */
+function roundPercentage(probability) {
+  const multiplier = Math.pow(10, PERCENTAGE_DECIMAL_PLACES);
+  return Math.round(probability * GUARANTEED_KO_THRESHOLD * multiplier) / multiplier;
+}
 
 export async function POST({ request }) {
   try {
@@ -356,9 +369,10 @@ function calculateMoveSequenceKOProbability(gen, attacker, defender, movesUsed, 
 function calculateSingleMoveKO(gen, attacker, defender, moveUsed, defenderHP) {
   const moveResult = calculate(gen, attacker, defender, new Move(gen, moveUsed.move));
   const koChance = moveResult.kochance();
+  const koPercentage = roundPercentage(koChance.chance);
   
   return createKOAnalysisResult(
-    koChance.chance * GUARANTEED_KO_THRESHOLD,
+    koPercentage,
     koChance.chance === 1,
     koChance.text,
     SINGLE_MOVE_THRESHOLD
@@ -388,10 +402,12 @@ function calculateMultiMoveKO(gen, attacker, defender, movesUsed, defenderHP) {
   console.log(`     Target: ${defenderHP} HP`);
   const probability = calculateExactSequenceProbability(damageArrays, defenderHP);
   
+  const koPercentage = roundPercentage(probability);
+  
   return createKOAnalysisResult(
-    probability * GUARANTEED_KO_THRESHOLD,
+    koPercentage,
     probability === 1,
-    `${(probability * GUARANTEED_KO_THRESHOLD).toFixed(1)}% chance to ${movesUsed.length}HKO`,
+    `${koPercentage}% chance to ${movesUsed.length}HKO`,
     movesUsed.length
   );
 }
@@ -427,7 +443,7 @@ function calculateExactSequenceProbability(damageArrays, targetDamage) {
     const koCount = damageArray.filter(damage => damage >= targetDamage).length;
     const probability = koCount / damageArray.length;
     
-    console.log(`     Result: ${koCount}/${damageArray.length} combinations achieve KO = ${(probability * GUARANTEED_KO_THRESHOLD).toFixed(2)}%`);
+    console.log(`     Result: ${koCount}/${damageArray.length} combinations achieve KO = ${roundPercentage(probability)}%`);
     return probability;
   }
 
@@ -437,7 +453,7 @@ function calculateExactSequenceProbability(damageArrays, targetDamage) {
   
   const probability = calculateCombinationProbability(damageArrays, targetDamage);
   
-  console.log(`     Result: ${(probability * GUARANTEED_KO_THRESHOLD).toFixed(4)}% chance to achieve ${targetDamage}+ damage`);
+  console.log(`     Result: ${roundPercentage(probability)}% chance to achieve ${targetDamage}+ damage`);
   return probability;
 }
 
@@ -936,7 +952,7 @@ function calculateMatchup(gen, userMon, rivalMon) {
     
     console.log(`  🎲 User KO Probability:`);
     console.log(`     - Move sequence: ${userMovesUsed.map(m => m.move).join(' → ')}`);
-    console.log(`     - Probability: ${userKOData.probability.toFixed(2)}%`);
+    console.log(`     - Probability: ${userKOData.probability}%`);
     console.log(`     - Guaranteed: ${userKOData.isGuaranteed ? 'YES ✓' : 'NO ✗'}`);
     console.log(`     - Description: ${userKOData.description}`);
     console.log(`${'='.repeat(60)}\n`);

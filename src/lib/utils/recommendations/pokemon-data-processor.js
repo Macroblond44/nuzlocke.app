@@ -132,9 +132,16 @@ export function formatRivalPokemonForAPI(rivalPokemon) {
     level: pokemon.original?.level || pokemon.level || 50,
     ability: pokemon.original?.ability || pokemon.ability || pokemon.abilities?.[0]?.name || 'unknown',
     nature: pokemon.original?.nature || pokemon.nature || 'Hardy',
-    moves: (pokemon.original?.moves || pokemon.moves || []).map(m => 
-      typeof m === 'string' ? m : (m.name || m)
-    ),
+    moves: (pokemon.original?.moves || pokemon.moves || []).map(m => {
+      if (typeof m === 'string') return m;
+      
+      // Special handling for Hidden Power - preserve type information
+      if (m.name === 'Hidden Power' && m.type) {
+        return `${m.name} ${m.type}`; // e.g., "Hidden Power grass"
+      }
+      
+      return m.name || m;
+    }),
     item: pokemon.original?.held?.name || pokemon.original?.held || pokemon.held?.name || pokemon.held || 'none',
     stats: pokemon.stats || pokemon.baseStats || { hp: 100, atk: 100, def: 100, spa: 100, spd: 100, spe: 100 },
     evs: pokemon.original?.evs || pokemon.evs || { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
@@ -161,7 +168,16 @@ export function formatBossTeamForAPI(bossTeam) {
       level: original.level || bossPokemon.level || 50,
       ability: original.ability || bossPokemon.ability || bossPokemon.abilities?.[0]?.name || 'unknown',
       nature: original.nature || bossPokemon.nature || 'Hardy',
-      moves: (original.moves || bossPokemon.moves || []).map(m => typeof m === 'string' ? m : (m.name || m)),
+      moves: (original.moves || bossPokemon.moves || []).map(m => {
+        if (typeof m === 'string') return m;
+        
+        // Special handling for Hidden Power - preserve type information
+        if (m.name === 'Hidden Power' && m.type) {
+          return `${m.name} ${m.type}`; // e.g., "Hidden Power grass"
+        }
+        
+        return m.name || m;
+      }),
       item: original.held?.name || original.held || bossPokemon.held?.name || bossPokemon.held || original.item || bossPokemon.item || 'none',
       stats: bossPokemon.stats || bossPokemon.baseStats || { hp: 100, atk: 100, def: 100, spa: 100, spd: 100, spe: 100 },
       evs: original.evs || bossPokemon.evs || { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },

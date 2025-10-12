@@ -690,14 +690,14 @@ function calculateMatchup(gen, userMon, rivalMon) {
       item: userMon.item,
       moves: userMon.moves
     });
-    console.log(`Rival Pokemon (from static league file):`, {
+    console.log(`Rival Pokemon (from league JSON):`, {
       name: rivalMon.name,
       level: rivalMon.level,
       ability: rivalMon.ability,
       nature: rivalMon.nature,
       item: rivalMon.item,
-      baseStats: rivalMon.stats, // Base stats from radred.fire.json (or equivalent)
-      moves: rivalMon.moves?.map(m => typeof m === 'string' ? m : (m.name || m))
+      baseStats: rivalMon.stats, // Base stats from league file (e.g., radred.water.json)
+      moves: rivalMon.moves // Already processed by formatBossTeamForAPI with Hidden Power type
     });
     
     // Create Pokémon objects with proper stats
@@ -792,7 +792,19 @@ function calculateMatchup(gen, userMon, rivalMon) {
     // ========== STEP 1: Calculate all possible moves for both Pokémon ==========
     console.log(`\n[1v1 SIMULATION] Calculating all move options...`);
     const userMoveOptions = calculateAllMoves(gen, userPokemon, rivalPokemon, userMon.moves);
-    const rivalMoves = rivalMon.moves?.map(m => typeof m === 'string' ? m : (m.name || m)) || [];
+    
+    // Process rival moves, handling special cases like Hidden Power with type
+    const rivalMoves = rivalMon.moves?.map(m => {
+      if (typeof m === 'string') return m;
+      
+      // Special handling for Hidden Power - include type information
+      if (m.name === 'Hidden Power' && m.type) {
+        return `${m.name} ${m.type}`; // e.g., "Hidden Power grass"
+      }
+      
+      return m.name || m;
+    }) || [];
+    
     const rivalMoveOptions = calculateAllMoves(gen, rivalPokemon, userPokemon, rivalMoves);
     
     if (userMoveOptions.length === 0) {

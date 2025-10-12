@@ -108,13 +108,58 @@
   }
 
   function getWinLossText(result) {
-    if (result.hitsToKO === 1) return 'OHKO'
-    if (result.hitsToKO === 2) return '2HKO'
-    return `${result.hitsToKO}HKO`
+    const hitsToKO = result.hitsToKO;
+    
+    // Check if it's a guaranteed KO (from description parsing)
+    if (result.isGuaranteedKO === true) {
+      return `guaranteed ${hitsToKO}HKO`;
+    }
+    
+    // Handle specific hit counts with chances
+    if (hitsToKO === 1) {
+      if (result.canOHKO === true || result.ohkoChance === 100) {
+        return 'guaranteed OHKO'
+      } else if (result.ohkoChance && result.ohkoChance > 0) {
+        return `${result.ohkoChance}% chance to OHKO`
+      } else {
+        return 'OHKO'
+      }
+    }
+    if (hitsToKO === 2) {
+      if (result.canTwoHKO === true || result.twoHkoChance === 100) {
+        return 'guaranteed 2HKO'
+      } else if (result.twoHkoChance && result.twoHkoChance > 0) {
+        return `${result.twoHkoChance}% chance to 2HKO`
+      } else {
+        return '2HKO'
+      }
+    }
+    
+    // For 3HKO, 4HKO, etc., check if it's guaranteed
+    if (hitsToKO >= 3) {
+      // If we have a guaranteed KO flag or specific chance, use it
+      if (result.guaranteedKO === true || result.koChance === 100) {
+        return `guaranteed ${hitsToKO}HKO`;
+      } else if (result.koChance && result.koChance > 0) {
+        return `${result.koChance}% chance to ${hitsToKO}HKO`;
+      }
+    }
+    
+    return `${hitsToKO}HKO`
   }
 
   function formatPercentage(value) {
     return `${Math.round(value * 100)}%`
+  }
+
+  function formatDamageRange(damagePercentageRange, damageRange) {
+    if (damagePercentageRange) {
+      // Format as "123.8 - 152.3%"
+      const [min, max] = damagePercentageRange.split(',');
+      return `${min} - ${max}%`;
+    }
+    // Fallback to HP values if no percentage range available
+    return damageRange || 'N/A';
   }
 </script>
 
@@ -235,7 +280,7 @@
                                   vs {regionise(capitalise(matchup.rivalPokemon))}
                                 </h6>
                                 <p class="text-sm text-gray-600 dark:text-gray-400">
-                                  {getWinLossText(matchup)} • {matchup.damagePercentage}
+                                  {getWinLossText(matchup)}
                                 </p>
                               </div>
                             </div>
@@ -265,7 +310,7 @@
                             </div>
                             <div class="text-center">
                               <div class="font-semibold text-gray-900 dark:text-white">
-                                {matchup.damageRange}
+                                {formatDamageRange(matchup.damagePercentageRange, matchup.damageRange)}
                               </div>
                               <div class="text-xs text-gray-600 dark:text-gray-400">Damage Range</div>
                             </div>
@@ -308,8 +353,10 @@
                                 <div class="flex justify-between">
                                   <span class="text-gray-600 dark:text-gray-400">Ability:</span>
                                   <span class="font-medium text-gray-900 dark:text-white">
-                                    {calculationDetails.userAbility && typeof calculationDetails.userAbility === 'string' 
-                                      ? capitalise(calculationDetails.userAbility.replace(/-/g, ' ')) 
+                                    {calculationDetails.userAbility 
+                                      ? (typeof calculationDetails.userAbility === 'string' 
+                                        ? capitalise(calculationDetails.userAbility.replace(/-/g, ' '))
+                                        : capitalise(calculationDetails.userAbility.name?.replace(/-/g, ' ') || 'Unknown'))
                                       : 'N/A'}
                                   </span>
                                 </div>
@@ -360,8 +407,10 @@
                                 <div class="flex justify-between">
                                   <span class="text-gray-600 dark:text-gray-400">Ability:</span>
                                   <span class="font-medium text-gray-900 dark:text-white">
-                                    {calculationDetails.rivalAbility && typeof calculationDetails.rivalAbility === 'string' 
-                                      ? capitalise(calculationDetails.rivalAbility.replace(/-/g, ' ')) 
+                                    {calculationDetails.rivalAbility 
+                                      ? (typeof calculationDetails.rivalAbility === 'string' 
+                                        ? capitalise(calculationDetails.rivalAbility.replace(/-/g, ' '))
+                                        : capitalise(calculationDetails.rivalAbility.name?.replace(/-/g, ' ') || 'Unknown'))
                                       : 'N/A'}
                                   </span>
                                 </div>
@@ -411,7 +460,7 @@
                                 </div>
                                 <div class="flex justify-between">
                                   <span class="text-gray-600 dark:text-gray-400">Damage Range:</span>
-                                  <span class="font-medium text-gray-900 dark:text-white">{calculationDetails.damageRange}</span>
+                                  <span class="font-medium text-gray-900 dark:text-white">{formatDamageRange(calculationDetails.damagePercentageRange, calculationDetails.damageRange)}</span>
                                 </div>
                                 <div class="flex justify-between">
                                   <span class="text-gray-600 dark:text-gray-400">Damage %:</span>

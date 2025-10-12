@@ -78,9 +78,14 @@ export async function POST({ request }) {
           // Ensure damagePercentage exists (alias for damagePercent)
           damagePercentage: matchup.damagePercent ? `${matchup.damagePercent}%` : 'N/A',
           damageRange: matchup.damageRange ? `${matchup.damageRange[0]},${matchup.damageRange[1]}` : 'N/A',
-          // Add OHKO/2HKO chances as percentages
-          ohkoChance: matchup.canOHKO ? 100 : 0,
-          twoHkoChance: matchup.canTwoHKO ? 100 : 0,
+          // Add damage percentage range from description parsing
+          damagePercentageRange: matchup.damagePercentageRange ? `${matchup.damagePercentageRange[0]},${matchup.damagePercentageRange[1]}` : null,
+          // Add OHKO/2HKO chances as percentages (use parsed values from description)
+          ohkoChance: matchup.ohkoChance || (matchup.canOHKO ? 100 : 0),
+          twoHkoChance: matchup.twoHkoChance || (matchup.canTwoHKO ? 100 : 0),
+          // Add guaranteed KO and general KO chance information
+          isGuaranteedKO: matchup.isGuaranteedKO || false,
+          koChance: matchup.koChance || 0,
           score: matchup.winProbability || 0
         });
       }
@@ -317,17 +322,77 @@ function calculateMatchup(gen, userMon, rivalMon) {
     console.log(`  Average Damage: ${avgDamage}`);
     console.log(`  Hits to KO: ${hitsToKO}`);
     
-    // Calculate win probability (simplified)
+    // Calculate win probability and parse OHKO chances from description
     const canOHKO = damageRange[0] >= defenderHP;
     const canTwoHKO = damageRange[0] * 2 >= defenderHP;
     
+    // Parse KO chances and damage percentages from the best result description
+    let ohkoChance = 0;
+    let twoHkoChance = 0;
+    let isGuaranteedKO = false;
+    let koChance = 0;
+    let damagePercentageRange = null;
+    
+    if (bestResult && bestResult.desc) {
+      const desc = bestResult.desc();
+      console.log(`  Parsing description: "${desc}"`);
+      
+      // Extract damage percentage range from description (e.g., "39.4 - 47.3%")
+      const percentageMatch = desc.match(/\((\d+\.?\d*) - (\d+\.?\d*)%\)/);
+      if (percentageMatch) {
+        const minPercent = parseFloat(percentageMatch[1]);
+        const maxPercent = parseFloat(percentageMatch[2]);
+        damagePercentageRange = [minPercent, maxPercent];
+        console.log(`  Found damage percentage range: ${minPercent}% - ${maxPercent}%`);
+      }
+      
+      // Check for guaranteed KOs of any type (OHKO, 2HKO, 3HKO, etc.)
+      const guaranteedMatch = desc.match(/guaranteed (\d+)HKO/);
+      if (guaranteedMatch) {
+        const guaranteedHits = parseInt(guaranteedMatch[1]);
+        isGuaranteedKO = true;
+        koChance = 100;
+        
+        // Set specific OHKO/2HKO flags
+        if (guaranteedHits === 1) {
+          ohkoChance = 100;
+        } else if (guaranteedHits === 2) {
+          twoHkoChance = 100;
+        }
+        
+        console.log(`  Found guaranteed ${guaranteedHits}HKO`);
+      } else {
+        // Look for percentage chances
+        const ohkoMatch = desc.match(/(\d+)% chance to OHKO/);
+        if (ohkoMatch) {
+          ohkoChance = parseInt(ohkoMatch[1]);
+        }
+        
+        const twoHkoMatch = desc.match(/(\d+)% chance to 2HKO/);
+        if (twoHkoMatch) {
+          twoHkoChance = parseInt(twoHkoMatch[1]);
+        }
+        
+        // Look for other percentage chances (3HKO, 4HKO, etc.)
+        const koMatch = desc.match(/(\d+)% chance to (\d+)HKO/);
+        if (koMatch) {
+          koChance = parseInt(koMatch[1]);
+          console.log(`  Found ${koChance}% chance to ${koMatch[2]}HKO`);
+        }
+      }
+    }
+    
     console.log(`  Can OHKO: ${canOHKO}`);
     console.log(`  Can 2HKO: ${canTwoHKO}`);
+    console.log(`  OHKO Chance: ${ohkoChance}%`);
+    console.log(`  2HKO Chance: ${twoHkoChance}%`);
+    console.log(`  Is Guaranteed KO: ${isGuaranteedKO}`);
+    console.log(`  KO Chance: ${koChance}%`);
     
     let winProbability = 0;
-    if (canOHKO) {
+    if (canOHKO || ohkoChance === 100 || (hitsToKO === 1 && isGuaranteedKO)) {
       winProbability = 100;
-    } else if (canTwoHKO) {
+    } else if (canTwoHKO || twoHkoChance === 100 || (hitsToKO === 2 && isGuaranteedKO)) {
       winProbability = 80;
     } else if (hitsToKO <= 3) {
       winProbability = 60;
@@ -343,10 +408,15 @@ function calculateMatchup(gen, userMon, rivalMon) {
     return {
       bestMove,
       damageRange,
+      damagePercentageRange, // Add percentage range from description
       hitsToKO,
       winProbability,
-      canOHKO,
-      canTwoHKO,
+      canOHKO: canOHKO || ohkoChance === 100,
+      canTwoHKO: canTwoHKO || twoHkoChance === 100,
+      ohkoChance,
+      twoHkoChance,
+      isGuaranteedKO,
+      koChance,
       damagePercent: Math.round((avgDamage / defenderHP) * 100)
     };
     

@@ -113,8 +113,8 @@ export class RecommendationManager {
     const levelCap = calculateLevelCap(rivalPokemon)
     console.log(`[RecommendationManager] Level cap: ${levelCap}`)
 
-    // Format user Pokémon (captured) with level cap applied
-    const userPokemon = formatCapturedPokemonForAPI(capturedPokemon, levelCap)
+    // Format user Pokémon (captured) with level cap applied and auto-evolution
+    const userPokemon = formatCapturedPokemonForAPI(capturedPokemon, levelCap, gameKey)
     
     // Validate user Pokémon data
     const validation = validatePokemonForAdvancedRecommendations(userPokemon)
@@ -151,8 +151,8 @@ export class RecommendationManager {
     const levelCap = calculateLevelCap(bossTeam)
     console.log(`[RecommendationManager] Level cap: ${levelCap}`)
 
-    // Format user Pokémon (route encounters) with level cap applied
-    const userPokemon = formatRoutePokemonForAPI(routePokemon, levelCap)
+    // Format user Pokémon (route encounters) with level cap applied and auto-evolution
+    const userPokemon = formatRoutePokemonForAPI(routePokemon, levelCap, gameKey)
     
     // Format rival Pokémon from boss team
     const rivalPokemon = formatBossTeamForAPI(bossTeam)

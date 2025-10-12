@@ -183,3 +183,103 @@ export function hasSpecies(pokemonName) {
   return getSpecies(pokemonName) !== null;
 }
 
+/**
+ * Evolution method constants
+ * Based on Pokémon Essentials/Pokémon data structure
+ */
+const EVOLUTION_METHODS = {
+  1: 'friendship',      // Friendship
+  2: 'friendship-day',  // Friendship during day
+  3: 'friendship-night',// Friendship during night
+  4: 'level',          // Level up
+  5: 'trade',          // Trade
+  6: 'trade-item',     // Trade holding item
+  7: 'item',           // Use item
+  8: 'level-attack',   // Level with Attack > Defense
+  9: 'level-defense',  // Level with Attack < Defense
+  10: 'level-equal',   // Level with Attack = Defense
+  // ... more methods exist but these are the most common
+  254: 'mega',         // Mega evolution
+  255: 'primal'        // Primal reversion
+};
+
+/**
+ * Get evolution data for a Pokemon
+ * @param {string} pokemonName - Pokemon name (e.g., "bulbasaur")
+ * @returns {Array} Array of evolution objects with format:
+ *   [{ method: 'level', parameter: 16, evolvedForm: 'ivysaur', evolvedFormId: 2 }]
+ */
+export function getPokemonEvolutions(pokemonName) {
+  const species = getSpecies(pokemonName);
+  
+  if (!species || !species.evolutions || species.evolutions.length === 0) {
+    return [];
+  }
+  
+  const allSpecies = pokemonData.radred?.species || {};
+  const result = [];
+  
+  // species.evolutions format: [[method, parameter, evolvedFormId, 0], ...]
+  // Example: [4, 16, 2, 0] = Level 16 → Ivysaur (ID: 2)
+  for (const [methodId, parameter, evolvedFormId, _unused] of species.evolutions) {
+    const evolvedSpecies = allSpecies[evolvedFormId];
+    
+    if (!evolvedSpecies) {
+      console.warn(`[getPokemonEvolutions] Evolution target ID ${evolvedFormId} not found for ${pokemonName}`);
+      continue;
+    }
+    
+    const methodName = EVOLUTION_METHODS[methodId] || `unknown-${methodId}`;
+    const evolvedFormName = evolvedSpecies.name.toLowerCase();
+    
+    result.push({
+      method: methodName,
+      parameter: parameter,
+      evolvedForm: evolvedFormName,
+      evolvedFormId: evolvedFormId,
+      // For level-based evolutions, include the level for easy access
+      ...(methodName === 'level' && { level: parameter })
+    });
+  }
+  
+  return result;
+}
+
+/**
+ * Get the evolved form of a Pokemon at a specific level
+ * Returns the highest evolution stage reachable at the given level
+ * 
+ * @param {string} pokemonName - Pokemon name
+ * @param {number} level - Target level (usually level cap)
+ * @returns {string|null} Evolved form name or null if no evolution at this level
+ */
+export function getEvolvedFormAtLevel(pokemonName, level) {
+  let currentForm = pokemonName.toLowerCase();
+  let evolved = false;
+  
+  // Keep evolving until we can't anymore
+  // This handles multi-stage evolutions (e.g., Bulbasaur → Ivysaur → Venusaur)
+  let attempts = 0;
+  const MAX_ATTEMPTS = 10; // Prevent infinite loops
+  
+  while (attempts < MAX_ATTEMPTS) {
+    const evolutions = getPokemonEvolutions(currentForm);
+    
+    // Find level-based evolution that can be reached
+    const levelEvolution = evolutions.find(evo => 
+      evo.method === 'level' && evo.level <= level
+    );
+    
+    if (levelEvolution) {
+      currentForm = levelEvolution.evolvedForm;
+      evolved = true;
+      attempts++;
+    } else {
+      // No more evolutions available at this level
+      break;
+    }
+  }
+  
+  return evolved ? currentForm : null;
+}
+

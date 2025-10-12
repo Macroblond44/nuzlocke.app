@@ -9,30 +9,86 @@
  * - RouteRecommendations.svelte (route recommendations)
  */
 
+import { getEvolvedFormAtLevel, hasSpecies } from '$lib/utils/radred-data.js';
+
+/**
+ * Auto-evolve a Pokémon to its highest form based on level cap
+ * 
+ * This function checks if a Pokémon should be evolved based on the level cap
+ * and returns the evolved form name if applicable. Handles multi-stage evolutions.
+ * 
+ * @param {string} pokemonName - Original Pokémon name
+ * @param {number} levelCap - Target level (Nuzlocke level cap)
+ * @param {string} game - Game identifier (e.g., 'radred', 'radred_hard')
+ * @returns {string} Evolved form name or original name if no evolution
+ */
+function autoEvolvePokemon(pokemonName, levelCap, game = '') {
+  // Only auto-evolve for Radical Red games (where we have evolution data)
+  const isRadredGame = game === 'radred' || game === 'radred_hard';
+  
+  if (!isRadredGame || !pokemonName) {
+    return pokemonName;
+  }
+  
+  // Check if Pokemon exists in Radical Red data
+  if (!hasSpecies(pokemonName)) {
+    console.log(`[Auto-Evolve] ${pokemonName} not found in Radical Red data, keeping original form`);
+    return pokemonName;
+  }
+  
+  try {
+    const evolvedForm = getEvolvedFormAtLevel(pokemonName, levelCap);
+    
+    if (evolvedForm) {
+      console.log(`[Auto-Evolve] ${pokemonName} → ${evolvedForm} at level ${levelCap}`);
+      return evolvedForm;
+    }
+    
+    console.log(`[Auto-Evolve] ${pokemonName} does not evolve at level ${levelCap}`);
+    return pokemonName;
+  } catch (error) {
+    console.warn(`[Auto-Evolve] Error evolving ${pokemonName}:`, error.message);
+    return pokemonName; // Return original on error
+  }
+}
+
 /**
  * Convert captured Pokémon data to the format expected by advanced recommendations API
  * 
+ * Auto-evolves Pokémon based on level cap before formatting.
+ * 
  * @param {Array} capturedPokemon - Array of captured Pokémon with full data
  * @param {number} levelCap - Maximum level to apply (Nuzlocke level cap)
+ * @param {string} game - Game identifier for evolution data (e.g., 'radred')
  * @returns {Array} Formatted user Pokémon data
  */
-export function formatCapturedPokemonForAPI(capturedPokemon, levelCap = 50) {
-  return capturedPokemon.map(pokemon => ({
-    name: pokemon.alias || pokemon.name,
-    level: Math.min(pokemon.original?.level || 50, levelCap), // Apply level cap
-    ability: pokemon.original?.ability || pokemon.abilities?.[0]?.name || 'unknown',
-    nature: pokemon.original?.nature || 'Hardy',
-    moves: (pokemon.original?.moves || pokemon.moves || []).map(m => 
-      typeof m === 'string' ? m : (m.name || m)
-    ),
-    item: pokemon.original?.held?.name || pokemon.original?.held || 'none',
-    evs: pokemon.original?.evs || { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
-    ivs: pokemon.original?.ivs || { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 }
-  }))
+export function formatCapturedPokemonForAPI(capturedPokemon, levelCap = 50, game = '') {
+  return capturedPokemon.map(pokemon => {
+    const originalName = pokemon.alias || pokemon.name;
+    const pokemonLevel = Math.min(pokemon.original?.level || 50, levelCap);
+    
+    // Auto-evolve based on level cap
+    const evolvedName = autoEvolvePokemon(originalName, levelCap, game);
+    
+    return {
+      name: evolvedName,
+      level: pokemonLevel,
+      ability: pokemon.original?.ability || pokemon.abilities?.[0]?.name || 'unknown',
+      nature: pokemon.original?.nature || 'Hardy',
+      moves: (pokemon.original?.moves || pokemon.moves || []).map(m => 
+        typeof m === 'string' ? m : (m.name || m)
+      ),
+      item: pokemon.original?.held?.name || pokemon.original?.held || 'none',
+      evs: pokemon.original?.evs || { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
+      ivs: pokemon.original?.ivs || { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 }
+    };
+  });
 }
 
 /**
  * Convert route Pokémon data to the format expected by advanced recommendations API
+ * 
+ * Auto-evolves Pokémon based on level cap before formatting.
  * 
  * For route Pokémon (wild encounters), the API will:
  * - Fetch ALL attacking moves learnable up to level cap
@@ -41,19 +97,27 @@ export function formatCapturedPokemonForAPI(capturedPokemon, levelCap = 50) {
  * 
  * @param {Array} routePokemon - Array of route Pokémon (from encounters)
  * @param {number} levelCap - Maximum level to apply (Nuzlocke level cap)
+ * @param {string} game - Game identifier for evolution data (e.g., 'radred')
  * @returns {Array} Formatted user Pokémon data
  */
-export function formatRoutePokemonForAPI(routePokemon, levelCap = 50) {
-  return routePokemon.map(pokemon => ({
-    name: pokemon.name || pokemon.alias,
-    level: levelCap, // Apply level cap to route pokemon
-    ability: null, // Will be randomly selected by the API (non-hidden)
-    nature: 'Hardy', // Default nature (neutral)
-    item: 'none',
-    moves: [], // Will fetch ALL attacking moves learnable up to level cap
-    ivs: { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 },
-    evs: { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 }
-  }))
+export function formatRoutePokemonForAPI(routePokemon, levelCap = 50, game = '') {
+  return routePokemon.map(pokemon => {
+    const originalName = pokemon.name || pokemon.alias;
+    
+    // Auto-evolve based on level cap
+    const evolvedName = autoEvolvePokemon(originalName, levelCap, game);
+    
+    return {
+      name: evolvedName,
+      level: levelCap, // Apply level cap to route pokemon
+      ability: null, // Will be randomly selected by the API (non-hidden)
+      nature: 'Hardy', // Default nature (neutral)
+      item: 'none',
+      moves: [], // Will fetch ALL attacking moves learnable up to level cap
+      ivs: { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 },
+      evs: { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 }
+    };
+  });
 }
 
 /**

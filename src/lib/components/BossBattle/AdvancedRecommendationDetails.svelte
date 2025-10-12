@@ -161,6 +161,79 @@
     // Fallback to HP values if no percentage range available
     return damageRange || 'N/A';
   }
+
+  /**
+   * Format move sequence for display when multiple moves are used
+   * @param {Object} battleSequence - Battle sequence data from server
+   * @returns {string} Formatted move sequence or single move name
+   */
+  function formatMoveSequence(battleSequence) {
+    if (!battleSequence || !battleSequence.userMoves || battleSequence.userMoves.length === 0) {
+      return 'N/A';
+    }
+
+    // If only one move was used, show just that move
+    if (battleSequence.userMoves.length === 1) {
+      return capitalise(battleSequence.userMoves[0].move.replace(/-/g, ' '));
+    }
+
+    // Multiple moves used - compress repeated moves for better UX
+    const moveNames = battleSequence.userMoves.map(move => 
+      capitalise(move.move.replace(/-/g, ' '))
+    );
+    
+    // Compress consecutive identical moves
+    const compressedSequence = [];
+    let currentMove = moveNames[0];
+    let count = 1;
+    
+    for (let i = 1; i < moveNames.length; i++) {
+      if (moveNames[i] === currentMove) {
+        count++;
+      } else {
+        // Add the current move with count if > 1
+        if (count === 1) {
+          compressedSequence.push(currentMove);
+        } else {
+          compressedSequence.push(`${currentMove} ×${count}`);
+        }
+        currentMove = moveNames[i];
+        count = 1;
+      }
+    }
+    
+    // Add the last move
+    if (count === 1) {
+      compressedSequence.push(currentMove);
+    } else {
+      compressedSequence.push(`${currentMove} ×${count}`);
+    }
+    
+    return compressedSequence.join(' → ');
+  }
+
+  /**
+   * Get move sequence title for tooltip (shows detailed info)
+   * @param {Object} battleSequence - Battle sequence data from server
+   * @returns {string} Detailed move sequence info
+   */
+  function getMoveSequenceTitle(battleSequence) {
+    if (!battleSequence || !battleSequence.userMoves || battleSequence.userMoves.length === 0) {
+      return 'No moves used';
+    }
+
+    if (battleSequence.userMoves.length === 1) {
+      const move = battleSequence.userMoves[0];
+      return `${capitalise(move.move.replace(/-/g, ' '))} (Turn ${move.turn}, ${move.damage.toFixed(1)} damage)`;
+    }
+
+    // Multiple moves - show detailed sequence
+    const detailedMoves = battleSequence.userMoves.map(move => 
+      `${capitalise(move.move.replace(/-/g, ' '))} (T${move.turn}, ${move.damage.toFixed(1)}dmg)`
+    );
+    
+    return detailedMoves.join(' → ');
+  }
 </script>
 
 {#if open}
@@ -252,7 +325,11 @@
                             Rival HP: {matchup.rivalFinalHP ? Math.round(matchup.rivalFinalHP) : '?'}/{matchup.rivalMaxHP || '?'}
                           </div>
                         {/if}
-                        {#if matchup.bestMove}
+                        {#if matchup.battleSequence}
+                          <div class="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate" title={getMoveSequenceTitle(matchup.battleSequence)}>
+                            {formatMoveSequence(matchup.battleSequence)}
+                          </div>
+                        {:else if matchup.bestMove}
                           <div class="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate" title={matchup.bestMove}>
                             {capitalise(matchup.bestMove.replace(/-/g, ' '))}
                           </div>
@@ -302,8 +379,8 @@
                             <!-- Your Attack -->
                             <div class="bg-white dark:bg-gray-600 p-3 rounded-lg text-center">
                               <div class="text-xs text-gray-600 dark:text-gray-400 mb-1">Your Attack</div>
-                              <div class="font-semibold text-green-600 dark:text-green-400 text-sm mb-1">
-                                {matchup.bestMove ? capitalise(matchup.bestMove.replace(/-/g, ' ')) : 'N/A'}
+                              <div class="font-semibold text-green-600 dark:text-green-400 text-sm mb-1" title={matchup.battleSequence ? getMoveSequenceTitle(matchup.battleSequence) : ''}>
+                                {matchup.battleSequence ? formatMoveSequence(matchup.battleSequence) : (matchup.bestMove ? capitalise(matchup.bestMove.replace(/-/g, ' ')) : 'N/A')}
                               </div>
                               <div class="text-xs text-gray-500 dark:text-gray-400">
                                 {getWinLossText(matchup)}
@@ -503,8 +580,8 @@
                               <div class="space-y-2">
                                 <div class="flex justify-between">
                                   <span class="text-gray-600 dark:text-gray-400">Best Move:</span>
-                                  <span class="font-semibold text-green-700 dark:text-green-300">
-                                    {calculationDetails.bestMove ? capitalise(calculationDetails.bestMove.replace(/-/g, ' ')) : 'N/A'}
+                                  <span class="font-semibold text-green-700 dark:text-green-300" title={calculationDetails.battleSequence ? getMoveSequenceTitle(calculationDetails.battleSequence) : ''}>
+                                    {calculationDetails.battleSequence ? formatMoveSequence(calculationDetails.battleSequence) : (calculationDetails.bestMove ? capitalise(calculationDetails.bestMove.replace(/-/g, ' ')) : 'N/A')}
                                   </span>
                                 </div>
                                 <div class="flex justify-between">

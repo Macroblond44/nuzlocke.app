@@ -461,10 +461,28 @@ function executeAttack(attacker, defender, move, currentHP) {
 }
 
 /**
+ * Helper: Create battle move record for tracking
+ * @param {string} moveName - Name of the move used
+ * @param {number} turn - Turn number when used
+ * @param {number} damage - Actual damage dealt
+ * @param {number} targetHP - Target's HP before the attack
+ * @returns {Object} Move record object
+ */
+function createMoveRecord(moveName, turn, damage, targetHP) {
+  return {
+    move: moveName,
+    turn,
+    damage,
+    targetHP,
+    timestamp: Date.now() // For debugging purposes
+  };
+}
+
+/**
  * Helper: Select optimal move considering current HP and priority
  * 
  * Strategy:
- * 1. If a priority move can guarantee KO → use it
+ * 1. If a priority move GUARANTEES KO → use it
  * 2. Among moves that guarantee KO → use the one with highest damage
  * 3. Among moves that can potentially KO → use the one with highest max damage
  * 4. Otherwise → use move with highest average damage
@@ -476,10 +494,10 @@ function selectOptimalMove(moveResults, defenderCurrentHP, needsPriority = false
   
   const priorityMoves = moveResults.filter(m => m.priority > 0);
   
-  // Strategy 1: Priority move that guarantees KO
+  // Strategy 1: Priority move that GUARANTEES KO
   if (needsPriority && priorityMoves.length > 0) {
-    const priorityKO = priorityMoves.find(m => m.minDamage >= defenderCurrentHP);
-    if (priorityKO) return priorityKO;
+    const priorityGuaranteedKO = priorityMoves.find(m => m.minDamage >= defenderCurrentHP);
+    if (priorityGuaranteedKO) return priorityGuaranteedKO;
   }
   
   // Strategy 2: Move that guarantees KO with highest damage
@@ -676,6 +694,10 @@ function calculateMatchup(gen, userMon, rivalMon) {
     let rivalSelectedMove = null;
     let battleLog = [];
     
+    // Track moves used in battle sequence
+    let userMovesUsed = [];
+    let rivalMovesUsed = [];
+    
     console.log(`\n[BATTLE START]`);
     console.log(`  User: ${userMon.name} (${userCurrentHP} HP, ${userSpeed} Speed)`);
     console.log(`  Rival: ${rivalMon.name} (${rivalCurrentHP} HP, ${rivalSpeed} Speed)`);
@@ -684,9 +706,10 @@ function calculateMatchup(gen, userMon, rivalMon) {
       console.log(`\n--- Turn ${turn} ---`);
       
       // Select optimal moves for this turn
-      userSelectedMove = selectOptimalMove(userMoveOptions, rivalCurrentHP, rivalSpeed > userSpeed);
+      // Always consider priority moves (needsPriority = true) for optimal strategy
+      userSelectedMove = selectOptimalMove(userMoveOptions, rivalCurrentHP, true);
       rivalSelectedMove = rivalMoveOptions.length > 0 
-        ? selectOptimalMove(rivalMoveOptions, userCurrentHP, userSpeed > rivalSpeed)
+        ? selectOptimalMove(rivalMoveOptions, userCurrentHP, true)
         : null;
       
       if (!userSelectedMove) {
@@ -718,6 +741,14 @@ function calculateMatchup(gen, userMon, rivalMon) {
         firstAttacker.setHP(attackResult.newHP);
         console.log(`  ${firstAttacker.name} deals ${attackResult.actualDamage.toFixed(1)} damage → ${attackResult.isKO ? 'FAINTED!' : `${Math.max(0, attackResult.newHP).toFixed(1)}/${firstAttacker.maxHP} HP`}`);
         
+        // Track move used
+        const moveRecord = createMoveRecord(firstAttacker.move.name, turn, attackResult.actualDamage, firstAttacker.targetHP);
+        if (firstAttacker.name === 'User') {
+          userMovesUsed.push(moveRecord);
+        } else {
+          rivalMovesUsed.push(moveRecord);
+        }
+        
         if (attackResult.isKO) {
           battleLog.push(`Turn ${turn}: ${firstAttacker.name}'s ${firstAttacker.move.name} wins the battle`);
           break;
@@ -729,6 +760,14 @@ function calculateMatchup(gen, userMon, rivalMon) {
         const attackResult = executeAttack(null, null, secondAttacker.move, secondAttacker.targetHP);
         secondAttacker.setHP(attackResult.newHP);
         console.log(`  ${secondAttacker.name} deals ${attackResult.actualDamage.toFixed(1)} damage → ${attackResult.isKO ? 'FAINTED!' : `${Math.max(0, attackResult.newHP).toFixed(1)}/${secondAttacker.maxHP} HP`}`);
+        
+        // Track move used
+        const moveRecord = createMoveRecord(secondAttacker.move.name, turn, attackResult.actualDamage, secondAttacker.targetHP);
+        if (secondAttacker.name === 'User') {
+          userMovesUsed.push(moveRecord);
+        } else {
+          rivalMovesUsed.push(moveRecord);
+        }
         
         if (attackResult.isKO) {
           battleLog.push(`Turn ${turn}: ${secondAttacker.name}'s ${secondAttacker.move.name} wins the battle`);
@@ -747,28 +786,39 @@ function calculateMatchup(gen, userMon, rivalMon) {
     console.log(`  Outcome: ${battleOutcome}`);
     console.log(`========================================\n`);
     
-    // ========== STEP 3: Parse detailed data for the moves used ==========
-    // Use the last selected moves from the battle simulation
+    // ========== STEP 3: Calculate battle statistics based on actual moves used ==========
+    console.log(`\n[BATTLE SEQUENCE ANALYSIS]`);
+    console.log(`  User moves used:`, userMovesUsed.map(m => `${m.move} (T${m.turn}, ${m.damage}dmg)`).join(', '));
+    console.log(`  Rival moves used:`, rivalMovesUsed.map(m => `${m.move} (T${m.turn}, ${m.damage}dmg)`).join(', '));
+    
+    // Calculate actual turns to KO based on battle sequence
+    const actualUserHitsToKO = userMovesUsed.length;
+    const actualRivalHitsToKO = rivalMovesUsed.length;
+    
+    // Get the final moves used for description parsing
     const finalUserMove = userSelectedMove || userMoveOptions[0];
     const finalRivalMove = rivalSelectedMove || (rivalMoveOptions[0] || null);
     
     const userDesc = finalUserMove?.result?.desc ? finalUserMove.result.desc() : '';
     const rivalDesc = finalRivalMove?.result?.desc ? finalRivalMove.result.desc() : '';
     
-    console.log(`\n[KO CHANCE CALCULATION]`);
-    console.log(`  User move: ${finalUserMove?.name || 'None'}`);
-    console.log(`  User damage: ${finalUserMove?.damageRange?.[0] || 0}-${finalUserMove?.damageRange?.[1] || 0}`);
-    console.log(`  Rival HP: ${rivalMaxHP}`);
+    console.log(`\n[BATTLE RESULTS SUMMARY]`);
+    console.log(`  ✅ Actual battle result: ${userWins ? 'USER WINS' : 'RIVAL WINS'}`);
+    console.log(`  📊 User sequence: ${actualUserHitsToKO}HKO (${userMovesUsed.length} moves used)`);
+    console.log(`  📊 Rival sequence: ${actualRivalHitsToKO}HKO (${rivalMovesUsed.length} moves used)`);
+    
+    console.log(`\n[THEORETICAL CALCULATIONS - For reference only]`);
+    console.log(`  🔬 User final move: ${finalUserMove?.name || 'None'} vs full HP rival (${rivalMaxHP} HP)`);
+    console.log(`  🔬 User damage: ${finalUserMove?.damageRange?.[0] || 0}-${finalUserMove?.damageRange?.[1] || 0}`);
     const userKOData = parseCalculationDescription(userDesc, finalUserMove?.damageRange || [0, 0], rivalMaxHP);
     
-    console.log(`\n  Rival move: ${finalRivalMove?.name || 'None'}`);
-    console.log(`  Rival damage: ${finalRivalMove?.damageRange?.[0] || 0}-${finalRivalMove?.damageRange?.[1] || 0}`);
-    console.log(`  User HP: ${userMaxHP}`);
+    console.log(`\n  🔬 Rival final move: ${finalRivalMove?.name || 'None'} vs full HP user (${userMaxHP} HP)`);
+    console.log(`  🔬 Rival damage: ${finalRivalMove?.damageRange?.[0] || 0}-${finalRivalMove?.damageRange?.[1] || 0}`);
     const rivalKOData = parseCalculationDescription(rivalDesc, finalRivalMove?.damageRange || [0, 0], userMaxHP);
     
-    // Use hits to KO from @smogon/calc description (more accurate than mathematical calculation)
-    const userHitsToKO = userKOData.hitsToKO || (finalUserMove ? Math.ceil(rivalMaxHP / finalUserMove.avgDamage) : Infinity);
-    const rivalHitsToKO = rivalKOData.hitsToKO || (finalRivalMove ? Math.ceil(userMaxHP / finalRivalMove.avgDamage) : Infinity);
+    // Use actual battle sequence for hits to KO
+    const userHitsToKO = actualUserHitsToKO;
+    const rivalHitsToKO = actualRivalHitsToKO;
     
     // ========== STEP 4: Return comprehensive battle data ==========
     return {
@@ -778,26 +828,34 @@ function calculateMatchup(gen, userMon, rivalMon) {
       battleLog,
       turns: turn - 1,
       
-      // User's attack data
+      // User's attack data (based on actual battle sequence)
       bestMove: finalUserMove?.name || 'No valid moves',
       damageRange: finalUserMove?.damageRange || [0, 0],
       damagePercentageRange: userKOData.damagePercentageRange,
-      hitsToKO: userHitsToKO,
-      canOHKO: userKOData.ohkoChance === 100,
-      canTwoHKO: userKOData.twoHkoChance === 100,
+      hitsToKO: userHitsToKO, // Now based on actual battle sequence
+      canOHKO: actualUserHitsToKO === 1 && userKOData.ohkoChance === 100,
+      canTwoHKO: actualUserHitsToKO === 2 && userKOData.twoHkoChance === 100,
       ohkoChance: userKOData.ohkoChance,
       twoHkoChance: userKOData.twoHkoChance,
       isGuaranteedKO: userKOData.isGuaranteedKO,
       koChance: userKOData.koChance,
       damagePercent: finalUserMove ? Math.round((finalUserMove.avgDamage / rivalMaxHP) * 100) : 0,
       
-      // Rival's attack data
+      // Battle sequence information
+      battleSequence: {
+        userMoves: userMovesUsed,
+        rivalMoves: rivalMovesUsed,
+        totalTurns: turn - 1,
+        winningMove: userWins ? userMovesUsed[userMovesUsed.length - 1]?.move : rivalMovesUsed[rivalMovesUsed.length - 1]?.move
+      },
+      
+      // Rival's attack data (based on actual battle sequence)
       rivalBestMove: finalRivalMove?.name || 'No valid moves',
       rivalDamageRange: finalRivalMove?.damageRange || [0, 0],
       rivalDamagePercentageRange: rivalKOData.damagePercentageRange,
-      rivalHitsToKO: rivalHitsToKO,
-      rivalCanOHKO: rivalKOData.ohkoChance === 100,
-      rivalCanTwoHKO: rivalKOData.twoHkoChance === 100,
+      rivalHitsToKO: rivalHitsToKO, // Now based on actual battle sequence
+      rivalCanOHKO: actualRivalHitsToKO === 1 && rivalKOData.ohkoChance === 100,
+      rivalCanTwoHKO: actualRivalHitsToKO === 2 && rivalKOData.twoHkoChance === 100,
       rivalOhkoChance: rivalKOData.ohkoChance,
       rivalDamagePercent: finalRivalMove ? Math.round((finalRivalMove.avgDamage / userMaxHP) * 100) : 0,
       

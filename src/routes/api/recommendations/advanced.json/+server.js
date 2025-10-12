@@ -70,6 +70,33 @@ function roundPercentage(probability) {
   return Math.round(probability * GUARANTEED_KO_THRESHOLD * multiplier) / multiplier;
 }
 
+/**
+ * Normalize ability name for @smogon/calc
+ * Converts from various formats to the format expected by @smogon/calc
+ * 
+ * @param {string} abilityName - Ability name in any format
+ * @returns {string} Normalized ability name
+ * 
+ * Examples:
+ *   'strong-jaw' → 'Strong Jaw'
+ *   'overgrow' → 'Overgrow'
+ *   'Lightning Rod' → 'Lightning Rod'
+ */
+function normalizeAbilityName(abilityName) {
+  if (!abilityName || abilityName === 'unknown') return undefined;
+  
+  // If already in correct format (capitalized with spaces), return as is
+  if (abilityName.includes(' ') && abilityName[0] === abilityName[0].toUpperCase()) {
+    return abilityName;
+  }
+  
+  // Convert kebab-case or lowercase to Title Case with spaces
+  return abilityName
+    .split('-')
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+}
+
 export async function POST({ request }) {
   try {
     const body = await request.json();
@@ -686,6 +713,7 @@ function calculateMatchup(gen, userMon, rivalMon) {
       name: userMon.name,
       level: userMon.level,
       ability: userMon.ability,
+      abilityNormalized: normalizeAbilityName(userMon.ability),
       nature: userMon.nature,
       item: userMon.item,
       moves: userMon.moves
@@ -704,9 +732,12 @@ function calculateMatchup(gen, userMon, rivalMon) {
     // Note: item must be undefined (not 'none') when there's no item
     const userItem = userMon.item && userMon.item !== 'none' ? userMon.item : undefined;
     
+    // Normalize ability name for @smogon/calc (converts 'strong-jaw' → 'Strong Jaw')
+    const userAbility = normalizeAbilityName(userMon.ability);
+    
     const userPokemon = new Pokemon(gen, userMon.name, {
       level: userMon.level || 50,
-      ability: userMon.ability || undefined,
+      ability: userAbility,
       nature: userMon.nature || 'Hardy',
       ivs: userMon.ivs || DEFAULT_IVS,
       evs: userMon.evs || DEFAULT_EVS,
@@ -734,9 +765,12 @@ function calculateMatchup(gen, userMon, rivalMon) {
     
     // Create rival Pokémon using data from static league file (radred.fire.json or equivalent)
     // Extract ability name if it's an object
-    const rivalAbilityName = typeof rivalMon.ability === 'object' && rivalMon.ability !== null
+    const rivalAbilityRaw = typeof rivalMon.ability === 'object' && rivalMon.ability !== null
       ? rivalMon.ability.name
       : rivalMon.ability;
+    
+    // Normalize ability name for @smogon/calc (converts 'technician' → 'Technician')
+    const rivalAbilityName = normalizeAbilityName(rivalAbilityRaw);
     
     // Extract item name if it's an object
     let rivalItemName = typeof rivalMon.item === 'object' && rivalMon.item !== null

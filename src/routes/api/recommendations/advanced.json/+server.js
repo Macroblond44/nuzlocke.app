@@ -19,16 +19,23 @@
  */
 
 /**
- * Multi-game damage calculator support
+ * Multi-game damage calculator with romhack support
  * 
- * - For Radical Red: Uses the official fork @smogon/calc-radred
- *   (maintained by RadicalRedShowdown, includes all custom Pokémon/moves/abilities)
+ * Uses @smogon/calc (v0.10.0+) with Generation 9 which includes all Pokémon from Gen 1-9.
+ * Custom base stats for romhacks are pre-processed and stored in static league files.
  * 
- * - For other games: Uses standard @smogon/calc
+ * How it works:
+ * 1. Reads `calcGen` from games.json (e.g., calcGen: 9 for Radical Red)
+ * 2. Uses @smogon/calc's Generations.get(calcGen) to load the appropriate generation
+ * 3. Receives custom base stats from static league files (e.g., radred.fire.json)
+ * 4. Overrides default base stats using the `overrides` parameter in Pokemon constructor
+ * 
+ * Configuration per game in games.json:
+ * - calcGen: Generation number for species/moves pool (9 for modern romhacks, includes Gen 1-9)
  */
 
-import { calculate as calculateStandard, Pokemon as PokemonStandard, Move as MoveStandard, Generations as GenerationsStandard } from '@smogon/calc';
-import { calculate as calculateRadRed, Pokemon as PokemonRadRed, Move as MoveRadRed, Generations as GenerationsRadRed } from '@smogon/calc-radred';
+import { calculate, Pokemon, Move, Generations } from '@smogon/calc';
+import gamesData from '$lib/data/games.json';
 
 export async function POST({ request }) {
   try {
@@ -49,22 +56,19 @@ export async function POST({ request }) {
     }
     
     console.log(`[Advanced Recommendations] Calculating matchups for ${userPokemon.length} user Pokémon vs ${rivalPokemon.length} rival Pokémon`);
-    console.log(`[Game] Detected game: ${game || 'unknown (defaulting to standard calc)'}`);
+    console.log(`[Game] Detected game: ${game || 'unknown'}`);
     
-    // Select the appropriate calculator based on the game
-    const isRadicalRed = game && game.toLowerCase().includes('radred');
-    const { calculate, Pokemon, Move, Generations } = isRadicalRed
-      ? { calculate: calculateRadRed, Pokemon: PokemonRadRed, Move: MoveRadRed, Generations: GenerationsRadRed }
-      : { calculate: calculateStandard, Pokemon: PokemonStandard, Move: MoveStandard, Generations: GenerationsStandard };
+    // Get game configuration
+    const gameConfig = gamesData[game] || {};
+    const genNumber = gameConfig.calcGen || 9; // Default to Gen 9 for modern romhacks
     
-    console.log(`[Calculator] Using ${isRadicalRed ? 'Radical Red' : 'Standard'} calculator`);
+    console.log(`[Calculator] Using @smogon/calc with Generation ${genNumber} for game: ${game}`);
     
     // Calculate level cap (max level of rival Pokémon) for Nuzlocke rules
     const levelCap = Math.max(...rivalPokemon.map(p => parseInt(p.level) || 50));
     console.log(`[Level Cap] Applying Nuzlocke level cap: ${levelCap}`);
     
-    // Use Generation 9 for Radical Red (includes Gen 9 Pokémon like Varoom), Gen 8 for others
-    const gen = Generations.get(isRadicalRed ? 9 : 8);
+    const gen = Generations.get(genNumber);
     console.log(`[Generation] Using Generation ${gen.num}`);
     
     const recommendations = [];
@@ -82,7 +86,7 @@ export async function POST({ request }) {
       
       for (const rivalMon of rivalPokemon) {
         console.log(`[Matchup] Processing rival: ${rivalMon.name} (level ${rivalMon.level})`);
-        const matchup = calculateMatchup(gen, userMonCapped, rivalMon, { calculate, Pokemon, Move });
+        const matchup = calculateMatchup(gen, userMonCapped, rivalMon);
         matchups.push({
           // Rival Pokémon info
           rivalPokemon: rivalMon.name,  // Changed from rivalName to rivalPokemon
@@ -159,8 +163,7 @@ export async function POST({ request }) {
 /**
  * Calculate matchup between user's Pokémon and rival's Pokémon
  */
-function calculateMatchup(gen, userMon, rivalMon, calcClasses) {
-  const { calculate, Pokemon, Move } = calcClasses;
+function calculateMatchup(gen, userMon, rivalMon) {
   
   try {
     console.log(`\n========== CALCULATING MATCHUP ==========`);

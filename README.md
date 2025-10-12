@@ -89,6 +89,39 @@ yarn dev
 
 The application will be available at `http://localhost:5173`
 
+### Advanced Recommendation System
+
+This application uses `@smogon/calc` (v0.10.0+) for advanced damage calculations and recommendations.
+
+**How it works:**
+1. Each game in `games.json` has `calcGen` configured (the generation to use for calculations)
+2. The API endpoint reads `calcGen` and loads the appropriate generation from `@smogon/calc`
+3. Custom base stats for romhacks come from static league files (e.g., `radred.fire.json`)
+4. Base stats are overridden using `@smogon/calc`'s `overrides` parameter
+
+**Data Flow:**
+```
+league.json + pokemon-data.json (custom stats)
+  ↓ [generate-radred-league.js]
+radred.fire.json (static file with enriched data)
+  ↓ [Frontend loads for display + sends to API]
+API uses custom stats to override @smogon/calc defaults
+  ↓ [@smogon/calc performs calculations]
+Results sent back to frontend
+```
+
+**Supported Games:**
+- **Radical Red**: Uses Gen 9 (includes all Gen 1-9 Pokémon)
+- **Other romhacks**: Can be configured by adding `calcGen` to `games.json`
+- **Official games**: Use standard generations (1-9)
+
+**Configuration Example** (`games.json`):
+```json
+"radred": {
+  "calcGen": 9  // Generation 9 includes all Pokémon from Gen 1-9
+}
+```
+
 ### Useful Links
 
 - [PixelIt](https://giventofly.github.io/pixelit/#tryit) - A Pixelator for making custom assets

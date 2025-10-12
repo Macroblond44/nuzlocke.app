@@ -220,18 +220,12 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.6.tgz"
   integrity sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==
 
-"@smogon/calc-radred@file:./vendor/radred-calc/calc":
-  version "0.9.0"
-  resolved "file:../../../../tmp/radred-calc-install/calc"
+"@smogon/calc@^0.10.0":
+  version "0.10.0"
+  resolved "https://registry.npmjs.org/@smogon/calc/-/calc-0.10.0.tgz"
+  integrity sha512-VmtTDVjF4z1Yzx1QN7NbsEcRLBAZGv/NVlb1ZK1//uppNmIg3Iqp7hDERGSM0FlmdogPEqw7iqY/3RuMSYPkmw==
   dependencies:
     "@types/node" "^18.14.2"
-
-"@smogon/calc@^0.6.0":
-  version "0.6.0"
-  resolved "https://registry.npmjs.org/@smogon/calc/-/calc-0.6.0.tgz"
-  integrity sha512-0HMOKOFOuHY0GIQont/3gtQjZltY13PzsWX5SAn7ws26uL20yG2RYC2V7kG/EYT2lZB48H/ZpBLm52totI65Sw==
-  dependencies:
-    "@types/node" "^14.11.2"
 
 "@sveltejs/adapter-vercel@1.0.0-next.84":
   version "1.0.0-next.84"
@@ -291,12 +285,7 @@
   resolved "https://registry.npmjs.org/@types/cookie/-/cookie-0.5.1.tgz"
   integrity sha512-COUnqfB2+ckwXXSFInsFdOAWQzCCx+a5hq2ruyj+Vjund94RJQd4LG2u9hnvJrTgunKAaax7ancBYlDrNYxA0g==
 
-"@types/node@*", "@types/node@^14.11.2":
-  version "14.18.34"
-  resolved "https://registry.npmjs.org/@types/node/-/node-14.18.34.tgz"
-  integrity sha512-hcU9AIQVHmPnmjRK+XUUYlILlr9pQrsqSrwov/JK1pnf3GTQowVBhx54FbvM0AU/VXGH4i3+vgXS5EguR7fysA==
-
-"@types/node@^18.14.2":
+"@types/node@*", "@types/node@^18.14.2":
   version "18.19.130"
   resolved "https://registry.npmjs.org/@types/node/-/node-18.19.130.tgz"
   integrity sha512-GRaXQx6jGfL8sKfaIDD6OupbIHBr9jv7Jnaml9tB7l4v068PAOXqfcujMMo5PhbIs6ggR1XODELqahT2R8v0fg==

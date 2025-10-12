@@ -310,7 +310,8 @@
     "patchId": "radred",
     "region": "kanto",
     "lastUpdated": "11th March 2023",
-    "difficulty": [":", "Hardcore:_hard"]
+    "difficulty": [":", "Hardcore:_hard"],
+    "calcGen": 9
   },
   "renplat": {
     "pid": "renplat",

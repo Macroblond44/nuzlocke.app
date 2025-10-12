@@ -161,7 +161,8 @@ export class RecommendationManager {
       level: p.level,
       ability: p.ability,
       moves: p.moves,
-      item: p.item
+      item: p.item,
+      stats: p.stats // ← Ver qué stats se están enviando
     })))
 
     // Make API request

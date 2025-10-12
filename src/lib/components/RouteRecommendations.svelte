@@ -83,6 +83,16 @@
     bossTeam = await Promise.all(
       selectedBoss.pokemon.map(async (p) => {
         const pkmnData = await getPkmn(p.name)
+        
+        // Debug: Log stats from league file
+        if (p.name === 'floatzel') {
+          console.log('[Route Recommendations] Floatzel from league file:', {
+            name: p.name,
+            stats: p.stats,
+            moves: p.moves
+          })
+        }
+        
         return {
           ...pkmnData,
           original: p,

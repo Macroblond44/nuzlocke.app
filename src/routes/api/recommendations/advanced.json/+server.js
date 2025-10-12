@@ -783,6 +783,8 @@ function calculateMatchup(gen, userMon, rivalMon) {
     }
     
     // Use base stats from static league file (already includes romhack modifications)
+    console.log(`[DEBUG] rivalMon.stats received:`, rivalMon.stats);
+    
     const baseStats = rivalMon.stats ? {
       hp: rivalMon.stats.hp,
       atk: rivalMon.stats.atk,
@@ -793,6 +795,7 @@ function calculateMatchup(gen, userMon, rivalMon) {
     } : undefined;
     
     console.log(`[Base Stats] Using ${baseStats ? 'provided' : 'default'} base stats for ${rivalMon.name}:`, baseStats);
+    console.log(`[DEBUG] Expected for Floatzel: { hp: 85, atk: 90, def: 55, spa: 95, spd: 50, spe: 115 }`);
     
     const rivalPokemon = new Pokemon(gen, rivalMon.name, {
       level: parseInt(rivalMon.level) || 50,

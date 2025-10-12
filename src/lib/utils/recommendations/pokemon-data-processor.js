@@ -179,7 +179,9 @@ export function formatBossTeamForAPI(bossTeam) {
         return m.name || m;
       }),
       item: original.held?.name || original.held || bossPokemon.held?.name || bossPokemon.held || original.item || bossPokemon.item || 'none',
-      stats: bossPokemon.stats || bossPokemon.baseStats || { hp: 100, atk: 100, def: 100, spa: 100, spd: 100, spe: 100 },
+      // IMPORTANT: Use stats from league file (original), not from getPkmn (bossPokemon)
+      // League file has the correct stats for trainers/bosses from static files
+      stats: original.stats || bossPokemon.stats || bossPokemon.baseStats || { hp: 100, atk: 100, def: 100, spa: 100, spd: 100, spe: 100 },
       evs: original.evs || bossPokemon.evs || { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
       ivs: original.ivs || bossPokemon.ivs || { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 }
     }

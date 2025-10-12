@@ -39,14 +39,17 @@ export const fetchLeague = async (game, starter = 'fire') => {
   if (!browser) return
 
   const id = `${game}@${starter}`
-  const uri = `${DATA}/league/${game}.${starter}.json`
+  // Add cache-busting timestamp to force reload of league files
+  const uri = `${DATA}/league/${game}.${starter}.json?v=${Date.now()}`
 
-  if (league[id]) return league[id]
+  // Temporarily disable in-memory cache to ensure fresh data
+  // if (league[id]) return league[id]
   if (!league[uri]) league[uri] = fetch(uri).then((res) => res.json())
 
   console.time(`league:${id}`)
   league[id] = await league[uri]
   console.timeEnd(`league:${id}`)
+  console.log(`[fetchLeague] Loaded ${id}, sample stats for first pokemon:`, league[id]?.['1']?.pokemon?.[0]?.stats || league[id]?.['2']?.pokemon?.[0]?.stats)
   return league[id]
 }
 

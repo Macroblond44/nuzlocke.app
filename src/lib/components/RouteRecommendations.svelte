@@ -636,7 +636,7 @@
     on:close={() => showAdvancedModal = false}
     recommendations={recommendationManager.getAdvancedRecommendations()}
     bossTeam={bossTeam}
-    userTeam={[]}
+    userTeam={encounterPokemon}
     gameMode="route"
   />
 {/if}

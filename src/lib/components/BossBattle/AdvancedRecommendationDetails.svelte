@@ -191,11 +191,13 @@
             Pokemon Analysis
           </h3>
           
+          
           {#each recommendations as pokemon, index}
+            {@const userPokemonData = userTeam.find(p => (p.name || p.alias) === pokemon.name)}
             <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
               <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-4">
-                  <PIcon name={pokemon.name} class="w-12 h-12" />
+                  <PIcon name={userPokemonData?.sprite || userPokemonData?.name || pokemon.name} class="w-12 h-12" />
                   <div>
                     <h4 class="text-lg font-semibold text-gray-900 dark:text-white">
                       {regionise(capitalise(pokemon.name))}

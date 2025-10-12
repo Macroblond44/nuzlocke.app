@@ -240,11 +240,14 @@
                             {getWinLossText(matchup)}
                           </div>
                           <div class="text-xs text-green-600 dark:text-green-400 font-medium mt-1">
-                            HP: {matchup.userFinalHP ? Math.round(matchup.userFinalHP) : '?'}/{matchup.userMaxHP || '?'}
+                            Your HP: {matchup.userFinalHP ? Math.round(matchup.userFinalHP) : '?'}/{matchup.userMaxHP || '?'}
                           </div>
                         {:else}
                           <div class="text-xs text-red-600 dark:text-red-400">
                             KO'd in {matchup.rivalHitsToKO || '?'} hit(s)
+                          </div>
+                          <div class="text-xs text-orange-600 dark:text-orange-400 font-medium mt-1">
+                            Rival HP: {matchup.rivalFinalHP ? Math.round(matchup.rivalFinalHP) : '?'}/{matchup.rivalMaxHP || '?'}
                           </div>
                         {/if}
                         {#if matchup.bestMove}
@@ -335,19 +338,25 @@
                             
                             <!-- Battle Outcome -->
                             <div class="bg-white dark:bg-gray-600 p-3 rounded-lg text-center">
-                              <div class="text-xs text-gray-600 dark:text-gray-400 mb-1">Final HP</div>
+                              <div class="text-xs text-gray-600 dark:text-gray-400 mb-1">Battle Result</div>
                               {#if matchup.userWins}
                                 <div class="font-semibold text-green-600 dark:text-green-400 text-sm">
-                                  ✓ {matchup.userFinalHP ? Math.round(matchup.userFinalHP) : '?'}/{matchup.userMaxHP || '?'}
+                                  ✓ Victory
                                 </div>
                                 <div class="text-xs text-green-500 dark:text-green-400">
+                                  Your HP: {matchup.userFinalHP ? Math.round(matchup.userFinalHP) : '?'}/{matchup.userMaxHP || '?'}
+                                </div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">
                                   {matchup.turns || '?'} turn(s)
                                 </div>
                               {:else}
                                 <div class="font-semibold text-red-600 dark:text-red-400 text-sm">
-                                  ✗ Defeated
+                                  ✗ Defeat
                                 </div>
-                                <div class="text-xs text-red-500 dark:text-red-400">
+                                <div class="text-xs text-orange-500 dark:text-orange-400">
+                                  Rival HP: {matchup.rivalFinalHP ? Math.round(matchup.rivalFinalHP) : '?'}/{matchup.rivalMaxHP || '?'}
+                                </div>
+                                <div class="text-xs text-gray-500 dark:text-gray-400">
                                   {matchup.turns || '?'} turn(s)
                                 </div>
                               {/if}

@@ -220,6 +220,12 @@
   resolved "https://registry.npmjs.org/@popperjs/core/-/core-2.11.6.tgz"
   integrity sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==
 
+"@smogon/calc-radred@file:./vendor/radred-calc/calc":
+  version "0.9.0"
+  resolved "file:../../../../tmp/radred-calc-install/calc"
+  dependencies:
+    "@types/node" "^18.14.2"
+
 "@smogon/calc@^0.6.0":
   version "0.6.0"
   resolved "https://registry.npmjs.org/@smogon/calc/-/calc-0.6.0.tgz"
@@ -289,6 +295,13 @@
   version "14.18.34"
   resolved "https://registry.npmjs.org/@types/node/-/node-14.18.34.tgz"
   integrity sha512-hcU9AIQVHmPnmjRK+XUUYlILlr9pQrsqSrwov/JK1pnf3GTQowVBhx54FbvM0AU/VXGH4i3+vgXS5EguR7fysA==
+
+"@types/node@^18.14.2":
+  version "18.19.130"
+  resolved "https://registry.npmjs.org/@types/node/-/node-18.19.130.tgz"
+  integrity sha512-GRaXQx6jGfL8sKfaIDD6OupbIHBr9jv7Jnaml9tB7l4v068PAOXqfcujMMo5PhbIs6ggR1XODELqahT2R8v0fg==
+  dependencies:
+    undici-types "~5.26.4"
 
 "@types/pug@^2.0.4":
   version "2.0.6"
@@ -2769,6 +2782,11 @@ uc.micro@^1.0.1, uc.micro@^1.0.5:
   version "1.0.6"
   resolved "https://registry.npmjs.org/uc.micro/-/uc.micro-1.0.6.tgz"
   integrity sha512-8Y75pvTYkLJW2hWQHXxoqRgV7qb9B+9vFEtidML+7koHUFapnVJAZ6cKs+Qjz5Aw3aZWHMC6u0wJE3At+nSGwA==
+
+undici-types@~5.26.4:
+  version "5.26.5"
+  resolved "https://registry.npmjs.org/undici-types/-/undici-types-5.26.5.tgz"
+  integrity sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==
 
 undici@5.13.0:
   version "5.13.0"

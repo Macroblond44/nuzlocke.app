@@ -238,6 +238,19 @@
         ivs: pokemon.original?.ivs || pokemon.ivs || { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 }
       }))
 
+      // Parse savedGames to get the game object
+      let currentGame = null;
+      savedGames.subscribe(
+        parse((games) => {
+          currentGame = games[$activeGame];
+        })
+      )();
+      
+      const gameId = currentGame?.game || 'unknown';
+      console.log('[ProgressModal] Active game ID:', $activeGame);
+      console.log('[ProgressModal] Current game object:', currentGame);
+      console.log('[ProgressModal] Sending game ID:', gameId);
+      
       const response = await fetch('/api/recommendations/advanced.json', {
         method: 'POST',
         headers: {
@@ -246,6 +259,7 @@
         body: JSON.stringify({
           userPokemon,
           rivalPokemon,
+          game: gameId, // Pass the current game to select the right calculator
           gameMode: 'normal'
         })
       })

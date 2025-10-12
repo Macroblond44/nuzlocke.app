@@ -18,11 +18,25 @@
  * which already includes any romhack-specific stat modifications.
  */
 
-import { calculate, Pokemon, Move, Generations } from '@smogon/calc';
+/**
+ * Multi-game damage calculator support
+ * 
+ * - For Radical Red: Uses the official fork @smogon/calc-radred
+ *   (maintained by RadicalRedShowdown, includes all custom Pokémon/moves/abilities)
+ * 
+ * - For other games: Uses standard @smogon/calc
+ */
+
+import { calculate as calculateStandard, Pokemon as PokemonStandard, Move as MoveStandard, Generations as GenerationsStandard } from '@smogon/calc';
+import { calculate as calculateRadRed, Pokemon as PokemonRadRed, Move as MoveRadRed, Generations as GenerationsRadRed } from '@smogon/calc-radred';
 
 export async function POST({ request }) {
   try {
-    const { userPokemon, rivalPokemon } = await request.json();
+    const body = await request.json();
+    const { userPokemon, rivalPokemon, game } = body;
+    
+    console.log('[Request] Received body keys:', Object.keys(body));
+    console.log('[Request] Game parameter:', game, 'Type:', typeof game);
     
     if (!userPokemon || !rivalPokemon) {
       return new Response(JSON.stringify({ 
@@ -35,13 +49,23 @@ export async function POST({ request }) {
     }
     
     console.log(`[Advanced Recommendations] Calculating matchups for ${userPokemon.length} user Pokémon vs ${rivalPokemon.length} rival Pokémon`);
+    console.log(`[Game] Detected game: ${game || 'unknown (defaulting to standard calc)'}`);
+    
+    // Select the appropriate calculator based on the game
+    const isRadicalRed = game && game.toLowerCase().includes('radred');
+    const { calculate, Pokemon, Move, Generations } = isRadicalRed
+      ? { calculate: calculateRadRed, Pokemon: PokemonRadRed, Move: MoveRadRed, Generations: GenerationsRadRed }
+      : { calculate: calculateStandard, Pokemon: PokemonStandard, Move: MoveStandard, Generations: GenerationsStandard };
+    
+    console.log(`[Calculator] Using ${isRadicalRed ? 'Radical Red' : 'Standard'} calculator`);
     
     // Calculate level cap (max level of rival Pokémon) for Nuzlocke rules
     const levelCap = Math.max(...rivalPokemon.map(p => parseInt(p.level) || 50));
     console.log(`[Level Cap] Applying Nuzlocke level cap: ${levelCap}`);
     
-    // Use Generation 8 as base (similar to Radical Red mechanics)
-    const gen = Generations.get(8);
+    // Use Generation 9 for Radical Red (includes Gen 9 Pokémon like Varoom), Gen 8 for others
+    const gen = Generations.get(isRadicalRed ? 9 : 8);
+    console.log(`[Generation] Using Generation ${gen.num}`);
     
     const recommendations = [];
     
@@ -58,7 +82,7 @@ export async function POST({ request }) {
       
       for (const rivalMon of rivalPokemon) {
         console.log(`[Matchup] Processing rival: ${rivalMon.name} (level ${rivalMon.level})`);
-        const matchup = calculateMatchup(gen, userMonCapped, rivalMon);
+        const matchup = calculateMatchup(gen, userMonCapped, rivalMon, { calculate, Pokemon, Move });
         matchups.push({
           // Rival Pokémon info
           rivalPokemon: rivalMon.name,  // Changed from rivalName to rivalPokemon
@@ -135,7 +159,9 @@ export async function POST({ request }) {
 /**
  * Calculate matchup between user's Pokémon and rival's Pokémon
  */
-function calculateMatchup(gen, userMon, rivalMon) {
+function calculateMatchup(gen, userMon, rivalMon, calcClasses) {
+  const { calculate, Pokemon, Move } = calcClasses;
+  
   try {
     console.log(`\n========== CALCULATING MATCHUP ==========`);
     console.log(`User Pokemon:`, {
@@ -268,18 +294,23 @@ function calculateMatchup(gen, userMon, rivalMon) {
             power: move.bp,
             type: move.type,
             damage: result.damage,
-            description: result.desc()
+            damageType: typeof result.damage,
+            damageIsArray: Array.isArray(result.damage),
+            damageLength: result.damage?.length,
+            attacker: result.attacker?.name,
+            defender: result.defender?.name,
+            description: result.desc ? result.desc() : 'NO DESC FUNCTION'
           });
           
-          // Validate that result has damage
-          if (!result.damage) {
-            console.log(`    ❌ No damage for this move, skipping`);
+          // Validate that result has damage and it's a valid array
+          if (!result.damage || (Array.isArray(result.damage) && result.damage.length === 0)) {
+            console.log(`    ❌ No valid damage for this move, skipping`);
             continue;
           }
           
-          const avgDamage = result.damage && typeof result.damage === 'object' 
+          const avgDamage = Array.isArray(result.damage) && result.damage.length > 0
             ? (result.damage[0] + result.damage[result.damage.length - 1]) / 2 
-            : result.damage || 0;
+            : (typeof result.damage === 'number' ? result.damage : 0);
           
           console.log(`    Average damage: ${avgDamage}, Max damage so far: ${maxDamage}`);
           

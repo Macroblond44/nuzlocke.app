@@ -59895,7 +59895,16 @@
             "sturdy"
           ],
           "held": "custap-berry",
-          "sprite": "geodude-alola"
+          "sprite": "geodude-alola",
+          "nature": "Adamant",
+          "ivs": {
+            "spa": 0,
+            "hp": 31,
+            "atk": 31,
+            "def": 31,
+            "spd": 31,
+            "spe": 31
+          }
         },
         {
           "name": "varoom",
@@ -59910,7 +59919,16 @@
           "abilities": [
             "filter"
           ],
-          "held": "air-balloon"
+          "held": "air-balloon",
+          "nature": "Brave",
+          "ivs": {
+            "spe": 0,
+            "hp": 31,
+            "atk": 31,
+            "def": 31,
+            "spa": 31,
+            "spd": 31
+          }
         },
         {
           "name": "onix",
@@ -59924,7 +59942,8 @@
           "abilities": [
             "sturdy"
           ],
-          "held": "berry-juice"
+          "held": "berry-juice",
+          "nature": "Bashful"
         },
         {
           "name": "archen",
@@ -59939,7 +59958,8 @@
           "abilities": [
             "defeatist"
           ],
-          "held": "berry-juice"
+          "held": "berry-juice",
+          "nature": "Jolly"
         }
       ]
     },
@@ -59961,7 +59981,16 @@
           "abilities": [
             "protean"
           ],
-          "held": "eviolite"
+          "held": "eviolite",
+          "nature": "Lonely",
+          "evs": {
+            "atk": 40,
+            "hp": 100,
+            "spa": 40,
+            "def": 0,
+            "spd": 0,
+            "spe": 0
+          }
         },
         {
           "name": "floatzel",
@@ -59976,7 +60005,16 @@
           "abilities": [
             "technician"
           ],
-          "held": "mystic-water"
+          "held": "mystic-water",
+          "nature": "Timid",
+          "ivs": {
+            "atk": 30,
+            "spa": 30,
+            "hp": 31,
+            "def": 31,
+            "spd": 31,
+            "spe": 31
+          }
         },
         {
           "name": "starmie",
@@ -59991,7 +60029,8 @@
           "abilities": [
             "analytic"
           ],
-          "held": "sitrus-berry"
+          "held": "sitrus-berry",
+          "nature": "Timid"
         },
         {
           "name": "clodsire",
@@ -60006,7 +60045,8 @@
           "abilities": [
             "water-absorb"
           ],
-          "held": "iapapa-berry"
+          "held": "iapapa-berry",
+          "nature": "Bold"
         }
       ]
     },
@@ -60028,7 +60068,16 @@
           "abilities": [
             "electric-surge"
           ],
-          "held": "terrain-extender"
+          "held": "terrain-extender",
+          "nature": "Bold",
+          "ivs": {
+            "atk": 30,
+            "def": 30,
+            "hp": 31,
+            "spa": 31,
+            "spd": 31,
+            "spe": 31
+          }
         },
         {
           "name": "vikavolt",
@@ -60043,7 +60092,16 @@
           "abilities": [
             "levitate"
           ],
-          "held": "occa-berry"
+          "held": "occa-berry",
+          "nature": "Calm",
+          "evs": {
+            "hp": 100,
+            "atk": 0,
+            "def": 0,
+            "spa": 0,
+            "spd": 0,
+            "spe": 0
+          }
         },
         {
           "name": "bellibolt",
@@ -60058,7 +60116,24 @@
           "abilities": [
             "electromorphosis"
           ],
-          "held": "shuca-berry"
+          "held": "shuca-berry",
+          "nature": "Bold",
+          "ivs": {
+            "atk": 30,
+            "spa": 30,
+            "hp": 31,
+            "def": 31,
+            "spd": 31,
+            "spe": 31
+          },
+          "evs": {
+            "hp": 100,
+            "atk": 0,
+            "def": 0,
+            "spa": 0,
+            "spd": 0,
+            "spe": 0
+          }
         },
         {
           "name": "pawmot",
@@ -60073,7 +60148,8 @@
           "abilities": [
             "iron-fist"
           ],
-          "held": "focus-sash"
+          "held": "focus-sash",
+          "nature": "Jolly"
         },
         {
           "name": "manectric",
@@ -60110,7 +60186,16 @@
           "abilities": [
             "grassy-surge"
           ],
-          "held": "terrain-extender"
+          "held": "terrain-extender",
+          "nature": "Jolly",
+          "evs": {
+            "atk": 252,
+            "def": 4,
+            "spe": 252,
+            "hp": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "meowscarada",
@@ -60125,7 +60210,16 @@
           "abilities": [
             "protean"
           ],
-          "held": "focus-sash"
+          "held": "focus-sash",
+          "nature": "Jolly",
+          "evs": {
+            "atk": 252,
+            "def": 4,
+            "spe": 252,
+            "hp": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "venusaur",
@@ -60156,7 +60250,24 @@
           "abilities": [
             "triage"
           ],
-          "held": "grassy-seed"
+          "held": "grassy-seed",
+          "nature": "Modest",
+          "ivs": {
+            "atk": 30,
+            "spa": 30,
+            "spe": 30,
+            "hp": 31,
+            "def": 31,
+            "spd": 31
+          },
+          "evs": {
+            "def": 4,
+            "hp": 252,
+            "spa": 252,
+            "atk": 0,
+            "spd": 0,
+            "spe": 0
+          }
         },
         {
           "name": "electrode-hisui",
@@ -60172,7 +60283,24 @@
             "reckless"
           ],
           "held": "life-orb",
-          "sprite": "electrode-hisui"
+          "sprite": "electrode-hisui",
+          "nature": "Naive",
+          "ivs": {
+            "atk": 30,
+            "def": 30,
+            "hp": 31,
+            "spa": 31,
+            "spd": 31,
+            "spe": 31
+          },
+          "evs": {
+            "atk": 4,
+            "spa": 252,
+            "spe": 252,
+            "hp": 0,
+            "def": 0,
+            "spd": 0
+          }
         }
       ]
     },
@@ -60194,7 +60322,24 @@
           "abilities": [
             "magic-bounce"
           ],
-          "held": "psychic-seed"
+          "held": "psychic-seed",
+          "nature": "Quiet",
+          "ivs": {
+            "atk": 0,
+            "spe": 0,
+            "hp": 31,
+            "def": 31,
+            "spa": 31,
+            "spd": 31
+          },
+          "evs": {
+            "def": 4,
+            "hp": 252,
+            "spa": 252,
+            "atk": 0,
+            "spd": 0,
+            "spe": 0
+          }
         },
         {
           "name": "indeedee-female",
@@ -60239,7 +60384,24 @@
           "abilities": [
             "trace"
           ],
-          "held": "eviolite"
+          "held": "eviolite",
+          "nature": "Relaxed",
+          "ivs": {
+            "atk": 0,
+            "spe": 0,
+            "hp": 31,
+            "def": 31,
+            "spa": 31,
+            "spd": 31
+          },
+          "evs": {
+            "def": 252,
+            "hp": 252,
+            "spd": 4,
+            "atk": 0,
+            "spa": 0,
+            "spe": 0
+          }
         },
         {
           "name": "ursaluna",
@@ -60254,7 +60416,24 @@
           "abilities": [
             "guts"
           ],
-          "held": "flame-orb"
+          "held": "flame-orb",
+          "nature": "Brave",
+          "ivs": {
+            "spe": 0,
+            "hp": 31,
+            "atk": 31,
+            "def": 31,
+            "spa": 31,
+            "spd": 31
+          },
+          "evs": {
+            "atk": 252,
+            "def": 4,
+            "hp": 252,
+            "spa": 0,
+            "spd": 0,
+            "spe": 0
+          }
         },
         {
           "name": "gardevoir",
@@ -60290,7 +60469,24 @@
           "abilities": [
             "aerilate"
           ],
-          "held": "choice-specs"
+          "held": "choice-specs",
+          "nature": "Timid",
+          "ivs": {
+            "atk": 30,
+            "hp": 31,
+            "def": 31,
+            "spa": 31,
+            "spd": 31,
+            "spe": 31
+          },
+          "evs": {
+            "spa": 252,
+            "spd": 4,
+            "spe": 252,
+            "hp": 0,
+            "atk": 0,
+            "def": 0
+          }
         },
         {
           "name": "accelgor",
@@ -60305,7 +60501,16 @@
           "abilities": [
             "sheer-force"
           ],
-          "held": "life-orb"
+          "held": "life-orb",
+          "nature": "Timid",
+          "evs": {
+            "spa": 252,
+            "spd": 4,
+            "spe": 252,
+            "hp": 0,
+            "atk": 0,
+            "def": 0
+          }
         },
         {
           "name": "greninja",
@@ -60320,7 +60525,16 @@
           "abilities": [
             "battle-bond"
           ],
-          "held": "life-orb"
+          "held": "life-orb",
+          "nature": "Timid",
+          "evs": {
+            "spa": 252,
+            "spd": 4,
+            "spe": 252,
+            "hp": 0,
+            "atk": 0,
+            "def": 0
+          }
         },
         {
           "name": "drapion",
@@ -60333,7 +60547,16 @@
           "abilities": [
             "sniper"
           ],
-          "held": "choice-scarf"
+          "held": "choice-scarf",
+          "nature": "Adamant",
+          "evs": {
+            "atk": 252,
+            "spd": 4,
+            "spe": 252,
+            "hp": 0,
+            "def": 0,
+            "spa": 0
+          }
         },
         {
           "name": "iron-valiant",
@@ -60385,7 +60608,16 @@
           "abilities": [
             "mega-launcher"
           ],
-          "held": "focus-sash"
+          "held": "focus-sash",
+          "nature": "Timid",
+          "evs": {
+            "def": 4,
+            "spa": 252,
+            "spe": 252,
+            "hp": 0,
+            "atk": 0,
+            "spd": 0
+          }
         },
         {
           "name": "slither-wing",
@@ -60415,7 +60647,16 @@
           "abilities": [
             "chlorophyll"
           ],
-          "held": "lum-berry"
+          "held": "lum-berry",
+          "nature": "Timid",
+          "evs": {
+            "def": 4,
+            "spa": 252,
+            "spe": 252,
+            "hp": 0,
+            "atk": 0,
+            "spd": 0
+          }
         },
         {
           "name": "typhlosion",
@@ -60430,7 +60671,24 @@
           "abilities": [
             "blazing-soul"
           ],
-          "held": "heavy-duty-boots"
+          "held": "heavy-duty-boots",
+          "nature": "Modest",
+          "ivs": {
+            "atk": 30,
+            "spa": 30,
+            "hp": 31,
+            "def": 31,
+            "spd": 31,
+            "spe": 31
+          },
+          "evs": {
+            "def": 4,
+            "spa": 252,
+            "spe": 252,
+            "hp": 0,
+            "atk": 0,
+            "spd": 0
+          }
         },
         {
           "name": "ogerpon-hearthflame-mask",
@@ -60483,7 +60741,16 @@
           "abilities": [
             "unnerve"
           ],
-          "held": "focus-sash"
+          "held": "focus-sash",
+          "nature": "Jolly",
+          "evs": {
+            "atk": 252,
+            "def": 4,
+            "spe": 252,
+            "hp": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "roaring-moon",
@@ -60513,7 +60780,16 @@
           "abilities": [
             "multiscale"
           ],
-          "held": "weakness-policy"
+          "held": "weakness-policy",
+          "nature": "Adamant",
+          "evs": {
+            "def": 4,
+            "hp": 252,
+            "spe": 252,
+            "atk": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "magearna",
@@ -60528,7 +60804,16 @@
           "abilities": [
             "soul-heart"
           ],
-          "held": "leftovers"
+          "held": "leftovers",
+          "nature": "Modest",
+          "evs": {
+            "hp": 252,
+            "spa": 252,
+            "spe": 4,
+            "atk": 0,
+            "def": 0,
+            "spd": 0
+          }
         },
         {
           "name": "gouging-fire",
@@ -60558,7 +60843,16 @@
           "abilities": [
             "beast-boost"
           ],
-          "held": "life-orb"
+          "held": "life-orb",
+          "nature": "Timid",
+          "evs": {
+            "def": 4,
+            "spa": 252,
+            "spe": 252,
+            "hp": 0,
+            "atk": 0,
+            "spd": 0
+          }
         }
       ]
     },
@@ -60597,7 +60891,16 @@
             "early-bird",
             "flash-fire"
           ],
-          "held": "wise-glasses"
+          "held": "wise-glasses",
+          "nature": "Timid",
+          "ivs": {
+            "atk": 30,
+            "spa": 30,
+            "hp": 31,
+            "def": 31,
+            "spd": 31,
+            "spe": 31
+          }
         },
         {
           "name": "mightyena",
@@ -60612,7 +60915,8 @@
           "abilities": [
             "strong-jaw"
           ],
-          "held": "berry-juice"
+          "held": "berry-juice",
+          "nature": "Jolly"
         }
       ]
     },
@@ -60634,7 +60938,16 @@
           "abilities": [
             "sheer-force"
           ],
-          "held": "life-orb"
+          "held": "life-orb",
+          "nature": "Timid",
+          "evs": {
+            "def": 4,
+            "spa": 252,
+            "spe": 252,
+            "hp": 0,
+            "atk": 0,
+            "spd": 0
+          }
         },
         {
           "name": "honchkrow",
@@ -60649,7 +60962,16 @@
           "abilities": [
             "super-luck"
           ],
-          "held": "scope-lens"
+          "held": "scope-lens",
+          "nature": "Jolly",
+          "evs": {
+            "atk": 252,
+            "def": 4,
+            "spe": 252,
+            "hp": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "infernape",
@@ -60758,7 +61080,16 @@
           "ability": "poison-touch",
           "abilities": [
             "poison-touch"
-          ]
+          ],
+          "nature": "Timid",
+          "evs": {
+            "def": 4,
+            "spa": 252,
+            "spe": 252,
+            "hp": 0,
+            "atk": 0,
+            "spd": 0
+          }
         },
         {
           "name": "rhyhorn",
@@ -60794,7 +61125,24 @@
           "abilities": [
             "competitive"
           ],
-          "held": "colbur-berry"
+          "held": "colbur-berry",
+          "nature": "Modest",
+          "ivs": {
+            "def": 30,
+            "spa": 30,
+            "spd": 30,
+            "spe": 30,
+            "hp": 31,
+            "atk": 31
+          },
+          "evs": {
+            "def": 4,
+            "hp": 252,
+            "spa": 252,
+            "atk": 0,
+            "spd": 0,
+            "spe": 0
+          }
         },
         {
           "name": "aegislash-blade",
@@ -60839,7 +61187,16 @@
           "abilities": [
             "intimidate"
           ],
-          "held": "sitrus-berry"
+          "held": "sitrus-berry",
+          "nature": "Adamant",
+          "evs": {
+            "atk": 252,
+            "hp": 252,
+            "spe": 6,
+            "def": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "primarina",
@@ -60854,7 +61211,16 @@
           "abilities": [
             "liquid-voice"
           ],
-          "held": "throat-spray"
+          "held": "throat-spray",
+          "nature": "Modest",
+          "evs": {
+            "hp": 6,
+            "spa": 252,
+            "spe": 252,
+            "atk": 0,
+            "def": 0,
+            "spd": 0
+          }
         },
         {
           "name": "mawile",
@@ -60892,7 +61258,16 @@
           "abilities": [
             "thick-fat"
           ],
-          "held": "focus-sash"
+          "held": "focus-sash",
+          "nature": "Jolly",
+          "evs": {
+            "atk": 252,
+            "hp": 6,
+            "spe": 252,
+            "def": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "durant",
@@ -60907,7 +61282,16 @@
           "abilities": [
             "hustle"
           ],
-          "held": "life-orb"
+          "held": "life-orb",
+          "nature": "Jolly",
+          "evs": {
+            "atk": 252,
+            "hp": 6,
+            "spe": 252,
+            "def": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "mimikyu-disguised",
@@ -61041,7 +61425,16 @@
           "abilities": [
             "magic-bounce"
           ],
-          "held": "sitrus-berry"
+          "held": "sitrus-berry",
+          "nature": "Modest",
+          "evs": {
+            "hp": 252,
+            "spa": 252,
+            "spe": 6,
+            "atk": 0,
+            "def": 0,
+            "spd": 0
+          }
         },
         {
           "name": "rhyperior",
@@ -61056,7 +61449,16 @@
           "abilities": [
             "solid-rock"
           ],
-          "held": "weakness-policy"
+          "held": "weakness-policy",
+          "nature": "Adamant",
+          "evs": {
+            "atk": 252,
+            "hp": 252,
+            "spe": 6,
+            "def": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "honchkrow",
@@ -61071,7 +61473,16 @@
           "abilities": [
             "super-luck"
           ],
-          "held": "scope-lens"
+          "held": "scope-lens",
+          "nature": "Jolly",
+          "evs": {
+            "atk": 252,
+            "hp": 6,
+            "spe": 252,
+            "def": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "mawile",
@@ -61108,7 +61519,16 @@
           "abilities": [
             "moxie"
           ],
-          "held": "psychic-seed"
+          "held": "psychic-seed",
+          "nature": "Adamant",
+          "evs": {
+            "atk": 252,
+            "def": 4,
+            "hp": 252,
+            "spa": 0,
+            "spd": 0,
+            "spe": 0
+          }
         },
         {
           "name": "tapu-lele",
@@ -61138,7 +61558,16 @@
           "abilities": [
             "sand-rush"
           ],
-          "held": "focus-sash"
+          "held": "focus-sash",
+          "nature": "Adamant",
+          "evs": {
+            "atk": 252,
+            "hp": 4,
+            "spe": 252,
+            "def": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "tyranitar",
@@ -61153,7 +61582,16 @@
           "abilities": [
             "sand-stream"
           ],
-          "held": "assault-vest"
+          "held": "assault-vest",
+          "nature": "Careful",
+          "evs": {
+            "atk": 4,
+            "hp": 252,
+            "spd": 252,
+            "def": 0,
+            "spa": 0,
+            "spe": 0
+          }
         },
         {
           "name": "celesteela",
@@ -61168,7 +61606,16 @@
           "abilities": [
             "beast-boost"
           ],
-          "held": "power-herb"
+          "held": "power-herb",
+          "nature": "Modest",
+          "evs": {
+            "hp": 4,
+            "spa": 252,
+            "spe": 252,
+            "atk": 0,
+            "def": 0,
+            "spd": 0
+          }
         },
         {
           "name": "mewtwo",
@@ -61182,7 +61629,16 @@
           "ability": "pressure",
           "abilities": [
             "pressure"
-          ]
+          ],
+          "nature": "Timid",
+          "evs": {
+            "hp": 4,
+            "spa": 252,
+            "spe": 252,
+            "atk": 0,
+            "def": 0,
+            "spd": 0
+          }
         },
         {
           "name": "mewtwo-mega-y",
@@ -61197,7 +61653,16 @@
           "abilities": [
             "pressure"
           ],
-          "sprite": "mewtwo-mega-y"
+          "sprite": "mewtwo-mega-y",
+          "nature": "Timid",
+          "evs": {
+            "hp": 4,
+            "spa": 252,
+            "spe": 252,
+            "atk": 0,
+            "def": 0,
+            "spd": 0
+          }
         }
       ],
       "doubleBattle": true
@@ -61218,7 +61683,16 @@
           "abilities": [
             "torrent"
           ],
-          "starter": "fire"
+          "starter": "fire",
+          "nature": "Modest",
+          "ivs": {
+            "atk": 25,
+            "def": 25,
+            "hp": 25,
+            "spa": 25,
+            "spd": 25,
+            "spe": 25
+          }
         },
         {
           "name": "bulbasaur",
@@ -61231,7 +61705,16 @@
           "abilities": [
             "overgrow"
           ],
-          "starter": "water"
+          "starter": "water",
+          "nature": "Bashful",
+          "ivs": {
+            "atk": 25,
+            "def": 25,
+            "hp": 25,
+            "spa": 25,
+            "spd": 25,
+            "spe": 25
+          }
         },
         {
           "name": "charmander",
@@ -61244,7 +61727,16 @@
           "abilities": [
             "blaze"
           ],
-          "starter": "grass"
+          "starter": "grass",
+          "nature": "Bashful",
+          "ivs": {
+            "atk": 25,
+            "def": 25,
+            "hp": 25,
+            "spa": 25,
+            "spd": 25,
+            "spe": 25
+          }
         }
       ]
     },
@@ -61265,7 +61757,16 @@
           "ability": "frisk",
           "abilities": [
             "frisk"
-          ]
+          ],
+          "nature": "Modest",
+          "ivs": {
+            "atk": 25,
+            "def": 25,
+            "hp": 25,
+            "spa": 25,
+            "spd": 25,
+            "spe": 25
+          }
         },
         {
           "name": "squirtle",
@@ -61279,7 +61780,16 @@
           "abilities": [
             "torrent"
           ],
-          "starter": "fire"
+          "starter": "fire",
+          "nature": "Docile",
+          "ivs": {
+            "atk": 25,
+            "def": 25,
+            "hp": 25,
+            "spa": 25,
+            "spd": 25,
+            "spe": 25
+          }
         },
         {
           "name": "bulbasaur",
@@ -61294,7 +61804,16 @@
           "abilities": [
             "overgrow"
           ],
-          "starter": "water"
+          "starter": "water",
+          "nature": "Lax",
+          "ivs": {
+            "atk": 25,
+            "def": 25,
+            "hp": 25,
+            "spa": 25,
+            "spd": 25,
+            "spe": 25
+          }
         },
         {
           "name": "charmander",
@@ -61309,7 +61828,16 @@
           "abilities": [
             "blaze"
           ],
-          "starter": "grass"
+          "starter": "grass",
+          "nature": "Lax",
+          "ivs": {
+            "atk": 25,
+            "def": 25,
+            "hp": 25,
+            "spa": 25,
+            "spd": 25,
+            "spe": 25
+          }
         }
       ]
     },
@@ -61636,7 +62164,16 @@
           "abilities": [
             "intimidate"
           ],
-          "held": "choice-band"
+          "held": "choice-band",
+          "nature": "Jolly",
+          "evs": {
+            "atk": 252,
+            "def": 4,
+            "spe": 252,
+            "hp": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "electivire",
@@ -61731,7 +62268,16 @@
             "magic-bounce"
           ],
           "held": "leftovers",
-          "starter": "fire"
+          "starter": "fire",
+          "nature": "Modest",
+          "evs": {
+            "def": 4,
+            "hp": 252,
+            "spa": 252,
+            "atk": 0,
+            "spd": 0,
+            "spe": 0
+          }
         },
         {
           "name": "hatterene",
@@ -61747,7 +62293,16 @@
             "magic-bounce"
           ],
           "held": "leftovers",
-          "starter": "grass"
+          "starter": "grass",
+          "nature": "Modest",
+          "evs": {
+            "def": 4,
+            "hp": 252,
+            "spa": 252,
+            "atk": 0,
+            "spd": 0,
+            "spe": 0
+          }
         },
         {
           "name": "kartana",
@@ -61836,7 +62391,16 @@
           "abilities": [
             "levitate"
           ],
-          "held": "focus-sash"
+          "held": "focus-sash",
+          "nature": "Jolly",
+          "evs": {
+            "atk": 252,
+            "hp": 6,
+            "spe": 252,
+            "def": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "breloom",
@@ -61851,7 +62415,16 @@
           "abilities": [
             "poison-heal"
           ],
-          "held": "toxic-orb"
+          "held": "toxic-orb",
+          "nature": "Jolly",
+          "evs": {
+            "atk": 252,
+            "hp": 6,
+            "spe": 252,
+            "def": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "manectric",
@@ -61866,7 +62439,16 @@
           "abilities": [
             "lightning-rod"
           ],
-          "held": "choice-specs"
+          "held": "choice-specs",
+          "nature": "Timid",
+          "evs": {
+            "hp": 6,
+            "spa": 252,
+            "spe": 252,
+            "atk": 0,
+            "def": 0,
+            "spd": 0
+          }
         },
         {
           "name": "relicanth",
@@ -61881,7 +62463,16 @@
           "abilities": [
             "rock-head"
           ],
-          "held": "choice-band"
+          "held": "choice-band",
+          "nature": "Adamant",
+          "evs": {
+            "atk": 252,
+            "hp": 252,
+            "spe": 6,
+            "def": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "flygon",
@@ -61896,7 +62487,16 @@
           "abilities": [
             "tinted-lens"
           ],
-          "held": "life-orb"
+          "held": "life-orb",
+          "nature": "Hasty",
+          "evs": {
+            "atk": 128,
+            "hp": 6,
+            "spa": 128,
+            "spe": 252,
+            "def": 0,
+            "spd": 0
+          }
         },
         {
           "name": "blaziken",
@@ -61932,7 +62532,16 @@
           "ability": "battle-armor",
           "abilities": [
             "battle-armor"
-          ]
+          ],
+          "nature": "Lax",
+          "ivs": {
+            "atk": 10,
+            "def": 10,
+            "hp": 10,
+            "spa": 10,
+            "spd": 10,
+            "spe": 10
+          }
         },
         {
           "name": "treecko",
@@ -61945,7 +62554,16 @@
           "ability": "overgrow",
           "abilities": [
             "overgrow"
-          ]
+          ],
+          "nature": "Mild",
+          "ivs": {
+            "atk": 10,
+            "def": 10,
+            "hp": 10,
+            "spa": 10,
+            "spd": 10,
+            "spe": 10
+          }
         }
       ]
     },
@@ -62094,7 +62712,16 @@
           "abilities": [
             "trace"
           ],
-          "held": "pixie-plate"
+          "held": "pixie-plate",
+          "nature": "Timid",
+          "evs": {
+            "def": 4,
+            "spa": 252,
+            "spe": 252,
+            "hp": 0,
+            "atk": 0,
+            "spd": 0
+          }
         },
         {
           "name": "sceptile",
@@ -62131,7 +62758,16 @@
           "abilities": [
             "pressure"
           ],
-          "held": "focus-sash"
+          "held": "focus-sash",
+          "nature": "Naive",
+          "evs": {
+            "atk": 128,
+            "spa": 132,
+            "spe": 252,
+            "hp": 0,
+            "def": 0,
+            "spd": 0
+          }
         },
         {
           "name": "jirachi",
@@ -62146,7 +62782,16 @@
           "abilities": [
             "serene-grace"
           ],
-          "held": "choice-scarf"
+          "held": "choice-scarf",
+          "nature": "Jolly",
+          "evs": {
+            "atk": 252,
+            "hp": 6,
+            "spe": 252,
+            "def": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "landorus-therian",
@@ -62192,7 +62837,16 @@
           "abilities": [
             "intimidate"
           ],
-          "held": "white-herb"
+          "held": "white-herb",
+          "nature": "Jolly",
+          "evs": {
+            "atk": 252,
+            "hp": 6,
+            "spe": 252,
+            "def": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "sceptile",
@@ -64484,7 +65138,16 @@
           "abilities": [
             "beast-boost"
           ],
-          "held": "focus-sash"
+          "held": "focus-sash",
+          "nature": "Jolly",
+          "evs": {
+            "atk": 252,
+            "def": 4,
+            "spe": 252,
+            "hp": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "metagross",
@@ -64530,7 +65193,16 @@
           "abilities": [
             "dark-aura"
           ],
-          "held": "assault-vest"
+          "held": "assault-vest",
+          "nature": "Modest",
+          "evs": {
+            "hp": 252,
+            "spa": 252,
+            "spd": 4,
+            "atk": 0,
+            "def": 0,
+            "spe": 0
+          }
         },
         {
           "name": "eternatus",
@@ -64545,7 +65217,16 @@
           "abilities": [
             "pressure"
           ],
-          "held": "power-herb"
+          "held": "power-herb",
+          "nature": "Timid",
+          "evs": {
+            "def": 4,
+            "spa": 252,
+            "spe": 252,
+            "hp": 0,
+            "atk": 0,
+            "spd": 0
+          }
         },
         {
           "name": "ditto",
@@ -64557,7 +65238,16 @@
           "abilities": [
             "imposter"
           ],
-          "held": "choice-scarf"
+          "held": "choice-scarf",
+          "nature": "Timid",
+          "evs": {
+            "def": 4,
+            "hp": 252,
+            "spe": 252,
+            "atk": 0,
+            "spa": 0,
+            "spd": 0
+          }
         }
       ]
     },
@@ -65157,7 +65847,24 @@
             "punk-rock"
           ],
           "held": "toxtricitite",
-          "sprite": "toxtricity-gmax"
+          "sprite": "toxtricity-gmax",
+          "nature": "Timid",
+          "ivs": {
+            "atk": 30,
+            "spa": 30,
+            "hp": 31,
+            "def": 31,
+            "spd": 31,
+            "spe": 31
+          },
+          "evs": {
+            "spa": 252,
+            "spd": 4,
+            "spe": 252,
+            "hp": 0,
+            "atk": 0,
+            "def": 0
+          }
         }
       ],
       "info": "<p><b>Tailwind</b><br />There is a permanent tailwind effect on Koga's side of the field</p>"
@@ -65312,7 +66019,16 @@
           "abilities": [
             "soul-heart"
           ],
-          "held": "weakness-policy"
+          "held": "weakness-policy",
+          "nature": "Modest",
+          "evs": {
+            "hp": 252,
+            "spa": 252,
+            "spe": 4,
+            "atk": 0,
+            "def": 0,
+            "spd": 0
+          }
         },
         {
           "name": "necrozma-dusk",
@@ -67899,7 +68615,16 @@
           "abilities": [
             "liquid-voice"
           ],
-          "held": "throat-spray"
+          "held": "throat-spray",
+          "nature": "Modest",
+          "evs": {
+            "hp": 6,
+            "spa": 252,
+            "spe": 252,
+            "atk": 0,
+            "def": 0,
+            "spd": 0
+          }
         },
         {
           "name": "aegislash-shield",
@@ -68029,7 +68754,16 @@
           "abilities": [
             "sand-rush"
           ],
-          "held": "focus-sash"
+          "held": "focus-sash",
+          "nature": "Adamant",
+          "evs": {
+            "atk": 252,
+            "def": 4,
+            "spe": 252,
+            "hp": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "garchomp",
@@ -68045,7 +68779,16 @@
             "sand-veil",
             "sand-force"
           ],
-          "held": "garchompite"
+          "held": "garchompite",
+          "nature": "Jolly",
+          "evs": {
+            "atk": 252,
+            "def": 4,
+            "spe": 252,
+            "hp": 0,
+            "spa": 0,
+            "spd": 0
+          }
         }
       ]
     },
@@ -68296,7 +69039,16 @@
             "unnerve",
             "insomnia"
           ],
-          "sprite": "mewtwo-mega-y"
+          "sprite": "mewtwo-mega-y",
+          "nature": "Timid",
+          "evs": {
+            "hp": 4,
+            "spa": 252,
+            "spe": 252,
+            "atk": 0,
+            "def": 0,
+            "spd": 0
+          }
         }
       ],
       "doubleBattle": true
@@ -69577,7 +70329,16 @@
             "speed-boost"
           ],
           "held": "blazikenite",
-          "sprite": "blaziken-mega"
+          "sprite": "blaziken-mega",
+          "nature": "Adamant",
+          "evs": {
+            "atk": 252,
+            "hp": 6,
+            "spe": 252,
+            "def": 0,
+            "spa": 0,
+            "spd": 0
+          }
         }
       ]
     }

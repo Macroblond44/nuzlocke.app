@@ -47,6 +47,15 @@
           "effect": "Held: Consumed at 1/4 max HP when using a move to go first."
         },
         "sprite": "10109",
+        "nature": "Adamant",
+        "ivs": {
+          "spa": 0,
+          "hp": 31,
+          "atk": 31,
+          "def": 31,
+          "spd": 31,
+          "spe": 31
+        },
         "alias": "geodude-alola",
         "types": [
           "rock",
@@ -102,6 +111,15 @@
           "name": "Air Balloon",
           "effect": "Held: Grants immunity to Ground-type moves, Spikes, and Toxic Spikes. Consumed when the holder takes damage from a move."
         },
+        "nature": "Brave",
+        "ivs": {
+          "spe": 0,
+          "hp": 31,
+          "atk": 31,
+          "def": 31,
+          "spa": 31,
+          "spd": 31
+        },
         "sprite": "965",
         "types": [
           "steel",
@@ -150,6 +168,7 @@
           "name": "Berry Juice",
           "effect": "Restores 20 HP."
         },
+        "nature": "Bashful",
         "sprite": "95",
         "types": [
           "rock",
@@ -206,6 +225,7 @@
           "name": "Berry Juice",
           "effect": "Restores 20 HP."
         },
+        "nature": "Jolly",
         "sprite": "566",
         "types": [
           "rock",
@@ -267,6 +287,15 @@
           "name": "Eviolite",
           "effect": "Held: Holder has 1.5× Defense and Special Defense, as long as it’s not fully evolved."
         },
+        "nature": "Lonely",
+        "evs": {
+          "atk": 40,
+          "hp": 100,
+          "spa": 40,
+          "def": 0,
+          "spd": 0,
+          "spe": 0
+        },
         "sprite": "657",
         "types": [
           "water"
@@ -319,6 +348,15 @@
           "sprite": "mystic-water",
           "name": "Mystic Water",
           "effect": "Held: Water-Type moves from holder do 20% more damage."
+        },
+        "nature": "Timid",
+        "ivs": {
+          "atk": 30,
+          "spa": 30,
+          "hp": 31,
+          "def": 31,
+          "spd": 31,
+          "spe": 31
         },
         "sprite": "419",
         "types": [
@@ -374,6 +412,7 @@
           "name": "Sitrus Berry",
           "effect": "Held: Consumed at 1/2 max HP to recover 1/4 max HP."
         },
+        "nature": "Timid",
         "sprite": "121",
         "types": [
           "water",
@@ -429,6 +468,7 @@
           "name": "Iapapa Berry",
           "effect": "Held: Consumed at 1/2 max HP to restore 1/8 max HP. Confuses Pokémon that dislike sour flavor."
         },
+        "nature": "Bold",
         "sprite": "980",
         "types": [
           "poison",
@@ -491,6 +531,15 @@
           "name": "Terrain Extender",
           "effect": "Held: Extends the holder’s Terrain effects to 8 turns."
         },
+        "nature": "Bold",
+        "ivs": {
+          "atk": 30,
+          "def": 30,
+          "hp": 31,
+          "spa": 31,
+          "spd": 31,
+          "spe": 31
+        },
         "sprite": "871",
         "types": [
           "electric",
@@ -546,6 +595,15 @@
           "name": "Occa Berry",
           "effect": "Held: Consumed when struck by a super-effective Fire-type attack to halve the damage."
         },
+        "nature": "Calm",
+        "evs": {
+          "hp": 100,
+          "atk": 0,
+          "def": 0,
+          "spa": 0,
+          "spd": 0,
+          "spe": 0
+        },
         "sprite": "738",
         "types": [
           "bug",
@@ -599,6 +657,23 @@
           "sprite": "shuca-berry",
           "name": "Shuca Berry",
           "effect": "Held: Consumed when struck by a super-effective Ground-type attack to halve the damage."
+        },
+        "nature": "Bold",
+        "ivs": {
+          "atk": 30,
+          "spa": 30,
+          "hp": 31,
+          "def": 31,
+          "spd": 31,
+          "spe": 31
+        },
+        "evs": {
+          "hp": 100,
+          "atk": 0,
+          "def": 0,
+          "spa": 0,
+          "spd": 0,
+          "spe": 0
         },
         "sprite": "939",
         "types": [
@@ -655,6 +730,7 @@
           "name": "Focus Sash",
           "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
+        "nature": "Jolly",
         "sprite": "923",
         "types": [
           "electric",
@@ -770,6 +846,15 @@
           "name": "Terrain Extender",
           "effect": "Held: Extends the holder’s Terrain effects to 8 turns."
         },
+        "nature": "Jolly",
+        "evs": {
+          "atk": 252,
+          "def": 4,
+          "spe": 252,
+          "hp": 0,
+          "spa": 0,
+          "spd": 0
+        },
         "sprite": "812",
         "types": [
           "grass"
@@ -822,6 +907,15 @@
           "sprite": "focus-sash",
           "name": "Focus Sash",
           "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
+        },
+        "nature": "Jolly",
+        "evs": {
+          "atk": 252,
+          "def": 4,
+          "spe": 252,
+          "hp": 0,
+          "spa": 0,
+          "spd": 0
         },
         "sprite": "908",
         "types": [
@@ -942,6 +1036,23 @@
           "name": "Grassy Seed",
           "effect": "Held: Consumed on Grassy Terrain and raises the holder’s Defense by one stage."
         },
+        "nature": "Modest",
+        "ivs": {
+          "atk": 30,
+          "spa": 30,
+          "spe": 30,
+          "hp": 31,
+          "def": 31,
+          "spd": 31
+        },
+        "evs": {
+          "def": 4,
+          "hp": 252,
+          "spa": 252,
+          "atk": 0,
+          "spd": 0,
+          "spe": 0
+        },
         "sprite": "154",
         "types": [
           "grass"
@@ -996,6 +1107,23 @@
           "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "sprite": "10232",
+        "nature": "Naive",
+        "ivs": {
+          "atk": 30,
+          "def": 30,
+          "hp": 31,
+          "spa": 31,
+          "spd": 31,
+          "spe": 31
+        },
+        "evs": {
+          "atk": 4,
+          "spa": 252,
+          "spe": 252,
+          "hp": 0,
+          "def": 0,
+          "spd": 0
+        },
         "alias": "electrode-hisui",
         "types": [
           "electric",
@@ -1058,6 +1186,23 @@
           "sprite": "psychic-seed",
           "name": "Psychic Seed",
           "effect": "Held: Consumed on Psychic Terrain and raises the holder’s Special Defense by one stage."
+        },
+        "nature": "Quiet",
+        "ivs": {
+          "atk": 0,
+          "spe": 0,
+          "hp": 31,
+          "def": 31,
+          "spa": 31,
+          "spd": 31
+        },
+        "evs": {
+          "def": 4,
+          "hp": 252,
+          "spa": 252,
+          "atk": 0,
+          "spd": 0,
+          "spe": 0
         },
         "sprite": "858",
         "types": [
@@ -1224,6 +1369,23 @@
           "name": "Eviolite",
           "effect": "Held: Holder has 1.5× Defense and Special Defense, as long as it’s not fully evolved."
         },
+        "nature": "Relaxed",
+        "ivs": {
+          "atk": 0,
+          "spe": 0,
+          "hp": 31,
+          "def": 31,
+          "spa": 31,
+          "spd": 31
+        },
+        "evs": {
+          "def": 252,
+          "hp": 252,
+          "spd": 4,
+          "atk": 0,
+          "spa": 0,
+          "spe": 0
+        },
         "sprite": "233",
         "types": [
           "normal"
@@ -1277,6 +1439,23 @@
           "sprite": "flame-orb",
           "name": "Flame Orb",
           "effect": "Held: Inflicts Burn on the holder at the end of the turn. Activates after Burn damage would occur."
+        },
+        "nature": "Brave",
+        "ivs": {
+          "spe": 0,
+          "hp": 31,
+          "atk": 31,
+          "def": 31,
+          "spa": 31,
+          "spd": 31
+        },
+        "evs": {
+          "atk": 252,
+          "def": 4,
+          "hp": 252,
+          "spa": 0,
+          "spd": 0,
+          "spe": 0
         },
         "sprite": "901",
         "types": [
@@ -1390,6 +1569,23 @@
           "name": "Choice Specs",
           "effect": "Held: Increases Special Attack by 50%, but restricts the holder to only one move."
         },
+        "nature": "Timid",
+        "ivs": {
+          "atk": 30,
+          "hp": 31,
+          "def": 31,
+          "spa": 31,
+          "spd": 31,
+          "spe": 31
+        },
+        "evs": {
+          "spa": 252,
+          "spd": 4,
+          "spe": 252,
+          "hp": 0,
+          "atk": 0,
+          "def": 0
+        },
         "sprite": "277",
         "types": [
           "normal",
@@ -1446,6 +1642,15 @@
           "name": "Life Orb",
           "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
+        "nature": "Timid",
+        "evs": {
+          "spa": 252,
+          "spd": 4,
+          "spe": 252,
+          "hp": 0,
+          "atk": 0,
+          "def": 0
+        },
         "sprite": "617",
         "types": [
           "bug"
@@ -1501,6 +1706,15 @@
           "name": "Life Orb",
           "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
+        "nature": "Timid",
+        "evs": {
+          "spa": 252,
+          "spd": 4,
+          "spe": 252,
+          "hp": 0,
+          "atk": 0,
+          "def": 0
+        },
         "sprite": "658",
         "types": [
           "water",
@@ -1541,6 +1755,15 @@
           "sprite": "choice-scarf",
           "name": "Choice Scarf",
           "effect": "Held: Increases Speed by 50%, but restricts the holder to only one move."
+        },
+        "nature": "Adamant",
+        "evs": {
+          "atk": 252,
+          "spd": 4,
+          "spe": 252,
+          "hp": 0,
+          "def": 0,
+          "spa": 0
         },
         "sprite": "452",
         "types": [
@@ -1713,6 +1936,15 @@
           "name": "Focus Sash",
           "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
+        "nature": "Timid",
+        "evs": {
+          "def": 4,
+          "spa": 252,
+          "spe": 252,
+          "hp": 0,
+          "atk": 0,
+          "spd": 0
+        },
         "sprite": "936",
         "types": [
           "fire",
@@ -1825,6 +2057,15 @@
           "name": "Lum Berry",
           "effect": "Held: Consumed to cure any status condition or confusion."
         },
+        "nature": "Timid",
+        "evs": {
+          "def": 4,
+          "spa": 252,
+          "spe": 252,
+          "hp": 0,
+          "atk": 0,
+          "spd": 0
+        },
         "sprite": "103",
         "types": [
           "grass",
@@ -1879,6 +2120,23 @@
           "name": "Heavy duty boots",
           "sprite": "heavy-duty-boots",
           "effect": "When switching in, the holder is unaffected by hazards on its side of the field."
+        },
+        "nature": "Modest",
+        "ivs": {
+          "atk": 30,
+          "spa": 30,
+          "hp": 31,
+          "def": 31,
+          "spd": 31,
+          "spe": 31
+        },
+        "evs": {
+          "def": 4,
+          "spa": 252,
+          "spe": 252,
+          "hp": 0,
+          "atk": 0,
+          "spd": 0
         },
         "sprite": "157",
         "types": [
@@ -2060,6 +2318,15 @@
           "name": "Focus Sash",
           "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
+        "nature": "Jolly",
+        "evs": {
+          "atk": 252,
+          "def": 4,
+          "spe": 252,
+          "hp": 0,
+          "spa": 0,
+          "spd": 0
+        },
         "sprite": "142",
         "types": [
           "rock",
@@ -2168,6 +2435,15 @@
           "name": "Weakness Policy",
           "effect": "Held: When the holder is hit by a super effective move, its Attack and Special Attack raise by two stages."
         },
+        "nature": "Adamant",
+        "evs": {
+          "def": 4,
+          "hp": 252,
+          "spe": 252,
+          "atk": 0,
+          "spa": 0,
+          "spd": 0
+        },
         "sprite": "149",
         "types": [
           "dragon",
@@ -2222,6 +2498,15 @@
           "sprite": "leftovers",
           "name": "Leftovers",
           "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
+        },
+        "nature": "Modest",
+        "evs": {
+          "hp": 252,
+          "spa": 252,
+          "spe": 4,
+          "atk": 0,
+          "def": 0,
+          "spd": 0
         },
         "sprite": "801",
         "types": [
@@ -2330,6 +2615,15 @@
           "sprite": "life-orb",
           "name": "Life Orb",
           "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
+        },
+        "nature": "Timid",
+        "evs": {
+          "def": 4,
+          "spa": 252,
+          "spe": 252,
+          "hp": 0,
+          "atk": 0,
+          "spd": 0
         },
         "sprite": "804",
         "types": [
@@ -7093,6 +7387,23 @@
           "effect": "Allows Toxtricity to Mega Evolve into Mega Toxtricity."
         },
         "sprite": "toxtricity-gmax",
+        "nature": "Timid",
+        "ivs": {
+          "atk": 30,
+          "spa": 30,
+          "hp": 31,
+          "def": 31,
+          "spd": 31,
+          "spe": 31
+        },
+        "evs": {
+          "spa": 252,
+          "spd": 4,
+          "spe": 252,
+          "hp": 0,
+          "atk": 0,
+          "def": 0
+        },
         "imgUrl": "/radred/toxtricity-mega",
         "types": [
           "electric",
@@ -7618,6 +7929,15 @@
           "name": "Weakness Policy",
           "effect": "Held: When the holder is hit by a super effective move, its Attack and Special Attack raise by two stages."
         },
+        "nature": "Modest",
+        "evs": {
+          "hp": 252,
+          "spa": 252,
+          "spe": 4,
+          "atk": 0,
+          "def": 0,
+          "spd": 0
+        },
         "sprite": "801",
         "types": [
           "steel",
@@ -7858,6 +8178,15 @@
           "name": "Battle Armor",
           "effect": "Protects against critical hits."
         },
+        "nature": "Lax",
+        "ivs": {
+          "atk": 10,
+          "def": 10,
+          "hp": 10,
+          "spa": 10,
+          "spd": 10,
+          "spe": 10
+        },
         "sprite": "341",
         "types": [
           "water"
@@ -7898,6 +8227,15 @@
         "ability": {
           "name": "Overgrow",
           "effect": "Strengthens grass moves to inflict 1.5× damage at 1/3 max HP or less."
+        },
+        "nature": "Mild",
+        "ivs": {
+          "atk": 10,
+          "def": 10,
+          "hp": 10,
+          "spa": 10,
+          "spd": 10,
+          "spe": 10
         },
         "sprite": "252",
         "types": [
@@ -8971,6 +9309,15 @@
           "name": "Pixie Plate",
           "effect": "Held: Fairy-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Fairy."
         },
+        "nature": "Timid",
+        "evs": {
+          "def": 4,
+          "spa": 252,
+          "spe": 252,
+          "hp": 0,
+          "atk": 0,
+          "spd": 0
+        },
         "sprite": "282",
         "types": [
           "psychic",
@@ -9440,6 +9787,15 @@
           "name": "Focus Sash",
           "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
+        "nature": "Naive",
+        "evs": {
+          "atk": 128,
+          "spa": 132,
+          "spe": 252,
+          "hp": 0,
+          "def": 0,
+          "spd": 0
+        },
         "alias": "deoxys-attack",
         "sprite": "10001",
         "types": [
@@ -9495,6 +9851,15 @@
           "sprite": "choice-scarf",
           "name": "Choice Scarf",
           "effect": "Held: Increases Speed by 50%, but restricts the holder to only one move."
+        },
+        "nature": "Jolly",
+        "evs": {
+          "atk": 252,
+          "hp": 6,
+          "spe": 252,
+          "def": 0,
+          "spa": 0,
+          "spd": 0
         },
         "sprite": "385",
         "types": [
@@ -9664,6 +10029,15 @@
           "sprite": "white-herb",
           "name": "White Herb",
           "effect": "Held: Resets all lowered stats to normal at end of turn. Consumed after use."
+        },
+        "nature": "Jolly",
+        "evs": {
+          "atk": 252,
+          "hp": 6,
+          "spe": 252,
+          "def": 0,
+          "spa": 0,
+          "spd": 0
         },
         "sprite": "367",
         "types": [
@@ -15250,6 +15624,15 @@
           "name": "Focus Sash",
           "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
+        "nature": "Jolly",
+        "evs": {
+          "atk": 252,
+          "def": 4,
+          "spe": 252,
+          "hp": 0,
+          "spa": 0,
+          "spd": 0
+        },
         "sprite": "795",
         "types": [
           "bug",
@@ -15419,6 +15802,15 @@
           "name": "Assault Vest",
           "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
+        "nature": "Modest",
+        "evs": {
+          "hp": 252,
+          "spa": 252,
+          "spd": 4,
+          "atk": 0,
+          "def": 0,
+          "spe": 0
+        },
         "sprite": "717",
         "types": [
           "dark",
@@ -15474,6 +15866,15 @@
           "name": "Power Herb",
           "effect": "Held: Both turns of a two-turn charge move happen at once. Consumed upon use."
         },
+        "nature": "Timid",
+        "evs": {
+          "def": 4,
+          "spa": 252,
+          "spe": 252,
+          "hp": 0,
+          "atk": 0,
+          "spd": 0
+        },
         "sprite": "890",
         "types": [
           "poison",
@@ -15507,6 +15908,15 @@
           "sprite": "choice-scarf",
           "name": "Choice Scarf",
           "effect": "Held: Increases Speed by 50%, but restricts the holder to only one move."
+        },
+        "nature": "Timid",
+        "evs": {
+          "def": 4,
+          "hp": 252,
+          "spe": 252,
+          "atk": 0,
+          "spa": 0,
+          "spd": 0
         },
         "sprite": "132",
         "types": [
@@ -15652,6 +16062,15 @@
           "name": "Wise Glasses",
           "effect": "Held: Boosts the damage of special moves used by the holder by 1/10 (10%)."
         },
+        "nature": "Timid",
+        "ivs": {
+          "atk": 30,
+          "spa": 30,
+          "hp": 31,
+          "def": 31,
+          "spd": 31,
+          "spe": 31
+        },
         "sprite": "228",
         "types": [
           "dark",
@@ -15707,6 +16126,7 @@
           "name": "Berry Juice",
           "effect": "Restores 20 HP."
         },
+        "nature": "Jolly",
         "sprite": "262",
         "types": [
           "dark"
@@ -16049,6 +16469,15 @@
           "name": "Life Orb",
           "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
+        "nature": "Timid",
+        "evs": {
+          "def": 4,
+          "spa": 252,
+          "spe": 252,
+          "hp": 0,
+          "atk": 0,
+          "spd": 0
+        },
         "sprite": "34",
         "types": [
           "poison",
@@ -16105,6 +16534,15 @@
           "sprite": "scope-lens",
           "name": "Scope Lens",
           "effect": "Held: Raises the holder’s critical hit ratio by one stage."
+        },
+        "nature": "Jolly",
+        "evs": {
+          "atk": 252,
+          "def": 4,
+          "spe": 252,
+          "hp": 0,
+          "spa": 0,
+          "spd": 0
         },
         "sprite": "430",
         "types": [
@@ -16682,6 +17120,23 @@
           "name": "Colbur Berry",
           "effect": "Held: Consumed when struck by a super-effective Dark-type attack to halve the damage."
         },
+        "nature": "Modest",
+        "ivs": {
+          "def": 30,
+          "spa": 30,
+          "spd": 30,
+          "spe": 30,
+          "hp": 31,
+          "atk": 31
+        },
+        "evs": {
+          "def": 4,
+          "hp": 252,
+          "spa": 252,
+          "atk": 0,
+          "spd": 0,
+          "spe": 0
+        },
         "sprite": "576",
         "types": [
           "psychic"
@@ -16851,6 +17306,15 @@
           "name": "Sitrus Berry",
           "effect": "Held: Consumed at 1/2 max HP to recover 1/4 max HP."
         },
+        "nature": "Adamant",
+        "evs": {
+          "atk": 252,
+          "hp": 252,
+          "spe": 6,
+          "def": 0,
+          "spa": 0,
+          "spd": 0
+        },
         "sprite": "727",
         "types": [
           "fire",
@@ -16904,6 +17368,15 @@
           "sprite": "throat-spray",
           "name": "Throat Spray",
           "effect": "Raises Sp. Atk when a Pokémon uses a sound-based\nmove."
+        },
+        "nature": "Modest",
+        "evs": {
+          "hp": 6,
+          "spa": 252,
+          "spe": 252,
+          "atk": 0,
+          "def": 0,
+          "spd": 0
         },
         "sprite": "730",
         "types": [
@@ -17137,6 +17610,15 @@
           "sprite": "throat-spray",
           "name": "Throat Spray",
           "effect": "Raises Sp. Atk when a Pokémon uses a sound-based\nmove."
+        },
+        "nature": "Modest",
+        "evs": {
+          "hp": 6,
+          "spa": 252,
+          "spe": 252,
+          "atk": 0,
+          "def": 0,
+          "spd": 0
         },
         "sprite": "730",
         "types": [
@@ -17390,6 +17872,15 @@
           "name": "Focus Sash",
           "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
+        "nature": "Jolly",
+        "evs": {
+          "atk": 252,
+          "hp": 6,
+          "spe": 252,
+          "def": 0,
+          "spa": 0,
+          "spd": 0
+        },
         "sprite": "473",
         "types": [
           "ice",
@@ -17443,6 +17934,15 @@
           "sprite": "life-orb",
           "name": "Life Orb",
           "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
+        },
+        "nature": "Jolly",
+        "evs": {
+          "atk": 252,
+          "hp": 6,
+          "spe": 252,
+          "def": 0,
+          "spa": 0,
+          "spd": 0
         },
         "sprite": "632",
         "types": [
@@ -17836,6 +18336,15 @@
           "name": "Focus Sash",
           "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
+        "nature": "Adamant",
+        "evs": {
+          "atk": 252,
+          "def": 4,
+          "spe": 252,
+          "hp": 0,
+          "spa": 0,
+          "spd": 0
+        },
         "sprite": "530",
         "types": [
           "ground",
@@ -17901,6 +18410,15 @@
           "name": "Garchompite",
           "effect": "Held: Allows Garchomp to Mega Evolve into Mega Garchomp."
         },
+        "nature": "Jolly",
+        "evs": {
+          "atk": 252,
+          "def": 4,
+          "spe": 252,
+          "hp": 0,
+          "spa": 0,
+          "spd": 0
+        },
         "sprite": "445",
         "types": [
           "dragon",
@@ -17963,6 +18481,15 @@
           "name": "Sitrus Berry",
           "effect": "Held: Consumed at 1/2 max HP to recover 1/4 max HP."
         },
+        "nature": "Modest",
+        "evs": {
+          "hp": 252,
+          "spa": 252,
+          "spe": 6,
+          "atk": 0,
+          "def": 0,
+          "spd": 0
+        },
         "sprite": "858",
         "types": [
           "psychic",
@@ -18017,6 +18544,15 @@
           "sprite": "weakness-policy",
           "name": "Weakness Policy",
           "effect": "Held: When the holder is hit by a super effective move, its Attack and Special Attack raise by two stages."
+        },
+        "nature": "Adamant",
+        "evs": {
+          "atk": 252,
+          "hp": 252,
+          "spe": 6,
+          "def": 0,
+          "spa": 0,
+          "spd": 0
         },
         "sprite": "464",
         "types": [
@@ -18074,6 +18610,15 @@
           "sprite": "scope-lens",
           "name": "Scope Lens",
           "effect": "Held: Raises the holder’s critical hit ratio by one stage."
+        },
+        "nature": "Jolly",
+        "evs": {
+          "atk": 252,
+          "hp": 6,
+          "spe": 252,
+          "def": 0,
+          "spa": 0,
+          "spd": 0
         },
         "sprite": "430",
         "types": [
@@ -18489,6 +19034,15 @@
           "name": "Psychic Seed",
           "effect": "Held: Consumed on Psychic Terrain and raises the holder’s Special Defense by one stage."
         },
+        "nature": "Adamant",
+        "evs": {
+          "atk": 252,
+          "def": 4,
+          "hp": 252,
+          "spa": 0,
+          "spd": 0,
+          "spe": 0
+        },
         "sprite": "560",
         "types": [
           "dark",
@@ -18599,6 +19153,15 @@
           "name": "Focus Sash",
           "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
+        "nature": "Adamant",
+        "evs": {
+          "atk": 252,
+          "hp": 4,
+          "spe": 252,
+          "def": 0,
+          "spa": 0,
+          "spd": 0
+        },
         "sprite": "530",
         "types": [
           "ground",
@@ -18654,6 +19217,15 @@
           "name": "Assault Vest",
           "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
+        "nature": "Careful",
+        "evs": {
+          "atk": 4,
+          "hp": 252,
+          "spd": 252,
+          "def": 0,
+          "spa": 0,
+          "spe": 0
+        },
         "sprite": "248",
         "types": [
           "rock",
@@ -18708,6 +19280,15 @@
           "name": "Power Herb",
           "effect": "Held: Both turns of a two-turn charge move happen at once. Consumed upon use."
         },
+        "nature": "Modest",
+        "evs": {
+          "hp": 4,
+          "spa": 252,
+          "spe": 252,
+          "atk": 0,
+          "def": 0,
+          "spd": 0
+        },
         "sprite": "797",
         "types": [
           "steel",
@@ -18757,6 +19338,15 @@
         "ability": {
           "name": "Pressure",
           "effect": "Increases the PP cost of moves targetting the Pokémon by one."
+        },
+        "nature": "Timid",
+        "evs": {
+          "hp": 4,
+          "spa": 252,
+          "spe": 252,
+          "atk": 0,
+          "def": 0,
+          "spd": 0
         },
         "sprite": "150",
         "types": [
@@ -18808,6 +19398,15 @@
           "effect": "Increases the PP cost of moves targetting the Pokémon by one."
         },
         "sprite": "10044",
+        "nature": "Timid",
+        "evs": {
+          "hp": 4,
+          "spa": 252,
+          "spe": 252,
+          "atk": 0,
+          "def": 0,
+          "spd": 0
+        },
         "alias": "mewtwo-mega-y",
         "types": [
           "psychic"
@@ -19379,6 +19978,15 @@
           }
         ],
         "sprite": "10044",
+        "nature": "Timid",
+        "evs": {
+          "hp": 4,
+          "spa": 252,
+          "spe": 252,
+          "atk": 0,
+          "def": 0,
+          "spd": 0
+        },
         "alias": "mewtwo-mega-y",
         "types": [
           "psychic"
@@ -19870,6 +20478,15 @@
           "name": "Poison Touch",
           "effect": "Has a 30% chance of poisoning target Pokémon upon contact."
         },
+        "nature": "Timid",
+        "evs": {
+          "def": 4,
+          "spa": 252,
+          "spe": 252,
+          "hp": 0,
+          "atk": 0,
+          "spd": 0
+        },
         "sprite": "34",
         "types": [
           "poison",
@@ -19985,6 +20602,15 @@
           "name": "Focus Sash",
           "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
+        "nature": "Jolly",
+        "evs": {
+          "atk": 252,
+          "hp": 6,
+          "spe": 252,
+          "def": 0,
+          "spa": 0,
+          "spd": 0
+        },
         "sprite": "338",
         "types": [
           "rock",
@@ -20039,6 +20665,15 @@
           "sprite": "toxic-orb",
           "name": "Toxic Orb",
           "effect": "Held: Inflicts Toxic on the holder at the end of the turn. Activates after Poison damage would occur."
+        },
+        "nature": "Jolly",
+        "evs": {
+          "atk": 252,
+          "hp": 6,
+          "spe": 252,
+          "def": 0,
+          "spa": 0,
+          "spd": 0
         },
         "sprite": "286",
         "types": [
@@ -20095,6 +20730,15 @@
           "name": "Choice Specs",
           "effect": "Held: Increases Special Attack by 50%, but restricts the holder to only one move."
         },
+        "nature": "Timid",
+        "evs": {
+          "hp": 6,
+          "spa": 252,
+          "spe": 252,
+          "atk": 0,
+          "def": 0,
+          "spd": 0
+        },
         "sprite": "310",
         "types": [
           "electric"
@@ -20149,6 +20793,15 @@
           "sprite": "choice-band",
           "name": "Choice Band",
           "effect": "Held: Increases Attack by 50%, but restricts the holder to only one move."
+        },
+        "nature": "Adamant",
+        "evs": {
+          "atk": 252,
+          "hp": 252,
+          "spe": 6,
+          "def": 0,
+          "spa": 0,
+          "spd": 0
         },
         "sprite": "369",
         "types": [
@@ -20205,6 +20858,15 @@
           "sprite": "life-orb",
           "name": "Life Orb",
           "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
+        },
+        "nature": "Hasty",
+        "evs": {
+          "atk": 128,
+          "hp": 6,
+          "spa": 128,
+          "spe": 252,
+          "def": 0,
+          "spd": 0
         },
         "sprite": "330",
         "types": [
@@ -20592,6 +21254,15 @@
           "effect": "Held: Allows Blaziken to Mega Evolve into Mega Blaziken."
         },
         "sprite": "10050",
+        "nature": "Adamant",
+        "evs": {
+          "atk": 252,
+          "hp": 6,
+          "spe": 252,
+          "def": 0,
+          "spa": 0,
+          "spd": 0
+        },
         "alias": "blaziken-mega",
         "types": [
           "fire",
@@ -27412,6 +28083,15 @@
           "name": "Frisk",
           "effect": "Reveals an opponent's held item upon entering battle."
         },
+        "nature": "Modest",
+        "ivs": {
+          "atk": 25,
+          "def": 25,
+          "hp": 25,
+          "spa": 25,
+          "spd": 25,
+          "spe": 25
+        },
         "sprite": "396",
         "types": [
           "normal",
@@ -28092,6 +28772,15 @@
           "sprite": "choice-band",
           "name": "Choice Band",
           "effect": "Held: Increases Attack by 50%, but restricts the holder to only one move."
+        },
+        "nature": "Jolly",
+        "evs": {
+          "atk": 252,
+          "def": 4,
+          "spe": 252,
+          "hp": 0,
+          "spa": 0,
+          "spd": 0
         },
         "sprite": "398",
         "types": [

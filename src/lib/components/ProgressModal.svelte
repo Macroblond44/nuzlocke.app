@@ -228,13 +228,14 @@
 
       const rivalPokemon = gymMons.map(pokemon => ({
         name: pokemon.alias || pokemon.name,
-        level: pokemon.original?.level || 50,
-        ability: pokemon.original?.ability || pokemon.abilities?.[0]?.name || 'unknown',
-        nature: pokemon.original?.nature || 'Hardy',
+        level: pokemon.original?.level || pokemon.level || 50,
+        ability: pokemon.original?.ability || pokemon.ability || pokemon.abilities?.[0]?.name || 'unknown',
+        nature: pokemon.original?.nature || pokemon.nature || 'Hardy',
         moves: (pokemon.original?.moves || pokemon.moves || []).map(m => typeof m === 'string' ? m : (m.name || m)),
-        item: pokemon.original?.held?.name || pokemon.original?.held || 'none',
-        evs: pokemon.original?.evs || { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
-        ivs: pokemon.original?.ivs || { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 }
+        item: pokemon.original?.held?.name || pokemon.original?.held || pokemon.held?.name || pokemon.held || 'none',
+        stats: pokemon.stats || pokemon.baseStats || { hp: 100, atk: 100, def: 100, spa: 100, spd: 100, spe: 100 }, // Base stats from static league file
+        evs: pokemon.original?.evs || pokemon.evs || { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
+        ivs: pokemon.original?.ivs || pokemon.ivs || { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 }
       }))
 
       const response = await fetch('/api/recommendations/advanced.json', {

@@ -11,8 +11,11 @@
  * POST /api/recommendations/advanced.json
  * Body: {
  *   userPokemon: [{ name, level, ability, nature, moves: [string], evs, ivs, item }],
- *   rivalPokemon: [{ name, level, ability, nature, moves: [{ name, type, power, damage_class }], stats, item }]
+ *   rivalPokemon: [{ name, level, ability, nature, moves: [{ name, type, power, damage_class }], stats (base stats), item }]
  * }
+ * 
+ * Note: rivalPokemon.stats should contain the BASE STATS from the static league file (e.g., radred.fire.json)
+ * which already includes any romhack-specific stat modifications.
  */
 
 import { calculate, Pokemon, Move, Generations } from '@smogon/calc';
@@ -32,31 +35,6 @@ export async function POST({ request }) {
     }
     
     console.log(`[Advanced Recommendations] Calculating matchups for ${userPokemon.length} user Pokémon vs ${rivalPokemon.length} rival Pokémon`);
-    
-    // Load Radical Red preloaded data
-    console.log(`[Radical Red Data] Loading preloaded trainer data...`);
-    const radredResponse = await fetch('https://api.npoint.io/ced457ba9aa55731616c');
-    console.log(`[Radical Red Data] Response status: ${radredResponse.status}`);
-    console.log(`[Radical Red Data] Response ok: ${radredResponse.ok}`);
-    
-    if (!radredResponse.ok) {
-      throw new Error(`Failed to fetch Radical Red data: ${radredResponse.status} ${radredResponse.statusText}`);
-    }
-    
-    const radredData = await radredResponse.json();
-    console.log(`[Radical Red Data] Data type: ${typeof radredData}`);
-    console.log(`[Radical Red Data] Data keys (first 10): ${Object.keys(radredData).slice(0, 10)}`);
-    console.log(`[Radical Red Data] Total keys: ${Object.keys(radredData).length}`);
-    
-    // Check if it has trainers property or if it's organized differently
-    if (radredData.trainers) {
-      console.log(`[Radical Red Data] Found trainers property with ${Object.keys(radredData.trainers).length} trainers`);
-    } else {
-      console.log(`[Radical Red Data] No trainers property found, data structure:`, {
-        firstKey: Object.keys(radredData)[0],
-        sampleValue: radredData[Object.keys(radredData)[0]]
-      });
-    }
     
     // Calculate level cap (max level of rival Pokémon) for Nuzlocke rules
     const levelCap = Math.max(...rivalPokemon.map(p => parseInt(p.level) || 50));
@@ -80,7 +58,7 @@ export async function POST({ request }) {
       
       for (const rivalMon of rivalPokemon) {
         console.log(`[Matchup] Processing rival: ${rivalMon.name} (level ${rivalMon.level})`);
-        const matchup = calculateMatchup(gen, userMonCapped, rivalMon, radredData);
+        const matchup = calculateMatchup(gen, userMonCapped, rivalMon);
         matchups.push({
           // Rival Pokémon info
           rivalPokemon: rivalMon.name,  // Changed from rivalName to rivalPokemon
@@ -152,7 +130,7 @@ export async function POST({ request }) {
 /**
  * Calculate matchup between user's Pokémon and rival's Pokémon
  */
-function calculateMatchup(gen, userMon, rivalMon, radredData) {
+function calculateMatchup(gen, userMon, rivalMon) {
   try {
     console.log(`\n========== CALCULATING MATCHUP ==========`);
     console.log(`User Pokemon:`, {
@@ -163,66 +141,15 @@ function calculateMatchup(gen, userMon, rivalMon, radredData) {
       item: userMon.item,
       moves: userMon.moves
     });
-    console.log(`Rival Pokemon (using preloaded data):`, {
+    console.log(`Rival Pokemon (from static league file):`, {
       name: rivalMon.name,
-      level: rivalMon.level
-      // Let the calculator use its preloaded Radical Red data for ability, nature, item, moves
+      level: rivalMon.level,
+      ability: rivalMon.ability,
+      nature: rivalMon.nature,
+      item: rivalMon.item,
+      baseStats: rivalMon.stats, // Base stats from radred.fire.json (or equivalent)
+      moves: rivalMon.moves?.map(m => typeof m === 'string' ? m : (m.name || m))
     });
-    
-    // Try to find preloaded data for this rival Pokémon
-    let preloadedRivalData = null;
-    console.log(`[Preloaded Data] Searching for ${rivalMon.name} in Radical Red data...`);
-    
-    if (radredData && typeof radredData === 'object') {
-      // The data is organized by Pokémon name directly
-      const pokemonName = rivalMon.name.toLowerCase();
-      console.log(`[Preloaded Data] Looking for key: "${rivalMon.name}"`);
-      console.log(`[Preloaded Data] Available keys include: ${Object.keys(radredData).slice(0, 20).join(', ')}...`);
-      
-      // Search for exact match first
-      if (radredData[rivalMon.name]) {
-        console.log(`[Preloaded Data] Found exact match for ${rivalMon.name}`);
-        // Find the trainer that matches our level or use the first one
-        const trainers = radredData[rivalMon.name];
-        const trainerEntries = Object.entries(trainers);
-        console.log(`[Preloaded Data] Available trainers for ${rivalMon.name}: ${trainerEntries.map(([name, data]) => `${name} (L${data.level})`).join(', ')}`);
-        
-        // Try to find a trainer with matching level
-        let matchingTrainer = trainerEntries.find(([trainerName, data]) => 
-          data.level === parseInt(rivalMon.level)
-        );
-        
-        // If no exact level match, use the first trainer
-        if (!matchingTrainer && trainerEntries.length > 0) {
-          matchingTrainer = trainerEntries[0];
-          console.log(`[Preloaded Data] No exact level match, using first trainer: ${matchingTrainer[0]}`);
-        }
-        
-        if (matchingTrainer) {
-          const [trainerName, data] = matchingTrainer;
-          preloadedRivalData = data;
-          console.log(`[Preloaded Data] Found ${rivalMon.name} (${trainerName}):`, preloadedRivalData);
-        }
-      } else {
-        console.log(`[Preloaded Data] No exact match found for ${rivalMon.name}`);
-        // Try case-insensitive search
-        const lowerCaseKey = Object.keys(radredData).find(key => key.toLowerCase() === rivalMon.name.toLowerCase());
-        if (lowerCaseKey) {
-          console.log(`[Preloaded Data] Found case-insensitive match: ${lowerCaseKey}`);
-          const trainers = radredData[lowerCaseKey];
-          const trainerEntries = Object.entries(trainers);
-          if (trainerEntries.length > 0) {
-            const [trainerName, data] = trainerEntries[0];
-            preloadedRivalData = data;
-            console.log(`[Preloaded Data] Using ${lowerCaseKey} (${trainerName}):`, preloadedRivalData);
-          }
-        } else {
-          console.log(`[Preloaded Data] No match found for ${rivalMon.name} (case-sensitive or case-insensitive)`);
-        }
-      }
-    } else {
-      console.log(`[Preloaded Data] radredData is not valid:`, { type: typeof radredData, isObject: radredData && typeof radredData === 'object' });
-    }
     
     // Create Pokémon objects with proper stats
     const attacker = new Pokemon(gen, userMon.name, {
@@ -253,31 +180,42 @@ function calculateMatchup(gen, userMon, rivalMon, radredData) {
       }
     });
     
-    // Create defender using preloaded Radical Red data if available
-    let defender;
-    if (preloadedRivalData) {
-      console.log(`[Preloaded Data] Using preloaded data for ${rivalMon.name}`);
-      defender = new Pokemon(gen, rivalMon.name, {
-        level: parseInt(rivalMon.level) || 50,
-        ability: preloadedRivalData.ability || undefined,
-        nature: preloadedRivalData.nature || 'Hardy',
-        ivs: preloadedRivalData.ivs || { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 },
-        evs: preloadedRivalData.evs || { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
-        item: preloadedRivalData.item || undefined
-      });
-      
-      // Update rivalMon with preloaded moves for damage calculation
-      if (preloadedRivalData.moves && Array.isArray(preloadedRivalData.moves)) {
-        rivalMon.moves = preloadedRivalData.moves;
-        console.log(`[Preloaded Data] Updated moves for ${rivalMon.name}:`, preloadedRivalData.moves);
-      }
-    } else {
-      console.log(`[Preloaded Data] No preloaded data found for ${rivalMon.name}, using basic data`);
-      defender = new Pokemon(gen, rivalMon.name, {
-        level: parseInt(rivalMon.level) || 50
-        // Use default stats if no preloaded data
-      });
-    }
+    // Create defender using data from static league file (radred.fire.json or equivalent)
+    // Extract ability name if it's an object
+    const rivalAbilityName = typeof rivalMon.ability === 'object' && rivalMon.ability !== null
+      ? rivalMon.ability.name
+      : rivalMon.ability;
+    
+    // Extract item name if it's an object
+    const rivalItemName = typeof rivalMon.item === 'object' && rivalMon.item !== null
+      ? (rivalMon.item.sprite || rivalMon.item.name)
+      : rivalMon.item;
+    
+    // Default IVs and EVs (will be overridden when we add them to league.json in the future)
+    const defaultIVs = { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 };
+    const defaultEVs = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
+    
+    // Use base stats from static league file (already includes romhack modifications)
+    const baseStats = rivalMon.stats ? {
+      hp: rivalMon.stats.hp,
+      atk: rivalMon.stats.atk,
+      def: rivalMon.stats.def,
+      spa: rivalMon.stats.spa,
+      spd: rivalMon.stats.spd,
+      spe: rivalMon.stats.spe
+    } : undefined;
+    
+    console.log(`[Base Stats] Using ${baseStats ? 'provided' : 'default'} base stats for ${rivalMon.name}:`, baseStats);
+    
+    const defender = new Pokemon(gen, rivalMon.name, {
+      level: parseInt(rivalMon.level) || 50,
+      ability: rivalAbilityName || undefined,
+      nature: rivalMon.nature || 'Hardy',
+      ivs: rivalMon.ivs || defaultIVs,
+      evs: rivalMon.evs || defaultEVs,
+      item: rivalItemName || undefined,
+      overrides: baseStats ? { baseStats } : undefined // Override base stats if provided
+    });
     
     console.log(`Defender created:`, {
       name: defender.name,

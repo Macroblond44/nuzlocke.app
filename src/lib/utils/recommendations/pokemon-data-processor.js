@@ -34,6 +34,11 @@ export function formatCapturedPokemonForAPI(capturedPokemon, levelCap = 50) {
 /**
  * Convert route Pokémon data to the format expected by advanced recommendations API
  * 
+ * For route Pokémon (wild encounters), the API will:
+ * - Fetch ALL attacking moves learnable up to level cap
+ * - Select a random non-hidden ability
+ * - Calculate optimal move selection during battle simulation
+ * 
  * @param {Array} routePokemon - Array of route Pokémon (from encounters)
  * @param {number} levelCap - Maximum level to apply (Nuzlocke level cap)
  * @returns {Array} Formatted user Pokémon data
@@ -42,10 +47,10 @@ export function formatRoutePokemonForAPI(routePokemon, levelCap = 50) {
   return routePokemon.map(pokemon => ({
     name: pokemon.name || pokemon.alias,
     level: levelCap, // Apply level cap to route pokemon
-    ability: null, // Will be randomly selected by the API
-    nature: 'Hardy', // Default nature
+    ability: null, // Will be randomly selected by the API (non-hidden)
+    nature: 'Hardy', // Default nature (neutral)
     item: 'none',
-    moves: [], // Will be randomly selected by the API
+    moves: [], // Will fetch ALL attacking moves learnable up to level cap
     ivs: { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 },
     evs: { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 }
   }))

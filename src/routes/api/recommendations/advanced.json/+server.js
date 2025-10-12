@@ -5,14 +5,20 @@
  * to provide more accurate recommendations based on:
  * - Actual damage calculations
  * - Number of hits to KO
- * - Best move to use
+ * - Best move to use (evaluates ALL available moves)
  * - Win probability
  * 
  * POST /api/recommendations/advanced.json
  * Body: {
  *   userPokemon: [{ name, level, ability, nature, moves: [string], evs, ivs, item }],
- *   rivalPokemon: [{ name, level, ability, nature, moves: [{ name, type, power, damage_class }], stats (base stats), item }]
+ *   rivalPokemon: [{ name, level, ability, nature, moves: [{ name, type, power, damage_class }], stats (base stats), item }],
+ *   gameMode: 'route' | 'normal' (optional)
  * }
+ * 
+ * For route mode (gameMode: 'route'):
+ * - Fetches ALL attacking moves learnable up to level cap
+ * - Calculator evaluates all moves and selects optimal move for each turn
+ * - More realistic simulation as Pokémon can use their full movepool
  * 
  * Note: rivalPokemon.stats should contain the BASE STATS from the static league file (e.g., radred.fire.json)
  * which already includes any romhack-specific stat modifications.
@@ -130,12 +136,11 @@ export async function POST({ request }) {
             .filter(m => m.level <= levelCap && m.damage_class !== 'status')
             .map(m => m.id || m.name);
           
-          // Select 4 random attacking moves (or all if less than 4)
-          const selectedMoves = learnableMoves.length > 4
-            ? learnableMoves.sort(() => 0.5 - Math.random()).slice(0, 4)
-            : learnableMoves;
+          // Use ALL available attacking moves (no limit)
+          // The calculator will evaluate all moves and select the best one for each matchup
+          const selectedMoves = learnableMoves;
           
-          console.log(`[Route Mode] ${pokemonName}: ${selectedMoves.length} moves (${selectedMoves.join(', ')}), ability: ${selectedAbility}`);
+          console.log(`[Route Mode] ${pokemonName}: ${selectedMoves.length} attacking moves available, ability: ${selectedAbility}`);
           
           return {
             ...pokemon,

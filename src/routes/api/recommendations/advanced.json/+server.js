@@ -434,12 +434,30 @@ function determineFirstAttacker(userMove, rivalMove, userSpeed, rivalSpeed) {
 }
 
 /**
- * Helper: Execute a single attack
- * Returns new HP after attack
+ * Helper: Execute a single attack with KO detection
+ * Returns { newHP, isKO, actualDamage }
  */
 function executeAttack(attacker, defender, move, currentHP) {
-  if (!move) return currentHP;
-  return currentHP - move.avgDamage;
+  if (!move) return { newHP: currentHP, isKO: false, actualDamage: 0 };
+  
+  // Check if move can potentially KO (max damage >= current HP)
+  if (move.maxDamage >= currentHP) {
+    // Move can KO - simulate KO with average damage for consistency
+    const actualDamage = Math.min(move.avgDamage, currentHP);
+    return { 
+      newHP: 0, 
+      isKO: true, 
+      actualDamage: actualDamage 
+    };
+  }
+  
+  // Move cannot KO - use average damage
+  const actualDamage = move.avgDamage;
+  return { 
+    newHP: currentHP - actualDamage, 
+    isKO: false, 
+    actualDamage: actualDamage 
+  };
 }
 
 /**
@@ -696,11 +714,11 @@ function calculateMatchup(gen, userMon, rivalMon) {
       
       // First attacker attacks
       if (firstAttacker.move) {
-        const newHP = executeAttack(null, null, firstAttacker.move, firstAttacker.targetHP);
-        firstAttacker.setHP(newHP);
-        console.log(`  ${firstAttacker.name} deals ${firstAttacker.move.avgDamage.toFixed(1)} damage → ${newHP <= 0 ? 'FAINTED!' : `${Math.max(0, newHP).toFixed(1)}/${firstAttacker.maxHP} HP`}`);
+        const attackResult = executeAttack(null, null, firstAttacker.move, firstAttacker.targetHP);
+        firstAttacker.setHP(attackResult.newHP);
+        console.log(`  ${firstAttacker.name} deals ${attackResult.actualDamage.toFixed(1)} damage → ${attackResult.isKO ? 'FAINTED!' : `${Math.max(0, attackResult.newHP).toFixed(1)}/${firstAttacker.maxHP} HP`}`);
         
-        if (newHP <= 0) {
+        if (attackResult.isKO) {
           battleLog.push(`Turn ${turn}: ${firstAttacker.name}'s ${firstAttacker.move.name} wins the battle`);
           break;
         }
@@ -708,11 +726,11 @@ function calculateMatchup(gen, userMon, rivalMon) {
       
       // Second attacker counterattacks (if still alive)
       if (secondAttacker.move) {
-        const newHP = executeAttack(null, null, secondAttacker.move, secondAttacker.targetHP);
-        secondAttacker.setHP(newHP);
-        console.log(`  ${secondAttacker.name} deals ${secondAttacker.move.avgDamage.toFixed(1)} damage → ${newHP <= 0 ? 'FAINTED!' : `${Math.max(0, newHP).toFixed(1)}/${secondAttacker.maxHP} HP`}`);
+        const attackResult = executeAttack(null, null, secondAttacker.move, secondAttacker.targetHP);
+        secondAttacker.setHP(attackResult.newHP);
+        console.log(`  ${secondAttacker.name} deals ${attackResult.actualDamage.toFixed(1)} damage → ${attackResult.isKO ? 'FAINTED!' : `${Math.max(0, attackResult.newHP).toFixed(1)}/${secondAttacker.maxHP} HP`}`);
         
-        if (newHP <= 0) {
+        if (attackResult.isKO) {
           battleLog.push(`Turn ${turn}: ${secondAttacker.name}'s ${secondAttacker.move.name} wins the battle`);
           break;
         }

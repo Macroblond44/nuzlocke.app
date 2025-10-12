@@ -37,6 +37,16 @@
 import { calculate, Pokemon, Move, Generations } from '@smogon/calc';
 import gamesData from '$lib/data/games.json';
 
+// ========== CONSTANTS ==========
+const MAX_BATTLE_TURNS = 20; // Prevent infinite battle loops
+const DEFAULT_IVS = { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 };
+const DEFAULT_EVS = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
+const DEFAULT_CALC_GEN = 9; // Modern romhacks use Gen 9
+
+// ========== SCORING WEIGHTS ==========
+const SCORE_WIN = 1;
+const SCORE_LOSS = 0;
+
 export async function POST({ request }) {
   try {
     const body = await request.json();
@@ -60,7 +70,7 @@ export async function POST({ request }) {
     
     // Get game configuration
     const gameConfig = gamesData[game] || {};
-    const genNumber = gameConfig.calcGen || 9; // Default to Gen 9 for modern romhacks
+    const genNumber = gameConfig.calcGen || DEFAULT_CALC_GEN;
     
     console.log(`[Calculator] Using @smogon/calc with Generation ${genNumber} for game: ${game}`);
     
@@ -161,7 +171,222 @@ export async function POST({ request }) {
 }
 
 /**
- * Calculate matchup between user's Pokémon and rival's Pokémon
+ * Helper: Extract numeric damage from calculation result
+ */
+function extractDamage(result) {
+  if (!result.damage) return [0, 0];
+  
+  if (Array.isArray(result.damage) && result.damage.length > 0) {
+    return [result.damage[0], result.damage[result.damage.length - 1]];
+  }
+  
+  if (typeof result.damage === 'number') {
+    return [result.damage, result.damage];
+  }
+  
+  return [0, 0];
+}
+
+/**
+ * Helper: Parse KO chances and damage percentages from description
+ */
+function parseCalculationDescription(desc, damageRange, defenderHP) {
+  let ohkoChance = 0;
+  let twoHkoChance = 0;
+  let isGuaranteedKO = false;
+  let koChance = 0;
+  let damagePercentageRange = null;
+  
+  if (!desc) {
+    return { ohkoChance, twoHkoChance, isGuaranteedKO, koChance, damagePercentageRange };
+  }
+  
+  // Extract damage percentage range (e.g., "39.4 - 47.3%")
+  const percentageMatch = desc.match(/\((\d+\.?\d*) - (\d+\.?\d*)%\)/);
+  if (percentageMatch) {
+    damagePercentageRange = [parseFloat(percentageMatch[1]), parseFloat(percentageMatch[2])];
+  }
+  
+  // Check for guaranteed KOs
+  const guaranteedMatch = desc.match(/guaranteed (\d+)HKO/);
+  if (guaranteedMatch) {
+    const guaranteedHits = parseInt(guaranteedMatch[1]);
+    isGuaranteedKO = true;
+    koChance = 100;
+    
+    if (guaranteedHits === 1) ohkoChance = 100;
+    else if (guaranteedHits === 2) twoHkoChance = 100;
+  } else {
+    // Look for percentage chances
+    const ohkoMatch = desc.match(/(\d+)% chance to OHKO/);
+    if (ohkoMatch) ohkoChance = parseInt(ohkoMatch[1]);
+    
+    const twoHkoMatch = desc.match(/(\d+)% chance to 2HKO/);
+    if (twoHkoMatch) twoHkoChance = parseInt(twoHkoMatch[1]);
+    
+    const koMatch = desc.match(/(\d+)% chance to (\d+)HKO/);
+    if (koMatch) koChance = parseInt(koMatch[1]);
+  }
+  
+  return { ohkoChance, twoHkoChance, isGuaranteedKO, koChance, damagePercentageRange };
+}
+
+/**
+ * Helper: Calculate all moves with their damage and priority
+ * Returns array of all valid moves with their calculation results
+ */
+function calculateAllMoves(gen, attacker, defender, movesList) {
+  const moveResults = [];
+  
+  if (!movesList || movesList.length === 0) {
+    console.log(`  [calculateAllMoves] No moves provided`);
+    return moveResults;
+  }
+  
+  console.log(`  [calculateAllMoves] Processing ${movesList.length} moves for ${attacker.name} vs ${defender.name}`);
+  
+  for (const moveName of movesList) {
+    const actualMoveName = typeof moveName === 'object' ? (moveName.name || moveName) : moveName;
+    
+    if (!actualMoveName || actualMoveName === '(No Move)') {
+      console.log(`    ⚠️ Skipping invalid move name:`, moveName);
+      continue;
+    }
+    
+    try {
+      const move = new Move(gen, actualMoveName);
+      
+      // Skip status moves
+      if (move.category === 'Status') {
+        console.log(`    ℹ️ Skipping status move: ${actualMoveName}`);
+        continue;
+      }
+      
+      // Validate Pokémon objects before calculation
+      if (!attacker || !attacker.species || !defender || !defender.species) {
+        console.log(`    ❌ Invalid Pokémon objects for ${actualMoveName}`);
+        console.log(`      Attacker valid: ${!!attacker?.species}, Defender valid: ${!!defender?.species}`);
+        continue;
+      }
+      
+      const result = calculate(gen, attacker, defender, move);
+      
+      if (!result.damage || (Array.isArray(result.damage) && result.damage.length === 0)) {
+        console.log(`    ⚠️ No damage calculated for: ${actualMoveName}`);
+        continue;
+      }
+      
+      const damageRange = extractDamage(result);
+      const avgDamage = (damageRange[0] + damageRange[1]) / 2;
+      const minDamage = damageRange[0];
+      const maxDamage = damageRange[1];
+      
+      console.log(`    ✅ ${actualMoveName}: ${minDamage}-${maxDamage} damage (avg: ${avgDamage.toFixed(1)}, priority: ${move.priority || 0})`);
+      
+      moveResults.push({
+        name: actualMoveName,
+        priority: move.priority || 0,
+        avgDamage,
+        minDamage,
+        maxDamage,
+        damageRange,
+        result
+      });
+    } catch (moveError) {
+      console.log(`    ❌ Failed to calculate ${actualMoveName}: ${moveError.message}`);
+    }
+  }
+  
+  console.log(`  [calculateAllMoves] Result: ${moveResults.length} valid attacking moves found`);
+  return moveResults;
+}
+
+/**
+ * Helper: Determine turn order based on move priority and speed
+ */
+function determineFirstAttacker(userMove, rivalMove, userSpeed, rivalSpeed) {
+  const userPriority = userMove?.priority || 0;
+  const rivalPriority = rivalMove?.priority || 0;
+  
+  // Priority moves go first
+  if (userPriority !== rivalPriority) {
+    return userPriority > rivalPriority;
+  }
+  
+  // Same priority → faster Pokémon goes first
+  return userSpeed >= rivalSpeed;
+}
+
+/**
+ * Helper: Execute a single attack
+ * Returns new HP after attack
+ */
+function executeAttack(attacker, defender, move, currentHP) {
+  if (!move) return currentHP;
+  return currentHP - move.avgDamage;
+}
+
+/**
+ * Helper: Select optimal move considering current HP and priority
+ * 
+ * Strategy:
+ * 1. If a priority move can guarantee KO → use it
+ * 2. If a move can guarantee KO this turn → use it
+ * 3. Otherwise, use move with highest average damage
+ */
+function selectOptimalMove(moveResults, defenderCurrentHP, needsPriority = false) {
+  if (!moveResults || moveResults.length === 0) {
+    return null;
+  }
+  
+  const priorityMoves = moveResults.filter(m => m.priority > 0);
+  
+  // Strategy 1: Priority move that guarantees KO
+  if (needsPriority && priorityMoves.length > 0) {
+    const priorityKO = priorityMoves.find(m => m.minDamage >= defenderCurrentHP);
+    if (priorityKO) return priorityKO;
+  }
+  
+  // Strategy 2: Any move that guarantees KO
+  const guaranteedKO = moveResults.find(m => m.minDamage >= defenderCurrentHP);
+  if (guaranteedKO) return guaranteedKO;
+  
+  // Strategy 3: Move with best KO chance
+  const possibleKO = moveResults.filter(m => m.maxDamage >= defenderCurrentHP);
+  if (possibleKO.length > 0) {
+    return possibleKO.reduce((best, current) => 
+      current.maxDamage > best.maxDamage ? current : best
+    );
+  }
+  
+  // Strategy 4: Highest average damage
+  return moveResults.reduce((best, current) => 
+    current.avgDamage > best.avgDamage ? current : best
+  );
+}
+
+/**
+ * Calculate complete 1v1 battle simulation between user's Pokémon and rival's Pokémon
+ * 
+ * Battle Simulation Strategy:
+ * 1. Calculate all possible moves for both Pokémon (with damage, priority, etc.)
+ * 2. Simulate battle turn-by-turn (up to MAX_BATTLE_TURNS):
+ *    - Select optimal move based on current HP and battle state
+ *    - Consider priority moves for securing KOs
+ *    - Determine turn order (priority > speed)
+ *    - Execute attacks and update HP
+ * 3. Battle ends when one Pokémon faints or max turns reached
+ * 
+ * Move Selection Logic (per turn):
+ * - Priority moves that can KO → highest priority
+ * - Guaranteed KO moves (min damage >= HP) → second priority  
+ * - Possible KO moves (max damage >= HP) → third priority
+ * - Highest average damage → fallback
+ * 
+ * @param {Generation} gen - @smogon/calc Generation instance
+ * @param {Object} userMon - User's Pokémon data
+ * @param {Object} rivalMon - Rival's Pokémon data
+ * @returns {Object} Battle result with winner, moves used, damage, and detailed stats
  */
 function calculateMatchup(gen, userMon, rivalMon) {
   
@@ -186,48 +411,52 @@ function calculateMatchup(gen, userMon, rivalMon) {
     });
     
     // Create Pokémon objects with proper stats
-    const attacker = new Pokemon(gen, userMon.name, {
+    // Note: item must be undefined (not 'none') when there's no item
+    const userItem = userMon.item && userMon.item !== 'none' ? userMon.item : undefined;
+    
+    const userPokemon = new Pokemon(gen, userMon.name, {
       level: userMon.level || 50,
       ability: userMon.ability || undefined,
       nature: userMon.nature || 'Hardy',
-      ivs: userMon.ivs || { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 },
-      evs: userMon.evs || { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
-      item: userMon.item || undefined
+      ivs: userMon.ivs || DEFAULT_IVS,
+      evs: userMon.evs || DEFAULT_EVS,
+      item: userItem
     });
     
-    console.log(`Attacker created:`, {
-      name: attacker.name,
-      level: attacker.level,
-      ability: attacker.ability,
-      nature: attacker.nature,
-      item: attacker.item,
-      baseStats: attacker.species.baseStats,
-      ivs: attacker.ivs,
-      evs: attacker.evs,
+    console.log(`User Pokemon created:`, {
+      name: userPokemon.name,
+      level: userPokemon.level,
+      ability: userPokemon.ability,
+      nature: userPokemon.nature,
+      item: userPokemon.item,
+      baseStats: userPokemon.species.baseStats,
+      ivs: userPokemon.ivs,
+      evs: userPokemon.evs,
       calculatedStats: {
-        hp: attacker.maxHP(),
-        atk: attacker.rawStats.atk,
-        def: attacker.rawStats.def,
-        spa: attacker.rawStats.spa,
-        spd: attacker.rawStats.spd,
-        spe: attacker.rawStats.spe
+        hp: userPokemon.maxHP(),
+        atk: userPokemon.rawStats.atk,
+        def: userPokemon.rawStats.def,
+        spa: userPokemon.rawStats.spa,
+        spd: userPokemon.rawStats.spd,
+        spe: userPokemon.rawStats.spe
       }
     });
     
-    // Create defender using data from static league file (radred.fire.json or equivalent)
+    // Create rival Pokémon using data from static league file (radred.fire.json or equivalent)
     // Extract ability name if it's an object
     const rivalAbilityName = typeof rivalMon.ability === 'object' && rivalMon.ability !== null
       ? rivalMon.ability.name
       : rivalMon.ability;
     
     // Extract item name if it's an object
-    const rivalItemName = typeof rivalMon.item === 'object' && rivalMon.item !== null
+    let rivalItemName = typeof rivalMon.item === 'object' && rivalMon.item !== null
       ? (rivalMon.item.sprite || rivalMon.item.name)
       : rivalMon.item;
     
-    // Default IVs and EVs (will be overridden when we add them to league.json in the future)
-    const defaultIVs = { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 };
-    const defaultEVs = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
+    // Ensure 'none' is converted to undefined for @smogon/calc
+    if (rivalItemName === 'none' || rivalItemName === 'None' || rivalItemName === '') {
+      rivalItemName = undefined;
+    }
     
     // Use base stats from static league file (already includes romhack modifications)
     const baseStats = rivalMon.stats ? {
@@ -241,217 +470,206 @@ function calculateMatchup(gen, userMon, rivalMon) {
     
     console.log(`[Base Stats] Using ${baseStats ? 'provided' : 'default'} base stats for ${rivalMon.name}:`, baseStats);
     
-    const defender = new Pokemon(gen, rivalMon.name, {
+    const rivalPokemon = new Pokemon(gen, rivalMon.name, {
       level: parseInt(rivalMon.level) || 50,
       ability: rivalAbilityName || undefined,
       nature: rivalMon.nature || 'Hardy',
-      ivs: rivalMon.ivs || defaultIVs,
-      evs: rivalMon.evs || defaultEVs,
+      ivs: rivalMon.ivs || DEFAULT_IVS,
+      evs: rivalMon.evs || DEFAULT_EVS,
       item: rivalItemName || undefined,
       overrides: baseStats ? { baseStats } : undefined // Override base stats if provided
     });
     
-    console.log(`Defender created:`, {
-      name: defender.name,
-      level: defender.level,
-      ability: defender.ability,
-      nature: defender.nature,
-      item: defender.item,
-      baseStats: defender.species.baseStats,
-      ivs: defender.ivs,
-      evs: defender.evs,
+    console.log(`Rival Pokemon created:`, {
+      name: rivalPokemon.name,
+      level: rivalPokemon.level,
+      ability: rivalPokemon.ability,
+      nature: rivalPokemon.nature,
+      item: rivalPokemon.item,
+      baseStats: rivalPokemon.species.baseStats,
+      ivs: rivalPokemon.ivs,
+      evs: rivalPokemon.evs,
       calculatedStats: {
-        hp: defender.maxHP(),
-        atk: defender.rawStats.atk,
-        def: defender.rawStats.def,
-        spa: defender.rawStats.spa,
-        spd: defender.rawStats.spd,
-        spe: defender.rawStats.spe
+        hp: rivalPokemon.maxHP(),
+        atk: rivalPokemon.rawStats.atk,
+        def: rivalPokemon.rawStats.def,
+        spa: rivalPokemon.rawStats.spa,
+        spd: rivalPokemon.rawStats.spd,
+        spe: rivalPokemon.rawStats.spe
       }
     });
     
-    // Find best move from user's moveset
-    let bestMove = null;
-    let maxDamage = 0;
-    let bestResult = null;
+    // ========== STEP 1: Calculate all possible moves for both Pokémon ==========
+    console.log(`\n[1v1 SIMULATION] Calculating all move options...`);
+    const userMoveOptions = calculateAllMoves(gen, userPokemon, rivalPokemon, userMon.moves);
+    const rivalMoves = rivalMon.moves?.map(m => typeof m === 'string' ? m : (m.name || m)) || [];
+    const rivalMoveOptions = calculateAllMoves(gen, rivalPokemon, userPokemon, rivalMoves);
     
-    if (userMon.moves && userMon.moves.length > 0) {
-      for (const moveName of userMon.moves) {
-        // Handle move name if it's an object or string
-        const actualMoveName = typeof moveName === 'object' ? (moveName.name || moveName) : moveName;
-        
-        if (!actualMoveName || actualMoveName === '(No Move)') continue;
-        
-        try {
-          const move = new Move(gen, actualMoveName);
-          
-          // Skip status moves (they don't deal damage)
-          if (move.category === 'Status') {
-            continue;
-          }
-          
-          const result = calculate(gen, attacker, defender, move);
-          
-          console.log(`  Move "${actualMoveName}":`, {
-            category: move.category,
-            power: move.bp,
-            type: move.type,
-            damage: result.damage,
-            damageType: typeof result.damage,
-            damageIsArray: Array.isArray(result.damage),
-            damageLength: result.damage?.length,
-            attacker: result.attacker?.name,
-            defender: result.defender?.name,
-            description: result.desc ? result.desc() : 'NO DESC FUNCTION'
-          });
-          
-          // Validate that result has damage and it's a valid array
-          if (!result.damage || (Array.isArray(result.damage) && result.damage.length === 0)) {
-            console.log(`    ❌ No valid damage for this move, skipping`);
-            continue;
-          }
-          
-          const avgDamage = Array.isArray(result.damage) && result.damage.length > 0
-            ? (result.damage[0] + result.damage[result.damage.length - 1]) / 2 
-            : (typeof result.damage === 'number' ? result.damage : 0);
-          
-          console.log(`    Average damage: ${avgDamage}, Max damage so far: ${maxDamage}`);
-          
-          if (avgDamage > maxDamage) {
-            maxDamage = avgDamage;
-            bestMove = actualMoveName;
-            bestResult = result;
-            console.log(`    ✅ New best move! ${actualMoveName} with ${avgDamage} avg damage`);
-          }
-        } catch (moveError) {
-          console.warn(`[Matchup] Could not calculate move ${actualMoveName}:`, moveError.message);
-        }
-      }
-    }
-    
-    if (!bestResult) {
+    if (userMoveOptions.length === 0) {
+      console.log(`  ❌ User has no valid attacking moves`);
       return {
+        userWins: false,
         bestMove: 'No valid moves',
+        rivalBestMove: null,
         damageRange: [0, 0],
+        rivalDamageRange: [0, 0],
         hitsToKO: Infinity,
+        rivalHitsToKO: 0,
+        userSpeed: userPokemon.rawStats.spe,
+        rivalSpeed: rivalPokemon.rawStats.spe,
+        userAttacksFirst: false,
         winProbability: 0,
-        canOHKO: false,
-        canTwoHKO: false
+        score: 0
       };
     }
     
-    const damage = bestResult.damage;
-    const damageRange = typeof damage === 'object' ? [damage[0], damage[damage.length - 1]] : [damage, damage];
-    const defenderHP = defender.maxHP();
+    // ========== STEP 2: Simulate turn-by-turn battle ==========
+    const userMaxHP = userPokemon.maxHP();
+    const rivalMaxHP = rivalPokemon.maxHP();
+    const userSpeed = userPokemon.rawStats.spe;
+    const rivalSpeed = rivalPokemon.rawStats.spe;
     
-    console.log(`\n📊 FINAL CALCULATION RESULTS:`);
-    console.log(`  Best Move: ${bestMove}`);
-    console.log(`  Damage Range: [${damageRange[0]}, ${damageRange[1]}]`);
-    console.log(`  Defender HP: ${defenderHP}`);
+    let userCurrentHP = userMaxHP;
+    let rivalCurrentHP = rivalMaxHP;
+    let turn = 1;
     
-    // Calculate hits to KO
-    const avgDamage = (damageRange[0] + damageRange[1]) / 2;
-    const hitsToKO = Math.ceil(defenderHP / avgDamage);
+    let userSelectedMove = null;
+    let rivalSelectedMove = null;
+    let battleLog = [];
     
-    console.log(`  Average Damage: ${avgDamage}`);
-    console.log(`  Hits to KO: ${hitsToKO}`);
+    console.log(`\n[BATTLE START]`);
+    console.log(`  User: ${userMon.name} (${userCurrentHP} HP, ${userSpeed} Speed)`);
+    console.log(`  Rival: ${rivalMon.name} (${rivalCurrentHP} HP, ${rivalSpeed} Speed)`);
     
-    // Calculate win probability and parse OHKO chances from description
-    const canOHKO = damageRange[0] >= defenderHP;
-    const canTwoHKO = damageRange[0] * 2 >= defenderHP;
-    
-    // Parse KO chances and damage percentages from the best result description
-    let ohkoChance = 0;
-    let twoHkoChance = 0;
-    let isGuaranteedKO = false;
-    let koChance = 0;
-    let damagePercentageRange = null;
-    
-    if (bestResult && bestResult.desc) {
-      const desc = bestResult.desc();
-      console.log(`  Parsing description: "${desc}"`);
+    while (userCurrentHP > 0 && rivalCurrentHP > 0 && turn <= MAX_BATTLE_TURNS) {
+      console.log(`\n--- Turn ${turn} ---`);
       
-      // Extract damage percentage range from description (e.g., "39.4 - 47.3%")
-      const percentageMatch = desc.match(/\((\d+\.?\d*) - (\d+\.?\d*)%\)/);
-      if (percentageMatch) {
-        const minPercent = parseFloat(percentageMatch[1]);
-        const maxPercent = parseFloat(percentageMatch[2]);
-        damagePercentageRange = [minPercent, maxPercent];
-        console.log(`  Found damage percentage range: ${minPercent}% - ${maxPercent}%`);
+      // Select optimal moves for this turn
+      userSelectedMove = selectOptimalMove(userMoveOptions, rivalCurrentHP, rivalSpeed > userSpeed);
+      rivalSelectedMove = rivalMoveOptions.length > 0 
+        ? selectOptimalMove(rivalMoveOptions, userCurrentHP, userSpeed > rivalSpeed)
+        : null;
+      
+      if (!userSelectedMove) {
+        console.log(`  User has no valid moves, LOSES`);
+        break;
       }
       
-      // Check for guaranteed KOs of any type (OHKO, 2HKO, 3HKO, etc.)
-      const guaranteedMatch = desc.match(/guaranteed (\d+)HKO/);
-      if (guaranteedMatch) {
-        const guaranteedHits = parseInt(guaranteedMatch[1]);
-        isGuaranteedKO = true;
-        koChance = 100;
+      // Determine turn order
+      const userAttacksFirst = determineFirstAttacker(userSelectedMove, rivalSelectedMove, userSpeed, rivalSpeed);
+      
+      console.log(`  User: ${userSelectedMove.name} (priority ${userSelectedMove.priority})`);
+      console.log(`  Rival: ${rivalSelectedMove?.name || 'None'} (priority ${rivalSelectedMove?.priority || 0})`);
+      console.log(`  → ${userAttacksFirst ? 'User' : 'Rival'} goes first`);
+      
+      // Execute turn (first attacker, then second)
+      const [firstAttacker, secondAttacker] = userAttacksFirst 
+        ? [
+            { name: 'User', move: userSelectedMove, targetHP: rivalCurrentHP, maxHP: rivalMaxHP, setHP: (hp) => rivalCurrentHP = hp },
+            { name: 'Rival', move: rivalSelectedMove, targetHP: userCurrentHP, maxHP: userMaxHP, setHP: (hp) => userCurrentHP = hp }
+          ]
+        : [
+            { name: 'Rival', move: rivalSelectedMove, targetHP: userCurrentHP, maxHP: userMaxHP, setHP: (hp) => userCurrentHP = hp },
+            { name: 'User', move: userSelectedMove, targetHP: rivalCurrentHP, maxHP: rivalMaxHP, setHP: (hp) => rivalCurrentHP = hp }
+          ];
+      
+      // First attacker attacks
+      if (firstAttacker.move) {
+        const newHP = executeAttack(null, null, firstAttacker.move, firstAttacker.targetHP);
+        firstAttacker.setHP(newHP);
+        console.log(`  ${firstAttacker.name} deals ${firstAttacker.move.avgDamage.toFixed(1)} damage → ${newHP <= 0 ? 'FAINTED!' : `${Math.max(0, newHP).toFixed(1)}/${firstAttacker.maxHP} HP`}`);
         
-        // Set specific OHKO/2HKO flags
-        if (guaranteedHits === 1) {
-          ohkoChance = 100;
-        } else if (guaranteedHits === 2) {
-          twoHkoChance = 100;
-        }
-        
-        console.log(`  Found guaranteed ${guaranteedHits}HKO`);
-      } else {
-        // Look for percentage chances
-        const ohkoMatch = desc.match(/(\d+)% chance to OHKO/);
-        if (ohkoMatch) {
-          ohkoChance = parseInt(ohkoMatch[1]);
-        }
-        
-        const twoHkoMatch = desc.match(/(\d+)% chance to 2HKO/);
-        if (twoHkoMatch) {
-          twoHkoChance = parseInt(twoHkoMatch[1]);
-        }
-        
-        // Look for other percentage chances (3HKO, 4HKO, etc.)
-        const koMatch = desc.match(/(\d+)% chance to (\d+)HKO/);
-        if (koMatch) {
-          koChance = parseInt(koMatch[1]);
-          console.log(`  Found ${koChance}% chance to ${koMatch[2]}HKO`);
+        if (newHP <= 0) {
+          battleLog.push(`Turn ${turn}: ${firstAttacker.name}'s ${firstAttacker.move.name} wins the battle`);
+          break;
         }
       }
+      
+      // Second attacker counterattacks (if still alive)
+      if (secondAttacker.move) {
+        const newHP = executeAttack(null, null, secondAttacker.move, secondAttacker.targetHP);
+        secondAttacker.setHP(newHP);
+        console.log(`  ${secondAttacker.name} deals ${secondAttacker.move.avgDamage.toFixed(1)} damage → ${newHP <= 0 ? 'FAINTED!' : `${Math.max(0, newHP).toFixed(1)}/${secondAttacker.maxHP} HP`}`);
+        
+        if (newHP <= 0) {
+          battleLog.push(`Turn ${turn}: ${secondAttacker.name}'s ${secondAttacker.move.name} wins the battle`);
+          break;
+        }
+      }
+      
+      turn++;
     }
     
-    console.log(`  Can OHKO: ${canOHKO}`);
-    console.log(`  Can 2HKO: ${canTwoHKO}`);
-    console.log(`  OHKO Chance: ${ohkoChance}%`);
-    console.log(`  2HKO Chance: ${twoHkoChance}%`);
-    console.log(`  Is Guaranteed KO: ${isGuaranteedKO}`);
-    console.log(`  KO Chance: ${koChance}%`);
+    const userWins = rivalCurrentHP <= 0 && userCurrentHP > 0;
+    const battleOutcome = battleLog[battleLog.length - 1] || `Battle timeout after ${MAX_BATTLE_TURNS} turns`;
     
-    let winProbability = 0;
-    if (canOHKO || ohkoChance === 100 || (hitsToKO === 1 && isGuaranteedKO)) {
-      winProbability = 100;
-    } else if (canTwoHKO || twoHkoChance === 100 || (hitsToKO === 2 && isGuaranteedKO)) {
-      winProbability = 80;
-    } else if (hitsToKO <= 3) {
-      winProbability = 60;
-    } else if (hitsToKO <= 4) {
-      winProbability = 40;
-    } else {
-      winProbability = 20;
-    }
-    
-    console.log(`  Win Probability: ${winProbability}`);
+    console.log(`\n[BATTLE RESULT] ${userWins ? '✅ USER WINS' : '❌ RIVAL WINS'}`);
+    console.log(`  Final HP: User ${Math.max(0, userCurrentHP).toFixed(1)}/${userMaxHP} | Rival ${Math.max(0, rivalCurrentHP).toFixed(1)}/${rivalMaxHP}`);
+    console.log(`  Outcome: ${battleOutcome}`);
     console.log(`========================================\n`);
     
+    // ========== STEP 3: Parse detailed data for the moves used ==========
+    // Use the last selected moves from the battle simulation
+    const finalUserMove = userSelectedMove || userMoveOptions[0];
+    const finalRivalMove = rivalSelectedMove || (rivalMoveOptions[0] || null);
+    
+    const userDesc = finalUserMove?.result?.desc ? finalUserMove.result.desc() : '';
+    const rivalDesc = finalRivalMove?.result?.desc ? finalRivalMove.result.desc() : '';
+    
+    const userKOData = parseCalculationDescription(userDesc, finalUserMove?.damageRange || [0, 0], rivalMaxHP);
+    const rivalKOData = parseCalculationDescription(rivalDesc, finalRivalMove?.damageRange || [0, 0], userMaxHP);
+    
+    // Calculate estimated turns to KO (for display purposes)
+    const userHitsToKO = finalUserMove ? Math.ceil(rivalMaxHP / finalUserMove.avgDamage) : Infinity;
+    const rivalHitsToKO = finalRivalMove ? Math.ceil(userMaxHP / finalRivalMove.avgDamage) : Infinity;
+    
+    // ========== STEP 4: Return comprehensive battle data ==========
     return {
-      bestMove,
-      damageRange,
-      damagePercentageRange, // Add percentage range from description
-      hitsToKO,
-      winProbability,
-      canOHKO: canOHKO || ohkoChance === 100,
-      canTwoHKO: canTwoHKO || twoHkoChance === 100,
-      ohkoChance,
-      twoHkoChance,
-      isGuaranteedKO,
-      koChance,
-      damagePercent: Math.round((avgDamage / defenderHP) * 100)
+      // Battle result
+      userWins,
+      battleOutcome,
+      battleLog,
+      turns: turn - 1,
+      
+      // User's attack data
+      bestMove: finalUserMove?.name || 'No valid moves',
+      damageRange: finalUserMove?.damageRange || [0, 0],
+      damagePercentageRange: userKOData.damagePercentageRange,
+      hitsToKO: userHitsToKO,
+      canOHKO: userKOData.ohkoChance === 100,
+      canTwoHKO: userKOData.twoHkoChance === 100,
+      ohkoChance: userKOData.ohkoChance,
+      twoHkoChance: userKOData.twoHkoChance,
+      isGuaranteedKO: userKOData.isGuaranteedKO,
+      koChance: userKOData.koChance,
+      damagePercent: finalUserMove ? Math.round((finalUserMove.avgDamage / rivalMaxHP) * 100) : 0,
+      
+      // Rival's attack data
+      rivalBestMove: finalRivalMove?.name || 'No valid moves',
+      rivalDamageRange: finalRivalMove?.damageRange || [0, 0],
+      rivalDamagePercentageRange: rivalKOData.damagePercentageRange,
+      rivalHitsToKO: rivalHitsToKO,
+      rivalCanOHKO: rivalKOData.ohkoChance === 100,
+      rivalCanTwoHKO: rivalKOData.twoHkoChance === 100,
+      rivalOhkoChance: rivalKOData.ohkoChance,
+      rivalDamagePercent: finalRivalMove ? Math.round((finalRivalMove.avgDamage / userMaxHP) * 100) : 0,
+      
+      // Speed & turn order data
+      userSpeed,
+      rivalSpeed,
+      userMovePriority: finalUserMove?.priority || 0,
+      rivalMovePriority: finalRivalMove?.priority || 0,
+      userAttacksFirst: userSpeed >= rivalSpeed, // First turn only
+      
+      // HP after battle
+      userFinalHP: Math.max(0, userCurrentHP),
+      rivalFinalHP: Math.max(0, rivalCurrentHP),
+      userMaxHP,
+      rivalMaxHP,
+      
+      // Scoring
+      winProbability: userWins ? 100 : 0,
+      score: userWins ? SCORE_WIN : SCORE_LOSS
     };
     
   } catch (error) {
@@ -469,22 +687,20 @@ function calculateMatchup(gen, userMon, rivalMon) {
 }
 
 /**
- * Calculate overall score for a Pokémon based on its matchups
+ * Calculate overall score for a Pokémon based on 1v1 battle results
+ * 
+ * Simple scoring system:
+ * - 1 point for each rival Pokémon defeated in 1v1
+ * - Total score = number of victories
+ * 
+ * This allows easy comparison: a Pokémon that wins 3/4 matchups scores 3 points
  */
 function calculateOverallScore(matchups) {
   if (!matchups || matchups.length === 0) return 0;
   
-  const totalWinProb = matchups.reduce((sum, m) => sum + m.winProbability, 0);
-  const avgWinProb = totalWinProb / matchups.length;
+  // Count number of victories (userWins = true)
+  const victories = matchups.filter(m => m.userWins).length;
   
-  // Bonus for having at least one OHKO matchup
-  const hasOHKO = matchups.some(m => m.canOHKO);
-  const ohkoBonus = hasOHKO ? 10 : 0;
-  
-  // Bonus for multiple 2HKO matchups
-  const twoHKOCount = matchups.filter(m => m.canTwoHKO).length;
-  const twoHKOBonus = twoHKOCount * 5;
-  
-  return Math.min(100, avgWinProb + ohkoBonus + twoHKOBonus);
+  return victories;
 }
 

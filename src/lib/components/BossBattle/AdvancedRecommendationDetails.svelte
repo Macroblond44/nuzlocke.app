@@ -184,25 +184,6 @@
 
       <!-- Content -->
       <div class="p-6">
-        <!-- Boss Team Overview -->
-        <div class="mb-8">
-          <h3 class="text-lg font-semibold mb-4 text-gray-900 dark:text-white">
-            Boss Team Overview
-          </h3>
-          <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {#each bossTeam as pokemon}
-              <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                <PIcon name={pokemon.alias || pokemon.name} class="w-8 h-8 mx-auto mb-2" />
-                <div class="text-sm font-medium text-gray-900 dark:text-white">
-                  {regionise(capitalise(pokemon.alias || pokemon.name))}
-                </div>
-                <div class="text-xs text-gray-600 dark:text-gray-400">
-                  Lv. {pokemon.level || '??'}
-                </div>
-              </div>
-            {/each}
-          </div>
-        </div>
 
         <!-- Pokemon Analysis -->
         <div class="space-y-6">
@@ -233,24 +214,41 @@
                 </button>
               </div>
 
-              <!-- Win/Loss Summary -->
+              <!-- Win/Loss Summary - Enhanced -->
               {#if pokemon.matchups}
                 <div class="mb-4">
-                  <h5 class="font-medium text-gray-900 dark:text-white mb-3">
-                    Matchup Results:
-                  </h5>
+                  <div class="flex items-center justify-between mb-3">
+                    <h5 class="font-medium text-gray-900 dark:text-white flex items-center gap-2">
+                      <Icon icon={BarChart} class="w-4 h-4 text-purple-500" />
+                      Battle Summary: {pokemon.matchups.filter(m => m.userWins).length}/{pokemon.matchups.length} Victories
+                    </h5>
+                  </div>
                   <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {#each pokemon.matchups as matchup}
-                      <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg text-center">
-                        <PIcon name={matchup.rivalPokemon} class="w-6 h-6 mx-auto mb-1" />
-                        <div class="text-xs font-medium text-gray-900 dark:text-white">
+                      <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg border-2 {matchup.userWins ? 'border-green-400 dark:border-green-600' : 'border-red-400 dark:border-red-600'}">
+                        <div class="flex items-center gap-2 mb-2">
+                          <PIcon name={matchup.rivalPokemon} class="w-6 h-6" />
+                          <div class="text-xs font-bold {matchup.userWins ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">
+                            {matchup.userWins ? '✓ WIN' : '✗ LOSS'}
+                          </div>
+                        </div>
+                        <div class="text-xs font-medium text-gray-900 dark:text-white mb-1">
                           {regionise(capitalise(matchup.rivalPokemon))}
                         </div>
-                        <div class="text-xs {getWinLossIcon(matchup)} font-semibold">
-                          {getWinLossText(matchup)}
-                        </div>
+                        {#if matchup.userWins}
+                          <div class="text-xs text-gray-600 dark:text-gray-400">
+                            {getWinLossText(matchup)}
+                          </div>
+                          <div class="text-xs text-green-600 dark:text-green-400 font-medium mt-1">
+                            HP: {matchup.userFinalHP ? Math.round(matchup.userFinalHP) : '?'}/{matchup.userMaxHP || '?'}
+                          </div>
+                        {:else}
+                          <div class="text-xs text-red-600 dark:text-red-400">
+                            KO'd in {matchup.rivalHitsToKO || '?'} hit(s)
+                          </div>
+                        {/if}
                         {#if matchup.bestMove}
-                          <div class="text-xs text-gray-600 dark:text-gray-400 mt-1">
+                          <div class="text-xs text-gray-500 dark:text-gray-400 mt-1 truncate" title={matchup.bestMove}>
                             {capitalise(matchup.bestMove.replace(/-/g, ' '))}
                           </div>
                         {/if}
@@ -294,25 +292,65 @@
                             </button>
                           </div>
 
-                          <!-- Quick Stats -->
-                          <div class="grid grid-cols-3 gap-3 text-sm">
-                            <div class="text-center">
-                              <div class="font-semibold text-gray-900 dark:text-white">
+                          <!-- Battle Stats Grid -->
+                          <div class="grid grid-cols-2 md:grid-cols-4 gap-3 text-sm">
+                            <!-- Your Attack -->
+                            <div class="bg-white dark:bg-gray-600 p-3 rounded-lg text-center">
+                              <div class="text-xs text-gray-600 dark:text-gray-400 mb-1">Your Attack</div>
+                              <div class="font-semibold text-green-600 dark:text-green-400 text-sm mb-1">
                                 {matchup.bestMove ? capitalise(matchup.bestMove.replace(/-/g, ' ')) : 'N/A'}
                               </div>
-                              <div class="text-xs text-gray-600 dark:text-gray-400">Best Move</div>
-                            </div>
-                            <div class="text-center">
-                              <div class="font-semibold {getWinLossIcon(matchup)}">
-                                {matchup.hitsToKO}
+                              <div class="text-xs text-gray-500 dark:text-gray-400">
+                                {getWinLossText(matchup)}
                               </div>
-                              <div class="text-xs text-gray-600 dark:text-gray-400">Hits to KO</div>
                             </div>
-                            <div class="text-center">
-                              <div class="font-semibold text-gray-900 dark:text-white">
-                                {formatDamageRange(matchup.damagePercentageRange, matchup.damageRange)}
+                            
+                            <!-- Rival Attack -->
+                            <div class="bg-white dark:bg-gray-600 p-3 rounded-lg text-center">
+                              <div class="text-xs text-gray-600 dark:text-gray-400 mb-1">Rival Attack</div>
+                              <div class="font-semibold text-red-600 dark:text-red-400 text-sm mb-1">
+                                {matchup.rivalBestMove && matchup.rivalBestMove !== 'No valid moves' 
+                                  ? capitalise(matchup.rivalBestMove.replace(/-/g, ' ')) 
+                                  : 'None'}
                               </div>
-                              <div class="text-xs text-gray-600 dark:text-gray-400">Damage Range</div>
+                              {#if matchup.rivalHitsToKO && matchup.rivalHitsToKO !== Infinity}
+                                <div class="text-xs text-gray-500 dark:text-gray-400">
+                                  {matchup.rivalHitsToKO}HKO
+                                </div>
+                              {:else}
+                                <div class="text-xs text-gray-500 dark:text-gray-400">Can't KO</div>
+                              {/if}
+                            </div>
+                            
+                            <!-- Turn Order -->
+                            <div class="bg-white dark:bg-gray-600 p-3 rounded-lg text-center">
+                              <div class="text-xs text-gray-600 dark:text-gray-400 mb-1">Turn Order</div>
+                              <div class="font-semibold text-gray-900 dark:text-white text-sm mb-1">
+                                {matchup.userAttacksFirst ? '⚡ You First' : '⚡ Rival First'}
+                              </div>
+                              <div class="text-xs text-gray-500 dark:text-gray-400">
+                                Speed: {matchup.userSpeed || '?'} vs {matchup.rivalSpeed || '?'}
+                              </div>
+                            </div>
+                            
+                            <!-- Battle Outcome -->
+                            <div class="bg-white dark:bg-gray-600 p-3 rounded-lg text-center">
+                              <div class="text-xs text-gray-600 dark:text-gray-400 mb-1">Final HP</div>
+                              {#if matchup.userWins}
+                                <div class="font-semibold text-green-600 dark:text-green-400 text-sm">
+                                  ✓ {matchup.userFinalHP ? Math.round(matchup.userFinalHP) : '?'}/{matchup.userMaxHP || '?'}
+                                </div>
+                                <div class="text-xs text-green-500 dark:text-green-400">
+                                  {matchup.turns || '?'} turn(s)
+                                </div>
+                              {:else}
+                                <div class="font-semibold text-red-600 dark:text-red-400 text-sm">
+                                  ✗ Defeated
+                                </div>
+                                <div class="text-xs text-red-500 dark:text-red-400">
+                                  {matchup.turns || '?'} turn(s)
+                                </div>
+                              {/if}
                             </div>
                           </div>
                         </div>
@@ -510,16 +548,25 @@
         </div>
 
         <!-- Algorithm Info -->
-        <div class="mt-8 p-4 bg-green-50 dark:bg-green-900/20 rounded-lg">
-          <h4 class="font-medium text-green-900 dark:text-green-100 mb-2">
-            Advanced Algorithm Information
+        <div class="mt-8 p-4 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg border-2 border-green-200 dark:border-green-700">
+          <h4 class="font-medium text-green-900 dark:text-green-100 mb-3 flex items-center gap-2">
+            <Icon icon={Info} class="w-5 h-5" />
+            Advanced Turn-by-Turn Battle Simulation
           </h4>
-          <ul class="text-sm text-green-800 dark:text-green-200 space-y-1">
-            <li>• <strong>Damage Calculator:</strong> Uses @smogon/calc with Radical Red 4.1 data</li>
-            <li>• <strong>Data Source:</strong> npoint.io for accurate Radical Red stats, abilities, and moves</li>
-            <li>• <strong>Calculation:</strong> 1v1 damage calculations considering all stats, abilities, and moves</li>
-            <li>• <strong>Scoring:</strong> OHKO = 100pts, 2HKO = 50pts, fewer hits = higher score</li>
-            <li>• <strong>Accuracy:</strong> Accounts for accuracy, critical hits, and damage variance</li>
+          <ul class="text-sm text-green-800 dark:text-green-200 space-y-2">
+            <li>• <strong>Calculator:</strong> @smogon/calc v0.10.0 with Generation 9 data</li>
+            <li>• <strong>Simulation:</strong> Full turn-by-turn 1v1 battle simulation (up to 20 turns)</li>
+            <li>• <strong>Move Selection:</strong> Dynamic per-turn optimal move selection based on:
+              <ul class="ml-6 mt-1 space-y-1 text-xs">
+                <li>→ Priority moves that guarantee KO</li>
+                <li>→ Moves that guarantee KO (min damage ≥ remaining HP)</li>
+                <li>→ Moves with highest KO probability</li>
+                <li>→ Highest average damage as fallback</li>
+              </ul>
+            </li>
+            <li>• <strong>Turn Order:</strong> Determined by move priority first, then speed stat</li>
+            <li>• <strong>Scoring:</strong> 1 point per victory. Total score = number of rivals defeated in 1v1</li>
+            <li>• <strong>Accuracy:</strong> Considers all stats, abilities, items, natures, IVs, EVs, and Nuzlocke level caps</li>
           </ul>
         </div>
       </div>

@@ -289,12 +289,13 @@ function parseCalculationDescription(desc, damageRange, defenderHP) {
   let isGuaranteedKO = false;
   let koChance = 0;
   let damagePercentageRange = null;
+  let hitsToKO = null; // Extract hits to KO from description
   
   console.log(`    [parseCalculationDescription] Input description: "${desc}"`);
   
   if (!desc) {
     console.log(`    [parseCalculationDescription] ⚠️ No description provided`);
-    return { ohkoChance, twoHkoChance, isGuaranteedKO, koChance, damagePercentageRange };
+    return { ohkoChance, twoHkoChance, isGuaranteedKO, koChance, damagePercentageRange, hitsToKO };
   }
   
   // Extract damage percentage range (e.g., "39.4 - 47.3%")
@@ -308,6 +309,7 @@ function parseCalculationDescription(desc, damageRange, defenderHP) {
   const guaranteedMatch = desc.match(/guaranteed (\d+)HKO/);
   if (guaranteedMatch) {
     const guaranteedHits = parseInt(guaranteedMatch[1]);
+    hitsToKO = guaranteedHits;
     isGuaranteedKO = true;
     koChance = 100;
     
@@ -315,31 +317,34 @@ function parseCalculationDescription(desc, damageRange, defenderHP) {
     else if (guaranteedHits === 2) twoHkoChance = 100;
     
     console.log(`    [parseCalculationDescription] ✅ Guaranteed ${guaranteedHits}HKO detected`);
-    console.log(`    [parseCalculationDescription] → OHKO: ${ohkoChance}%, 2HKO: ${twoHkoChance}%`);
+    console.log(`    [parseCalculationDescription] → OHKO: ${ohkoChance}%, 2HKO: ${twoHkoChance}%, hitsToKO: ${hitsToKO}`);
   } else {
     // Look for percentage chances (support both integer and decimal percentages)
     const ohkoMatch = desc.match(/(\d+\.?\d*)% chance to OHKO/);
     if (ohkoMatch) {
       ohkoChance = parseFloat(ohkoMatch[1]);
+      hitsToKO = 1;
       console.log(`    [parseCalculationDescription] 🎯 OHKO chance: ${ohkoChance}%`);
     }
     
     const twoHkoMatch = desc.match(/(\d+\.?\d*)% chance to 2HKO/);
     if (twoHkoMatch) {
       twoHkoChance = parseFloat(twoHkoMatch[1]);
+      hitsToKO = 2;
       console.log(`    [parseCalculationDescription] 🎯 2HKO chance: ${twoHkoChance}%`);
     }
     
     const koMatch = desc.match(/(\d+\.?\d*)% chance to (\d+)HKO/);
     if (koMatch) {
       koChance = parseFloat(koMatch[1]);
+      hitsToKO = parseInt(koMatch[2]);
       console.log(`    [parseCalculationDescription] 🎯 General KO chance: ${koChance}% for ${koMatch[2]}HKO`);
     }
   }
   
-  console.log(`    [parseCalculationDescription] Final result: OHKO=${ohkoChance}%, 2HKO=${twoHkoChance}%, guaranteed=${isGuaranteedKO}`);
+  console.log(`    [parseCalculationDescription] Final result: OHKO=${ohkoChance}%, 2HKO=${twoHkoChance}%, guaranteed=${isGuaranteedKO}, hitsToKO=${hitsToKO}`);
   
-  return { ohkoChance, twoHkoChance, isGuaranteedKO, koChance, damagePercentageRange };
+  return { ohkoChance, twoHkoChance, isGuaranteedKO, koChance, damagePercentageRange, hitsToKO };
 }
 
 /**
@@ -743,9 +748,9 @@ function calculateMatchup(gen, userMon, rivalMon) {
     console.log(`  User HP: ${userMaxHP}`);
     const rivalKOData = parseCalculationDescription(rivalDesc, finalRivalMove?.damageRange || [0, 0], userMaxHP);
     
-    // Calculate estimated turns to KO (for display purposes)
-    const userHitsToKO = finalUserMove ? Math.ceil(rivalMaxHP / finalUserMove.avgDamage) : Infinity;
-    const rivalHitsToKO = finalRivalMove ? Math.ceil(userMaxHP / finalRivalMove.avgDamage) : Infinity;
+    // Use hits to KO from @smogon/calc description (more accurate than mathematical calculation)
+    const userHitsToKO = userKOData.hitsToKO || (finalUserMove ? Math.ceil(rivalMaxHP / finalUserMove.avgDamage) : Infinity);
+    const rivalHitsToKO = rivalKOData.hitsToKO || (finalRivalMove ? Math.ceil(userMaxHP / finalRivalMove.avgDamage) : Infinity);
     
     // ========== STEP 4: Return comprehensive battle data ==========
     return {

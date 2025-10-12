@@ -110,38 +110,38 @@
   function getWinLossText(result) {
     const hitsToKO = result.hitsToKO;
     
-    // Check if it's a guaranteed KO (from description parsing)
-    if (result.isGuaranteedKO === true) {
+    // Use the new precise KO calculation from server
+    // The server now provides accurate koChance and isGuaranteedKO
+    if (result.isGuaranteedKO === true || result.koChance === 100) {
       return `guaranteed ${hitsToKO}HKO`;
     }
     
     // Handle specific hit counts with chances
     if (hitsToKO === 1) {
-      if (result.canOHKO === true || result.ohkoChance === 100) {
-        return 'guaranteed OHKO'
-      } else if (result.ohkoChance && result.ohkoChance > 0) {
+      if (result.ohkoChance && result.ohkoChance > 0 && result.ohkoChance < 100) {
         return `${result.ohkoChance}% chance to OHKO`
+      } else if (result.ohkoChance === 100) {
+        return 'guaranteed OHKO'
       } else {
         return 'OHKO'
       }
     }
     if (hitsToKO === 2) {
-      if (result.canTwoHKO === true || result.twoHkoChance === 100) {
-        return 'guaranteed 2HKO'
-      } else if (result.twoHkoChance && result.twoHkoChance > 0) {
+      if (result.twoHkoChance && result.twoHkoChance > 0 && result.twoHkoChance < 100) {
         return `${result.twoHkoChance}% chance to 2HKO`
+      } else if (result.twoHkoChance === 100) {
+        return 'guaranteed 2HKO'
       } else {
         return '2HKO'
       }
     }
     
-    // For 3HKO, 4HKO, etc., check if it's guaranteed
+    // For 3HKO, 4HKO, etc., use general koChance
     if (hitsToKO >= 3) {
-      // If we have a guaranteed KO flag or specific chance, use it
-      if (result.guaranteedKO === true || result.koChance === 100) {
-        return `guaranteed ${hitsToKO}HKO`;
-      } else if (result.koChance && result.koChance > 0) {
+      if (result.koChance && result.koChance > 0 && result.koChance < 100) {
         return `${result.koChance}% chance to ${hitsToKO}HKO`;
+      } else if (result.koChance === 100) {
+        return `guaranteed ${hitsToKO}HKO`;
       }
     }
     

@@ -49,6 +49,10 @@ const DEFAULT_IVS = { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 };
 const DEFAULT_EVS = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
 const DEFAULT_CALC_GEN = 9; // Modern romhacks use Gen 9
 
+// KO Analysis constants
+const GUARANTEED_KO_THRESHOLD = 100; // 100% chance = guaranteed
+const SINGLE_MOVE_THRESHOLD = 1; // For single move vs multi-move logic
+
 // ========== SCORING WEIGHTS ==========
 const SCORE_WIN = 1;
 const SCORE_LOSS = 0;
@@ -281,71 +285,184 @@ function extractDamage(result) {
 }
 
 /**
- * Helper: Parse KO chances and damage percentages from description
+ * Helper: Calculate median damage from @smogon/calc damage array
+ * @param {Array|number} damage - Damage array or single number from @smogon/calc
+ * @returns {number} Median damage using realistic damage values
  */
-function parseCalculationDescription(desc, damageRange, defenderHP) {
-  let ohkoChance = 0;
-  let twoHkoChance = 0;
-  let isGuaranteedKO = false;
-  let koChance = 0;
-  let damagePercentageRange = null;
-  let hitsToKO = null; // Extract hits to KO from description
+function calculateMedianDamage(damage) {
+  if (!damage) return 0;
   
-  console.log(`    [parseCalculationDescription] Input description: "${desc}"`);
-  
-  if (!desc) {
-    console.log(`    [parseCalculationDescription] ⚠️ No description provided`);
-    return { ohkoChance, twoHkoChance, isGuaranteedKO, koChance, damagePercentageRange, hitsToKO };
+  if (typeof damage === 'number') {
+    return damage;
   }
   
-  // Extract damage percentage range (e.g., "39.4 - 47.3%")
-  const percentageMatch = desc.match(/\((\d+\.?\d*) - (\d+\.?\d*)%\)/);
-  if (percentageMatch) {
-    damagePercentageRange = [parseFloat(percentageMatch[1]), parseFloat(percentageMatch[2])];
-    console.log(`    [parseCalculationDescription] 📊 Damage %: ${damagePercentageRange[0]}-${damagePercentageRange[1]}%`);
-  }
-  
-  // Check for guaranteed KOs
-  const guaranteedMatch = desc.match(/guaranteed (\d+)HKO/);
-  if (guaranteedMatch) {
-    const guaranteedHits = parseInt(guaranteedMatch[1]);
-    hitsToKO = guaranteedHits;
-    isGuaranteedKO = true;
-    koChance = 100;
+  if (Array.isArray(damage) && damage.length > 0) {
+    // Sort the damage values
+    const sortedDamage = [...damage].sort((a, b) => a - b);
+    const length = sortedDamage.length;
     
-    if (guaranteedHits === 1) ohkoChance = 100;
-    else if (guaranteedHits === 2) twoHkoChance = 100;
+    // Calculate median position
+    const medianIndex = Math.floor(length / 2);
     
-    console.log(`    [parseCalculationDescription] ✅ Guaranteed ${guaranteedHits}HKO detected`);
-    console.log(`    [parseCalculationDescription] → OHKO: ${ohkoChance}%, 2HKO: ${twoHkoChance}%, hitsToKO: ${hitsToKO}`);
-  } else {
-    // Look for percentage chances (support both integer and decimal percentages)
-    const ohkoMatch = desc.match(/(\d+\.?\d*)% chance to OHKO/);
-    if (ohkoMatch) {
-      ohkoChance = parseFloat(ohkoMatch[1]);
-      hitsToKO = 1;
-      console.log(`    [parseCalculationDescription] 🎯 OHKO chance: ${ohkoChance}%`);
-    }
-    
-    const twoHkoMatch = desc.match(/(\d+\.?\d*)% chance to 2HKO/);
-    if (twoHkoMatch) {
-      twoHkoChance = parseFloat(twoHkoMatch[1]);
-      hitsToKO = 2;
-      console.log(`    [parseCalculationDescription] 🎯 2HKO chance: ${twoHkoChance}%`);
-    }
-    
-    const koMatch = desc.match(/(\d+\.?\d*)% chance to (\d+)HKO/);
-    if (koMatch) {
-      koChance = parseFloat(koMatch[1]);
-      hitsToKO = parseInt(koMatch[2]);
-      console.log(`    [parseCalculationDescription] 🎯 General KO chance: ${koChance}% for ${koMatch[2]}HKO`);
+    if (length % 2 === 1) {
+      // Odd length: return middle value
+      return sortedDamage[medianIndex];
+    } else {
+      // Even length: return the higher of the two middle values
+      // This ensures we use a realistic damage value that actually exists
+      return sortedDamage[medianIndex];
     }
   }
   
-  console.log(`    [parseCalculationDescription] Final result: OHKO=${ohkoChance}%, 2HKO=${twoHkoChance}%, guaranteed=${isGuaranteedKO}, hitsToKO=${hitsToKO}`);
-  
-  return { ohkoChance, twoHkoChance, isGuaranteedKO, koChance, damagePercentageRange, hitsToKO };
+  return 0;
 }
+
+/**
+ * Calculate mathematically accurate KO probability for a move sequence
+ * 
+ * This function uses the exact damage arrays from @smogon/calc to calculate
+ * the precise probability of achieving a KO with a sequence of moves.
+ * 
+ * @param {Generation} gen - @smogon/calc Generation instance
+ * @param {Pokemon} attacker - Attacker Pokémon instance
+ * @param {Pokemon} defender - Defender Pokémon instance  
+ * @param {Array} movesUsed - Array of moves used in battle sequence
+ * @param {number} defenderHP - Defender's total HP
+ * @returns {Object} KO probability analysis with probability, isGuaranteed, description
+ */
+function calculateMoveSequenceKOProbability(gen, attacker, defender, movesUsed, defenderHP) {
+  if (!movesUsed || movesUsed.length === 0) {
+    return createKOAnalysisResult(0, false, 'No moves used', 0);
+  }
+
+  try {
+    // Single move case - use @smogon/calc kochance directly for efficiency
+    if (movesUsed.length === 1) {
+      return calculateSingleMoveKO(gen, attacker, defender, movesUsed[0], defenderHP);
+    }
+
+    // Multi-move case - calculate exact probability using damage arrays
+    return calculateMultiMoveKO(gen, attacker, defender, movesUsed, defenderHP);
+    
+  } catch (error) {
+    console.log(`  ⚠️ Error calculating KO probability: ${error.message}`);
+    return createKOAnalysisResult(0, false, 'Calculation error', movesUsed.length);
+  }
+}
+
+/**
+ * Calculate KO probability for a single move using @smogon/calc
+ */
+function calculateSingleMoveKO(gen, attacker, defender, moveUsed, defenderHP) {
+  const moveResult = calculate(gen, attacker, defender, new Move(gen, moveUsed.move));
+  const koChance = moveResult.kochance();
+  
+  return createKOAnalysisResult(
+    koChance.chance * GUARANTEED_KO_THRESHOLD,
+    koChance.chance === 1,
+    koChance.text,
+    SINGLE_MOVE_THRESHOLD
+  );
+}
+
+/**
+ * Calculate KO probability for multiple moves using exact damage arrays
+ */
+function calculateMultiMoveKO(gen, attacker, defender, movesUsed, defenderHP) {
+  console.log(`  🧮 Calculating ${movesUsed.length}-move sequence probability:`);
+  
+  // Get exact damage arrays from @smogon/calc for each move
+  const damageArrays = movesUsed.map((moveUsed, index) => {
+    const moveResult = calculate(gen, attacker, defender, new Move(gen, moveUsed.move));
+    const damageArray = moveResult.damage;
+    
+    console.log(`     Turn ${index + 1}: ${moveUsed.move.padEnd(15)} | Damage range: ${Math.min(...damageArray)}-${Math.max(...damageArray)} HP (${damageArray.length} possible values)`);
+    
+    return {
+      moveName: moveUsed.move,
+      damageArray
+    };
+  });
+
+  // Calculate exact probability using damage arrays
+  console.log(`     Target: ${defenderHP} HP`);
+  const probability = calculateExactSequenceProbability(damageArrays, defenderHP);
+  
+  return createKOAnalysisResult(
+    probability * GUARANTEED_KO_THRESHOLD,
+    probability === 1,
+    `${(probability * GUARANTEED_KO_THRESHOLD).toFixed(1)}% chance to ${movesUsed.length}HKO`,
+    movesUsed.length
+  );
+}
+
+/**
+ * Create a standardized KO analysis result object
+ */
+function createKOAnalysisResult(probability, isGuaranteed, description, hitsToKO) {
+  return {
+    probability,
+    isGuaranteed,
+    description,
+    hitsToKO
+  };
+}
+
+/**
+ * Calculate exact KO probability using damage arrays from @smogon/calc
+ * 
+ * Uses a recursive approach to calculate all possible damage combinations
+ * and determine the probability of achieving the target damage.
+ * 
+ * @param {Array} damageArrays - Array of {moveName, damageArray} objects
+ * @param {number} targetDamage - Target damage needed for KO
+ * @returns {number} Probability of achieving target damage or more (0-1)
+ */
+function calculateExactSequenceProbability(damageArrays, targetDamage) {
+  if (damageArrays.length === 0) return 0;
+  
+  // Single move case - simple probability calculation
+  if (damageArrays.length === 1) {
+    const damageArray = damageArrays[0].damageArray;
+    const koCount = damageArray.filter(damage => damage >= targetDamage).length;
+    const probability = koCount / damageArray.length;
+    
+    console.log(`     Result: ${koCount}/${damageArray.length} combinations achieve KO = ${(probability * GUARANTEED_KO_THRESHOLD).toFixed(2)}%`);
+    return probability;
+  }
+
+  // Multi-move case - calculate all combinations recursively
+  const totalCombinations = damageArrays.reduce((total, arr) => total * arr.damageArray.length, 1);
+  console.log(`     Analyzing ${totalCombinations.toLocaleString()} possible damage combinations...`);
+  
+  const probability = calculateCombinationProbability(damageArrays, targetDamage);
+  
+  console.log(`     Result: ${(probability * GUARANTEED_KO_THRESHOLD).toFixed(4)}% chance to achieve ${targetDamage}+ damage`);
+  return probability;
+}
+
+/**
+ * Recursively calculate probability of achieving target damage across all move combinations
+ */
+function calculateCombinationProbability(damageArrays, targetDamage, moveIndex = 0, currentDamage = 0) {
+  // Base case: all moves have been considered
+  if (moveIndex === damageArrays.length) {
+    return currentDamage >= targetDamage ? 1 : 0;
+  }
+  
+  let totalProbability = 0;
+  const currentMove = damageArrays[moveIndex];
+  
+  // For each possible damage value of current move, recurse to next move
+  for (const damage of currentMove.damageArray) {
+    const newDamage = currentDamage + damage;
+    const probability = calculateCombinationProbability(damageArrays, targetDamage, moveIndex + 1, newDamage);
+    totalProbability += probability / currentMove.damageArray.length;
+  }
+  
+  return totalProbability;
+}
+
 
 /**
  * Helper: Calculate all moves with their damage and priority
@@ -393,16 +510,16 @@ function calculateAllMoves(gen, attacker, defender, movesList) {
       }
       
       const damageRange = extractDamage(result);
-      const avgDamage = (damageRange[0] + damageRange[1]) / 2;
+      const medianDamage = calculateMedianDamage(result.damage);
       const minDamage = damageRange[0];
       const maxDamage = damageRange[1];
       
-      console.log(`    ✅ ${actualMoveName}: ${minDamage}-${maxDamage} damage (avg: ${avgDamage.toFixed(1)}, priority: ${move.priority || 0})`);
+      console.log(`    ✅ ${actualMoveName}: ${minDamage}-${maxDamage} damage (median: ${medianDamage}, priority: ${move.priority || 0})`);
       
       moveResults.push({
         name: actualMoveName,
         priority: move.priority || 0,
-        avgDamage,
+        avgDamage: medianDamage, // Use median instead of average
         minDamage,
         maxDamage,
         damageRange,
@@ -442,7 +559,7 @@ function executeAttack(attacker, defender, move, currentHP) {
   
   // Check if move can potentially KO (max damage >= current HP)
   if (move.maxDamage >= currentHP) {
-    // Move can KO - simulate KO with average damage for consistency
+    // Move can KO - simulate KO with median damage for consistency
     const actualDamage = Math.min(move.avgDamage, currentHP);
     return { 
       newHP: 0, 
@@ -451,7 +568,7 @@ function executeAttack(attacker, defender, move, currentHP) {
     };
   }
   
-  // Move cannot KO - use average damage
+  // Move cannot KO - use median damage
   const actualDamage = move.avgDamage;
   return { 
     newHP: currentHP - actualDamage, 
@@ -795,30 +912,34 @@ function calculateMatchup(gen, userMon, rivalMon) {
     const actualUserHitsToKO = userMovesUsed.length;
     const actualRivalHitsToKO = rivalMovesUsed.length;
     
-    // Get the final moves used for description parsing
-    const finalUserMove = userSelectedMove || userMoveOptions[0];
-    const finalRivalMove = rivalSelectedMove || (rivalMoveOptions[0] || null);
+    console.log(`\n${'='.repeat(60)}`);
+    console.log(`[BATTLE RESULTS SUMMARY]`);
+    console.log(`${'='.repeat(60)}`);
+    console.log(`  ✅ Winner: ${userWins ? 'USER' : 'RIVAL'}`);
+    console.log(`  🔄 Total turns: ${turn - 1}`);
+    console.log(`  ❤️  Final HP: User ${Math.max(0, userCurrentHP).toFixed(1)}/${userMaxHP} | Rival ${Math.max(0, rivalCurrentHP).toFixed(1)}/${rivalMaxHP}`);
     
-    const userDesc = finalUserMove?.result?.desc ? finalUserMove.result.desc() : '';
-    const rivalDesc = finalRivalMove?.result?.desc ? finalRivalMove.result.desc() : '';
+    console.log(`\n[USER BATTLE ANALYSIS]`);
+    console.log(`  📊 Moves used: ${userMovesUsed.map(m => m.move).join(' → ')}`);
+    console.log(`  🎯 Hits to KO: ${actualUserHitsToKO}HKO`);
+    console.log(`  💪 Total damage dealt: ${userMovesUsed.reduce((sum, m) => sum + m.damage, 0).toFixed(1)} HP`);
     
-    console.log(`\n[BATTLE RESULTS SUMMARY]`);
-    console.log(`  ✅ Actual battle result: ${userWins ? 'USER WINS' : 'RIVAL WINS'}`);
-    console.log(`  📊 User sequence: ${actualUserHitsToKO}HKO (${userMovesUsed.length} moves used)`);
-    console.log(`  📊 Rival sequence: ${actualRivalHitsToKO}HKO (${rivalMovesUsed.length} moves used)`);
+    console.log(`\n[RIVAL BATTLE ANALYSIS]`);
+    console.log(`  📊 Moves used: ${rivalMovesUsed.map(m => m.move).join(' → ')}`);
+    console.log(`  🎯 Hits to KO: ${actualRivalHitsToKO}HKO`);
+    console.log(`  💪 Total damage dealt: ${rivalMovesUsed.reduce((sum, m) => sum + m.damage, 0).toFixed(1)} HP`);
     
-    console.log(`\n[THEORETICAL CALCULATIONS - For reference only]`);
-    console.log(`  🔬 User final move: ${finalUserMove?.name || 'None'} vs full HP rival (${rivalMaxHP} HP)`);
-    console.log(`  🔬 User damage: ${finalUserMove?.damageRange?.[0] || 0}-${finalUserMove?.damageRange?.[1] || 0}`);
-    const userKOData = parseCalculationDescription(userDesc, finalUserMove?.damageRange || [0, 0], rivalMaxHP);
+    // Calculate mathematically accurate KO probability using exact damage arrays
+    console.log(`\n[MATHEMATICAL KO PROBABILITY ANALYSIS]`);
+    console.log(`  📐 Using exact damage arrays from @smogon/calc`);
+    const userKOData = calculateMoveSequenceKOProbability(gen, userPokemon, rivalPokemon, userMovesUsed, rivalMaxHP);
     
-    console.log(`\n  🔬 Rival final move: ${finalRivalMove?.name || 'None'} vs full HP user (${userMaxHP} HP)`);
-    console.log(`  🔬 Rival damage: ${finalRivalMove?.damageRange?.[0] || 0}-${finalRivalMove?.damageRange?.[1] || 0}`);
-    const rivalKOData = parseCalculationDescription(rivalDesc, finalRivalMove?.damageRange || [0, 0], userMaxHP);
-    
-    // Use actual battle sequence for hits to KO
-    const userHitsToKO = actualUserHitsToKO;
-    const rivalHitsToKO = actualRivalHitsToKO;
+    console.log(`  🎲 User KO Probability:`);
+    console.log(`     - Move sequence: ${userMovesUsed.map(m => m.move).join(' → ')}`);
+    console.log(`     - Probability: ${userKOData.probability.toFixed(2)}%`);
+    console.log(`     - Guaranteed: ${userKOData.isGuaranteed ? 'YES ✓' : 'NO ✗'}`);
+    console.log(`     - Description: ${userKOData.description}`);
+    console.log(`${'='.repeat(60)}\n`);
     
     // ========== STEP 4: Return comprehensive battle data ==========
     return {
@@ -828,18 +949,24 @@ function calculateMatchup(gen, userMon, rivalMon) {
       battleLog,
       turns: turn - 1,
       
-      // User's attack data (based on actual battle sequence)
-      bestMove: finalUserMove?.name || 'No valid moves',
-      damageRange: finalUserMove?.damageRange || [0, 0],
-      damagePercentageRange: userKOData.damagePercentageRange,
-      hitsToKO: userHitsToKO, // Now based on actual battle sequence
-      canOHKO: actualUserHitsToKO === 1 && userKOData.ohkoChance === 100,
-      canTwoHKO: actualUserHitsToKO === 2 && userKOData.twoHkoChance === 100,
-      ohkoChance: userKOData.ohkoChance,
-      twoHkoChance: userKOData.twoHkoChance,
-      isGuaranteedKO: userKOData.isGuaranteedKO,
-      koChance: userKOData.koChance,
-      damagePercent: finalUserMove ? Math.round((finalUserMove.avgDamage / rivalMaxHP) * 100) : 0,
+      // User's attack data (based on mathematically accurate sequence calculation)
+      bestMove: userMovesUsed[0]?.move || 'No valid moves',
+      damageRange: (() => {
+        const firstUserMove = userMoveOptions.find(m => m.name === userMovesUsed[0]?.move);
+        return firstUserMove?.damageRange || [0, 0];
+      })(),
+      hitsToKO: actualUserHitsToKO, // Based on actual battle sequence
+      // Use mathematically accurate KO information
+      canOHKO: userKOData.hitsToKO === SINGLE_MOVE_THRESHOLD,
+      canTwoHKO: userKOData.hitsToKO === 2,
+      ohkoChance: userKOData.hitsToKO === SINGLE_MOVE_THRESHOLD ? userKOData.probability : 0,
+      twoHkoChance: userKOData.hitsToKO === 2 ? userKOData.probability : 0,
+      isGuaranteedKO: userKOData.isGuaranteed,
+      koChance: userKOData.probability,
+      damagePercent: (() => {
+        const firstUserMove = userMoveOptions.find(m => m.name === userMovesUsed[0]?.move);
+        return firstUserMove ? Math.round((firstUserMove.avgDamage / rivalMaxHP) * GUARANTEED_KO_THRESHOLD) : 0;
+      })(),
       
       // Battle sequence information
       battleSequence: {
@@ -850,20 +977,32 @@ function calculateMatchup(gen, userMon, rivalMon) {
       },
       
       // Rival's attack data (based on actual battle sequence)
-      rivalBestMove: finalRivalMove?.name || 'No valid moves',
-      rivalDamageRange: finalRivalMove?.damageRange || [0, 0],
-      rivalDamagePercentageRange: rivalKOData.damagePercentageRange,
-      rivalHitsToKO: rivalHitsToKO, // Now based on actual battle sequence
-      rivalCanOHKO: actualRivalHitsToKO === 1 && rivalKOData.ohkoChance === 100,
-      rivalCanTwoHKO: actualRivalHitsToKO === 2 && rivalKOData.twoHkoChance === 100,
-      rivalOhkoChance: rivalKOData.ohkoChance,
-      rivalDamagePercent: finalRivalMove ? Math.round((finalRivalMove.avgDamage / userMaxHP) * 100) : 0,
+      rivalBestMove: rivalMovesUsed[0]?.move || 'No valid moves',
+      rivalDamageRange: (() => {
+        const firstRivalMove = rivalMoveOptions.find(m => m.name === rivalMovesUsed[0]?.move);
+        return firstRivalMove?.damageRange || [0, 0];
+      })(),
+      rivalHitsToKO: actualRivalHitsToKO, // Based on actual battle sequence
+      // Use actual battle results for rival KO information
+      rivalCanOHKO: actualRivalHitsToKO === SINGLE_MOVE_THRESHOLD,
+      rivalCanTwoHKO: actualRivalHitsToKO === 2,
+      rivalOhkoChance: actualRivalHitsToKO === SINGLE_MOVE_THRESHOLD ? GUARANTEED_KO_THRESHOLD : 0,
+      rivalDamagePercent: (() => {
+        const firstRivalMove = rivalMoveOptions.find(m => m.name === rivalMovesUsed[0]?.move);
+        return firstRivalMove ? Math.round((firstRivalMove.avgDamage / userMaxHP) * GUARANTEED_KO_THRESHOLD) : 0;
+      })(),
       
       // Speed & turn order data
       userSpeed,
       rivalSpeed,
-      userMovePriority: finalUserMove?.priority || 0,
-      rivalMovePriority: finalRivalMove?.priority || 0,
+      userMovePriority: (() => {
+        const firstUserMove = userMoveOptions.find(m => m.name === userMovesUsed[0]?.move);
+        return firstUserMove?.priority || 0;
+      })(),
+      rivalMovePriority: (() => {
+        const firstRivalMove = rivalMoveOptions.find(m => m.name === rivalMovesUsed[0]?.move);
+        return firstRivalMove?.priority || 0;
+      })(),
       userAttacksFirst: userSpeed >= rivalSpeed, // First turn only
       
       // HP after battle

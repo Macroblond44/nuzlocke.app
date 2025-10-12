@@ -442,8 +442,9 @@ function executeAttack(attacker, defender, move, currentHP) {
  * 
  * Strategy:
  * 1. If a priority move can guarantee KO → use it
- * 2. If a move can guarantee KO this turn → use it
- * 3. Otherwise, use move with highest average damage
+ * 2. Among moves that guarantee KO → use the one with highest damage
+ * 3. Among moves that can potentially KO → use the one with highest max damage
+ * 4. Otherwise → use move with highest average damage
  */
 function selectOptimalMove(moveResults, defenderCurrentHP, needsPriority = false) {
   if (!moveResults || moveResults.length === 0) {
@@ -458,9 +459,13 @@ function selectOptimalMove(moveResults, defenderCurrentHP, needsPriority = false
     if (priorityKO) return priorityKO;
   }
   
-  // Strategy 2: Any move that guarantees KO
-  const guaranteedKO = moveResults.find(m => m.minDamage >= defenderCurrentHP);
-  if (guaranteedKO) return guaranteedKO;
+  // Strategy 2: Move that guarantees KO with highest damage
+  const guaranteedKOMoves = moveResults.filter(m => m.minDamage >= defenderCurrentHP);
+  if (guaranteedKOMoves.length > 0) {
+    return guaranteedKOMoves.reduce((best, current) => 
+      current.avgDamage > best.avgDamage ? current : best
+    );
+  }
   
   // Strategy 3: Move with best KO chance
   const possibleKO = moveResults.filter(m => m.maxDamage >= defenderCurrentHP);

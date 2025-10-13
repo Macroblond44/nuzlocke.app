@@ -1115,13 +1115,20 @@ function calculateMatchup(gen, userMon, rivalMon) {
         rivalMovesUsed.push(createMoveRecord(rivalSelectedMove.name, turn, rivalSelectedMove.avgDamage, userMaxHP));
       }
       
-      // Check if first attacker can KO
-      const firstAttackerKOData = userAttacksFirst
-        ? calculateMoveSequenceKOProbability(gen, userPokemon, rivalPokemon, userMovesUsed, rivalMaxHP)
-        : (rivalSelectedMove ? calculateMoveSequenceKOProbability(gen, rivalPokemon, userPokemon, rivalMovesUsed, userMaxHP) : { probability: 0 });
+      // ========== CRITICAL: Calculate KO probability after first attacker ==========
+      console.log(`  🎲 KO Probability Check:`);
+      
+      // Calculate KO probabilities after first attacker
+      const userKODataAfterFirst = calculateMoveSequenceKOProbability(gen, userPokemon, rivalPokemon, userMovesUsed, rivalMaxHP);
+      const rivalKODataAfterFirst = rivalMovesUsed.length > 0 
+        ? calculateMoveSequenceKOProbability(gen, rivalPokemon, userPokemon, rivalMovesUsed, userMaxHP)
+        : { probability: 0, isGuaranteed: false };
+      
+      // Determine if first attacker KO'd
+      const firstAttackerKOd = userAttacksFirst ? userKODataAfterFirst.probability > 0 : rivalKODataAfterFirst.probability > 0;
       
       // Only allow second attacker to move if first attacker didn't KO
-      if (firstAttackerKOData.probability === 0) {
+      if (!firstAttackerKOd) {
         // First attacker didn't KO, second attacker can attack
         if (userAttacksFirst && rivalSelectedMove) {
           rivalMovesUsed.push(createMoveRecord(rivalSelectedMove.name, turn, rivalSelectedMove.avgDamage, userMaxHP));
@@ -1129,18 +1136,14 @@ function calculateMatchup(gen, userMon, rivalMon) {
           userMovesUsed.push(createMoveRecord(userSelectedMove.name, turn, userSelectedMove.avgDamage, rivalMaxHP));
         }
       } else {
-        console.log(`  🎯 First attacker can KO (${firstAttackerKOData.probability}%), second attacker doesn't get to move`);
+        console.log(`  🎯 First attacker has KO probability, second attacker doesn't get to move`);
       }
       
-      // ========== CRITICAL: Calculate KO probability after this turn ==========
-      console.log(`  🎲 KO Probability Check:`);
-      
-      // Calculate user's KO probability with moves used so far
+      // Calculate final KO probabilities for this turn (after both attackers)
       const userKOData = calculateMoveSequenceKOProbability(gen, userPokemon, rivalPokemon, userMovesUsed, rivalMaxHP);
       const userMoveSeq = userMovesUsed.map(m => m.move).join(' → ');
       console.log(`     User:  ${userKOData.probability.toString().padStart(5)}% (${userMoveSeq})`);
       
-      // Calculate rival's KO probability with moves used so far
       let rivalKOData = { probability: 0, isGuaranteed: false };
       if (rivalMovesUsed.length > 0) {
         rivalKOData = calculateMoveSequenceKOProbability(gen, rivalPokemon, userPokemon, rivalMovesUsed, userMaxHP);

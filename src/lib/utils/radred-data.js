@@ -56,8 +56,12 @@ export function getPokemonAbilities(pokemonName) {
   const result = [];
   
   // species.abilities format: [[abilityId, slot], [abilityId, slot], ...]
-  // slot 0 = regular ability, slot 1+ = hidden ability
-  for (const [abilityId, slot] of species.abilities) {
+  // Based on Radical Red Pokedex source code:
+  // a[0] = Hidden ability (speciesAbilitiesHidden)
+  // a[1] = Primary ability (speciesAbilitiesPrimary) 
+  // a[2] = Secondary ability (speciesAbilitiesSecondary)
+  for (let i = 0; i < species.abilities.length; i++) {
+    const [abilityId, slot] = species.abilities[i];
     if (abilityId === 0) continue; // Skip empty slots
     
     const abilityData = abilities[abilityId];
@@ -69,8 +73,8 @@ export function getPokemonAbilities(pokemonName) {
       id: abilityName.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
       name: abilityName,
       label: abilityName,
-      isHidden: slot > 0,
-      slot: slot + 1,
+      isHidden: i === 0, // a[0] is the hidden ability
+      slot: i + 1,
       effect: abilityData.description || ''
     });
   }

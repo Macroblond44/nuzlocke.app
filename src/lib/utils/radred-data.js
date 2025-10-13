@@ -210,7 +210,22 @@ const EVOLUTION_METHODS = {
   8: 'level-attack',   // Level with Attack > Defense
   9: 'level-defense',  // Level with Attack < Defense
   10: 'level-equal',   // Level with Attack = Defense
-  // ... more methods exist but these are the most common
+  11: 'level',         // Level (alternate)
+  12: 'level',         // Level (alternate)
+  13: 'level',         // Level (alternate)
+  14: 'level',         // Level (alternate)
+  16: 'level',         // Level (alternate)
+  17: 'level',         // Level (alternate)
+  18: 'level',         // Level (alternate)
+  20: 'level',         // Level (alternate)
+  21: 'level',         // Level during day
+  22: 'level',         // Level during night (used by Alolan Rattata, etc.)
+  23: 'level',         // Level (alternate)
+  26: 'level',         // Level (alternate)
+  27: 'level',         // Level (alternate)
+  28: 'level',         // Level (alternate)
+  30: 'level',         // Level (alternate)
+  31: 'level',         // Level (alternate)
   254: 'mega',         // Mega evolution
   255: 'primal'        // Primal reversion
 };
@@ -242,7 +257,8 @@ export function getPokemonEvolutions(pokemonName) {
     }
     
     const methodName = EVOLUTION_METHODS[methodId] || `unknown-${methodId}`;
-    const evolvedFormName = evolvedSpecies.name.toLowerCase();
+    // Use 'key' if available (for regional forms like "Linoone-Galar"), otherwise 'name'
+    const evolvedFormName = (evolvedSpecies.key || evolvedSpecies.name).toLowerCase();
     
     result.push({
       method: methodName,

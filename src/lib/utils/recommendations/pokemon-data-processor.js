@@ -102,7 +102,8 @@ export function formatCapturedPokemonForAPI(capturedPokemon, levelCap = 50, game
  */
 export function formatRoutePokemonForAPI(routePokemon, levelCap = 50, game = '') {
   return routePokemon.map(pokemon => {
-    const originalName = pokemon.name || pokemon.alias;
+    // Prioritize alias (which contains regional form info like "zigzagoon-galar")
+    const originalName = pokemon.alias || pokemon.name;
     
     // Auto-evolve based on level cap
     const evolvedName = autoEvolvePokemon(originalName, levelCap, game);
@@ -213,17 +214,17 @@ export function validatePokemonForAdvancedRecommendations(userPokemon) {
     
     if (!hasAbility && !hasMoves) {
       missingData.push({
-        name: pokemon.name || pokemon.alias,
+        name: pokemon.alias || pokemon.name,
         missing: 'ability and moves'
       })
     } else if (!hasAbility) {
       missingData.push({
-        name: pokemon.name || pokemon.alias,
+        name: pokemon.alias || pokemon.name,
         missing: 'ability'
       })
     } else if (!hasMoves) {
       missingData.push({
-        name: pokemon.name || pokemon.alias,
+        name: pokemon.alias || pokemon.name,
         missing: 'moves'
       })
     }

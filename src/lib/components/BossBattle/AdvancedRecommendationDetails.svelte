@@ -531,7 +531,7 @@
                     fallback={UNOWN}
                     name={pokemonData.name}
                     types={pokemonData.types || ['normal']}
-                    level={50}
+                    level={''}
                     moves={userPokemonData?.original?.moves || []}
                     ability={userPokemonData?.original?.ability ? { name: userPokemonData.original.ability } : ''}
                     nature={userPokemonData?.original?.nature ? NaturesMap[userPokemonData.original.nature] || { id: userPokemonData.original.nature, label: capitalise(userPokemonData.original.nature), value: [] } : undefined}

@@ -82,8 +82,7 @@ const BLACKLISTED_MOVES = new Set([
  * - Cute Charm: May infatuate opponent of opposite gender
  */
 const BLACKLISTED_ABILITIES = new Set([
-  'rivalry',
-  'cute-charm'
+  'rivalry'
 ]);
 
 /**

@@ -267,6 +267,11 @@
 
       status = NuzlockeStates[sid]
       _animateStatus(sid)
+      
+      // Open config modal when capturing (status id 1)
+      if (sid === 1) {
+        showConfigModal = true
+      }
     }
 
     if (sid === 5) return handleDeath(cb)

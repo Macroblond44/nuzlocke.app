@@ -31,10 +31,10 @@
   async function fetchMoves() {
     loading = true
     try {
-      const gameParam = gameKey ? `?game=${gameKey}` : ''
       const timestamp = Date.now()
+      const gameParam = gameKey ? `game=${gameKey}&` : ''
       
-      const response = await fetch(`/api/pokemon/${pokemonName}/moves.json${gameParam}&_t=${timestamp}`)
+      const response = await fetch(`/api/pokemon/${pokemonName}/moves.json?${gameParam}_t=${timestamp}`)
       movesDataSource = response.headers.get('X-Data-Source')
       
       const data = await response.json()

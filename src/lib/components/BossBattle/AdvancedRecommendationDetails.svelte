@@ -572,7 +572,7 @@
                     held={''}
                     maxStat={Math.max(150, ...Object.values(pokemonData.baseStats || {}))}
                     editable={true}
-                    gameKey={gameMode === 'normal' ? '' : 'radred'}
+                    gameKey={gameMode || ''}
                     onUpdate={(updateData) => handlePokemonUpdate(pokemon.name, updateData)}
                   />
                 {:else}

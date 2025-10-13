@@ -25,10 +25,10 @@
   async function fetchAbilities() {
     loading = true
     try {
-      const gameParam = gameKey ? `?game=${gameKey}` : ''
       const timestamp = Date.now()
+      const gameParam = gameKey ? `game=${gameKey}&` : ''
       
-      const response = await fetch(`/api/pokemon/${pokemonName}/abilities.json${gameParam}&_t=${timestamp}`)
+      const response = await fetch(`/api/pokemon/${pokemonName}/abilities.json?${gameParam}_t=${timestamp}`)
       abilitiesDataSource = response.headers.get('X-Data-Source')
       
       const abilities = await response.json()

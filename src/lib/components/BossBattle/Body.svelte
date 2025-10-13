@@ -23,10 +23,13 @@
   let recommendationMethod = 'basic' // 'basic' or 'advanced'
   let defaultRecommendationSetting = 0 // 0 = Basic, 1 = Advanced
   let validationError = null
+  let currentGameKey = '' // Store the current game key (e.g., 'radred', 'emerald', etc.)
 
-  // Load default recommendation method from settings
+  // Load default recommendation method from settings and game key
   savedGames.subscribe(parse(saves => {
-    const { settings } = saves[$activeGame] || {}
+    const currentSave = saves[$activeGame] || {}
+    const { settings, game } = currentSave
+    currentGameKey = game || ''
     const settingValue = (settings || '011101000')[getSetting('recommendation-method')]
     defaultRecommendationSetting = parseInt(settingValue) || 0
     // Set initial recommendation method based on settings
@@ -281,7 +284,7 @@
   {recommendations}
   bossTeam={team}
   userTeam={box}
-  gameMode="normal"
+  gameMode={currentGameKey}
   recommendationMethod={recommendationMethod}
   on:close={handleCloseAdvancedDebug}
 />

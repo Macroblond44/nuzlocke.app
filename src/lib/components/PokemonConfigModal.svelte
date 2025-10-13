@@ -50,11 +50,11 @@
   
   // Fetch abilities and moves when Pokemon is selected
   $: if (pokemon?.alias) {
-    const gameParam = gameKey ? `?game=${gameKey}` : '';
+    const timestamp = Date.now();
+    const gameParam = gameKey ? `game=${gameKey}&` : '';
     
     // Fetch abilities
-    const timestamp = Date.now();
-    fetch(`/api/pokemon/${pokemon.alias}/abilities.json${gameParam}&_t=${timestamp}`)
+    fetch(`/api/pokemon/${pokemon.alias}/abilities.json?${gameParam}_t=${timestamp}`)
       .then(res => {
         const source = res.headers.get('X-Data-Source');
         abilitiesDataSource = source;
@@ -70,7 +70,7 @@
       })
     
       // Fetch moves
-      fetch(`/api/pokemon/${pokemon.alias}/moves.json${gameParam}&_t=${timestamp}`)
+      fetch(`/api/pokemon/${pokemon.alias}/moves.json?${gameParam}_t=${timestamp}`)
         .then(res => {
           const source = res.headers.get('X-Data-Source');
           movesDataSource = source;

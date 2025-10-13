@@ -1106,17 +1106,30 @@ function calculateMatchup(gen, userMon, rivalMon) {
       console.log(`  🎯 Rival chooses: ${rivalSelectedMove?.name || 'None'}${rivalPriorityStr}`);
       console.log(`  ⚡ First strike:  ${userAttacksFirst ? 'User' : 'Rival'}\n`);
       
-      // Record moves used this turn (in order of execution)
+      // ========== Execute moves in order and check for KO after each ==========
+      
+      // First attacker always executes their move
       if (userAttacksFirst) {
         userMovesUsed.push(createMoveRecord(userSelectedMove.name, turn, userSelectedMove.avgDamage, rivalMaxHP));
-        if (rivalSelectedMove) {
+      } else if (rivalSelectedMove) {
+        rivalMovesUsed.push(createMoveRecord(rivalSelectedMove.name, turn, rivalSelectedMove.avgDamage, userMaxHP));
+      }
+      
+      // Check if first attacker can KO
+      const firstAttackerKOData = userAttacksFirst
+        ? calculateMoveSequenceKOProbability(gen, userPokemon, rivalPokemon, userMovesUsed, rivalMaxHP)
+        : (rivalSelectedMove ? calculateMoveSequenceKOProbability(gen, rivalPokemon, userPokemon, rivalMovesUsed, userMaxHP) : { probability: 0 });
+      
+      // Only allow second attacker to move if first attacker didn't KO
+      if (firstAttackerKOData.probability === 0) {
+        // First attacker didn't KO, second attacker can attack
+        if (userAttacksFirst && rivalSelectedMove) {
           rivalMovesUsed.push(createMoveRecord(rivalSelectedMove.name, turn, rivalSelectedMove.avgDamage, userMaxHP));
+        } else if (!userAttacksFirst) {
+          userMovesUsed.push(createMoveRecord(userSelectedMove.name, turn, userSelectedMove.avgDamage, rivalMaxHP));
         }
       } else {
-        if (rivalSelectedMove) {
-          rivalMovesUsed.push(createMoveRecord(rivalSelectedMove.name, turn, rivalSelectedMove.avgDamage, userMaxHP));
-        }
-        userMovesUsed.push(createMoveRecord(userSelectedMove.name, turn, userSelectedMove.avgDamage, rivalMaxHP));
+        console.log(`  🎯 First attacker can KO (${firstAttackerKOData.probability}%), second attacker doesn't get to move`);
       }
       
       // ========== CRITICAL: Calculate KO probability after this turn ==========

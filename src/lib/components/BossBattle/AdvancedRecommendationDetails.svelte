@@ -315,14 +315,14 @@
                             {getWinLossText(matchup)}
                           </div>
                           <div class="text-xs text-green-600 dark:text-green-400 font-medium mt-1">
-                            Your HP: {matchup.userFinalHP ? Math.round(matchup.userFinalHP) : '?'}/{matchup.userMaxHP || '?'}
+                            Your HP: {matchup.winnerRemainingHP ? Math.round(matchup.winnerRemainingHP) : '?'}/{matchup.userMaxHP || '?'}
                           </div>
                         {:else}
                           <div class="text-xs text-red-600 dark:text-red-400">
                             KO'd in {matchup.rivalHitsToKO || '?'} hit(s)
                           </div>
                           <div class="text-xs text-orange-600 dark:text-orange-400 font-medium mt-1">
-                            Rival HP: {matchup.rivalFinalHP ? Math.round(matchup.rivalFinalHP) : '?'}/{matchup.rivalMaxHP || '?'}
+                            Rival HP: {matchup.winnerRemainingHP ? Math.round(matchup.winnerRemainingHP) : '?'}/{matchup.rivalMaxHP || '?'}
                           </div>
                         {/if}
                         {#if matchup.battleSequence}
@@ -423,7 +423,7 @@
                                   ✓ Victory
                                 </div>
                                 <div class="text-xs text-green-500 dark:text-green-400">
-                                  Your HP: {matchup.userFinalHP ? Math.round(matchup.userFinalHP) : '?'}/{matchup.userMaxHP || '?'}
+                                  Your HP: {matchup.winnerRemainingHP ? Math.round(matchup.winnerRemainingHP) : '?'}/{matchup.userMaxHP || '?'}
                                 </div>
                                 <div class="text-xs text-gray-500 dark:text-gray-400">
                                   {matchup.turns || '?'} turn(s)
@@ -433,7 +433,7 @@
                                   ✗ Defeat
                                 </div>
                                 <div class="text-xs text-orange-500 dark:text-orange-400">
-                                  Rival HP: {matchup.rivalFinalHP ? Math.round(matchup.rivalFinalHP) : '?'}/{matchup.rivalMaxHP || '?'}
+                                  Rival HP: {matchup.winnerRemainingHP ? Math.round(matchup.winnerRemainingHP) : '?'}/{matchup.rivalMaxHP || '?'}
                                 </div>
                                 <div class="text-xs text-gray-500 dark:text-gray-400">
                                   {matchup.turns || '?'} turn(s)

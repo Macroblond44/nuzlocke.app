@@ -358,6 +358,72 @@ function calculateMedianDamage(damage) {
 }
 
 /**
+ * Calculate remaining HP for the winning Pokémon
+ * @param {Object} winner - The winning Pokémon data
+ * @param {Array} movesUsed - Array of moves used by the winner
+ * @param {Array} moveOptions - Available move options for the winner
+ * @returns {number} Remaining HP after battle
+ */
+function calculateWinnerRemainingHP(winner, winnerMovesUsed, winnerMoveOptions, loser, loserMovesUsed, loserMoveOptions, winnerSpeed, loserSpeed) {
+  const debugInfo = {
+    functionCalled: true,
+    winner: winner?.name,
+    loser: loser?.name,
+    winnerSpeed,
+    loserSpeed,
+    turns: []
+  };
+  
+  // Get the winner's max HP from the appropriate property
+  // For @smogon/calc Pokemon objects, use rawStats.hp or stats.hp
+  const maxHP = winner?.rawStats?.hp || winner?.stats?.hp || winner?.calculatedStats?.hp || winner?.hp || 0;
+  
+  debugInfo.maxHP = maxHP;
+  
+  if (!loserMovesUsed || loserMovesUsed.length === 0) {
+    console.log(`[HP CALCULATION] No loser moves, returning max HP: ${maxHP}`);
+    debugInfo.noLoserMoves = true;
+    winner._hpDebug = debugInfo;
+    return maxHP;
+  }
+  
+  let totalDamageReceived = 0;
+  
+  console.log(`[HP CALCULATION] Calculating HP for winner ${winner?.name}`);
+  console.log(`[HP CALCULATION] Loser moves used:`, loserMovesUsed.map(m => `${m.move} (${m.damage} dmg)`));
+  
+  // Simply sum up the damage from loser moves (damage already calculated in battleSequence)
+  for (let turn = 0; turn < loserMovesUsed.length; turn++) {
+    const loserMove = loserMovesUsed[turn];
+    const damage = loserMove.damage || 0; // Use the pre-calculated damage from battleSequence
+    
+    totalDamageReceived += damage;
+    
+    debugInfo.turns.push({
+      turn: turn + 1,
+      move: loserMove.move,
+      damage
+    });
+    
+    console.log(`[HP CALCULATION] Turn ${turn + 1}: ${loserMove.move} deals ${damage} damage`);
+  }
+  
+  const remainingHP = Math.max(0, maxHP - totalDamageReceived);
+  
+  debugInfo.totalDamageReceived = totalDamageReceived;
+  debugInfo.startingHP = maxHP;
+  debugInfo.remainingHP = remainingHP;
+  
+  console.log(`[HP CALCULATION] Total damage received: ${totalDamageReceived}`);
+  console.log(`[HP CALCULATION] Starting HP: ${maxHP}`);
+  console.log(`[HP CALCULATION] Remaining HP: ${remainingHP}`);
+  
+  winner._hpDebug = debugInfo;
+  
+  return remainingHP;
+}
+
+/**
  * Calculate mathematically accurate KO probability for a move sequence
  * 
  * This function uses the exact damage arrays from @smogon/calc to calculate
@@ -644,9 +710,23 @@ function getRivalMovePriority(rivalMovesUsed, rivalMoveOptions) {
 
 /**
  * Helper: Handle battle outcome when both sides can KO
+ * @param {number} turn - Current turn number
+ * @param {Object} userKOData - User's KO data
+ * @param {Object} rivalKOData - Rival's KO data
+ * @param {Array} userMovesUsed - User's moves used
+ * @param {Array} rivalMovesUsed - Rival's moves used
+ * @param {Array} userMoveOptions - User's move options
+ * @param {Array} rivalMoveOptions - Rival's move options
+ * @param {number} userSpeed - User's speed stat
+ * @param {number} rivalSpeed - Rival's speed stat
+ * @param {Array} battleLog - Battle log array
+ * @param {Object} userPokemon - User's Pokémon data
+ * @param {Object} rivalPokemon - Rival's Pokémon data
+ * @returns {Object} Object with winner info and remaining HP
  */
 function handleBothCanKO(turn, userKOData, rivalKOData, userMovesUsed, rivalMovesUsed,
-                         userMoveOptions, rivalMoveOptions, userSpeed, rivalSpeed, battleLog) {
+                         userMoveOptions, rivalMoveOptions, userSpeed, rivalSpeed, battleLog,
+                         userPokemon, rivalPokemon) {
   const userPriority = getUserMovePriority(userMovesUsed, userMoveOptions);
   const rivalPriority = getRivalMovePriority(rivalMovesUsed, rivalMoveOptions);
   
@@ -659,26 +739,64 @@ function handleBothCanKO(turn, userKOData, rivalKOData, userMovesUsed, rivalMove
   if (userWinsBySpeed) {
     console.log(`  ✅ USER WINS by speed/priority advantage!`);
     battleLog.push(`Turn ${turn}: User wins (faster/priority) with ${userKOData.probability}% ${userMovesUsed.length}HKO`);
+    
+    // Calculate remaining HP for the winning user
+    const remainingHP = calculateWinnerRemainingHP(userPokemon, userMovesUsed, userMoveOptions, rivalPokemon, rivalMovesUsed, rivalMoveOptions, userSpeed, rivalSpeed);
+    console.log(`[BATTLE RESULT] User remaining HP: ${remainingHP}/${userPokemon.rawStats?.hp || userPokemon.stats?.hp || 'unknown'}`);
+    
+    return { winner: 'user', remainingHP };
   } else {
     console.log(`  ❌ RIVAL WINS by speed/priority advantage!`);
     battleLog.push(`Turn ${turn}: Rival wins (faster/priority) with ${rivalKOData.probability}% ${rivalMovesUsed.length}HKO`);
+    
+    // Calculate remaining HP for the winning rival
+    const remainingHP = calculateWinnerRemainingHP(rivalPokemon, rivalMovesUsed, rivalMoveOptions, userPokemon, userMovesUsed, userMoveOptions, rivalSpeed, userSpeed);
+    console.log(`[BATTLE RESULT] Rival remaining HP: ${remainingHP}/${rivalPokemon.rawStats?.hp || rivalPokemon.stats?.hp || 'unknown'}`);
+    
+    return { winner: 'rival', remainingHP };
   }
 }
 
 /**
  * Helper: Handle battle outcome when only user can KO
+ * @param {number} turn - Current turn number
+ * @param {Object} userKOData - User's KO data
+ * @param {Array} userMovesUsed - User's moves used
+ * @param {Array} battleLog - Battle log array
+ * @param {Object} userPokemon - User's Pokémon data
+ * @param {Array} userMoveOptions - User's move options
+ * @returns {number} Remaining HP of the winning user Pokémon
  */
-function handleUserWins(turn, userKOData, userMovesUsed, battleLog) {
+function handleUserWins(turn, userKOData, userMovesUsed, battleLog, userPokemon, userMoveOptions, rivalPokemon, rivalMovesUsed, rivalMoveOptions, userSpeed, rivalSpeed) {
   console.log(`\n  ✅ USER WINS - ${userKOData.probability}% chance to ${userMovesUsed.length}HKO detected!`);
   battleLog.push(`Turn ${turn}: User wins with ${userKOData.probability}% ${userMovesUsed.length}HKO`);
+  
+  // Calculate remaining HP for the winning user
+  const remainingHP = calculateWinnerRemainingHP(userPokemon, userMovesUsed, userMoveOptions, rivalPokemon, rivalMovesUsed, rivalMoveOptions, userSpeed, rivalSpeed);
+  console.log(`[BATTLE RESULT] User remaining HP: ${remainingHP}/${userPokemon.rawStats?.hp || userPokemon.stats?.hp || 'unknown'}`);
+  
+  return remainingHP;
 }
 
 /**
  * Helper: Handle battle outcome when only rival can KO
+ * @param {number} turn - Current turn number
+ * @param {Object} rivalKOData - Rival's KO data
+ * @param {Array} rivalMovesUsed - Rival's moves used
+ * @param {Array} battleLog - Battle log array
+ * @param {Object} rivalPokemon - Rival's Pokémon data
+ * @param {Array} rivalMoveOptions - Rival's move options
+ * @returns {number} Remaining HP of the winning rival Pokémon
  */
-function handleRivalWins(turn, rivalKOData, rivalMovesUsed, battleLog) {
+function handleRivalWins(turn, rivalKOData, rivalMovesUsed, battleLog, rivalPokemon, rivalMoveOptions, userPokemon, userMovesUsed, userMoveOptions, rivalSpeed, userSpeed) {
   console.log(`\n  ❌ RIVAL WINS - ${rivalKOData.probability}% chance to ${rivalMovesUsed.length}HKO detected!`);
   battleLog.push(`Turn ${turn}: Rival wins with ${rivalKOData.probability}% ${rivalMovesUsed.length}HKO`);
+  
+  // Calculate remaining HP for the winning rival
+  const remainingHP = calculateWinnerRemainingHP(rivalPokemon, rivalMovesUsed, rivalMoveOptions, userPokemon, userMovesUsed, userMoveOptions, rivalSpeed, userSpeed);
+  console.log(`[BATTLE RESULT] Rival remaining HP: ${remainingHP}/${rivalPokemon.rawStats?.hp || rivalPokemon.stats?.hp || 'unknown'}`);
+  
+  return remainingHP;
 }
 
 /**
@@ -952,6 +1070,7 @@ function calculateMatchup(gen, userMon, rivalMon) {
     // Track who wins based on KO probability
     let userWins = false;
     let rivalWins = false;
+    let winnerRemainingHP = null;
     
     console.log(`\n╔═══════════════════════════════════════════════════════════╗`);
     console.log(`║  BATTLE SIMULATION - KO PROBABILITY ANALYSIS              ║`);
@@ -1024,24 +1143,21 @@ function calculateMatchup(gen, userMon, rivalMon) {
         // At least one side can KO - determine the winner
         if (userCanKO && rivalCanKO) {
           // Both can KO - winner determined by speed/priority
-          handleBothCanKO(
+          const bothResult = handleBothCanKO(
             turn, userKOData, rivalKOData, userMovesUsed, rivalMovesUsed,
             userMoveOptions, rivalMoveOptions, userSpeed, rivalSpeed,
-            battleLog
+            battleLog, userPokemon, rivalPokemon
           );
-          userWins = determineWinnerBySpeed(
-            userSpeed, rivalSpeed,
-            getUserMovePriority(userMovesUsed, userMoveOptions),
-            getRivalMovePriority(rivalMovesUsed, rivalMoveOptions)
-          );
-          rivalWins = !userWins;
+          userWins = bothResult.winner === 'user';
+          rivalWins = bothResult.winner === 'rival';
+          winnerRemainingHP = bothResult.remainingHP;
         } else if (userCanKO) {
           // Only user can KO
-          handleUserWins(turn, userKOData, userMovesUsed, battleLog);
+          winnerRemainingHP = handleUserWins(turn, userKOData, userMovesUsed, battleLog, userPokemon, userMoveOptions, rivalPokemon, rivalMovesUsed, rivalMoveOptions, userSpeed, rivalSpeed);
           userWins = true;
         } else {
           // Only rival can KO
-          handleRivalWins(turn, rivalKOData, rivalMovesUsed, battleLog);
+          winnerRemainingHP = handleRivalWins(turn, rivalKOData, rivalMovesUsed, battleLog, rivalPokemon, rivalMoveOptions, userPokemon, userMovesUsed, userMoveOptions, rivalSpeed, userSpeed);
           rivalWins = true;
         }
         break;
@@ -1136,7 +1252,11 @@ function calculateMatchup(gen, userMon, rivalMon) {
       // ===== HP Information =====
       userMaxHP,
       rivalMaxHP,
-      // Note: No final HP since we don't simulate actual HP reduction
+      winnerRemainingHP: winnerRemainingHP,
+      // HP remaining for the winning Pokémon after battle
+      
+      // ===== Debug Information =====
+      hpDebug: userPokemon._hpDebug || rivalPokemon._hpDebug || null,
       
       // ===== Scoring =====
       winProbability: userWins ? 100 : 0,

@@ -65,7 +65,10 @@ const DEFAULT_EVS = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
 const BLACKLISTED_MOVES = new Set([
   // Self-destruct moves (KO user)
   'explosion',
-  'self-destruct'
+  'self-destruct',
+  
+  // Delayed damage moves (hit 2 turns later, too unreliable for Nuzlocke)
+  'future-sight'
 ]);
 
 // Pokémon with cosmetic-only forms that @smogon/calc doesn't recognize

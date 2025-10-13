@@ -823,41 +823,77 @@ function determineWinnerBySpeed(userSpeed, rivalSpeed, userPriority, rivalPriori
 }
 
 /**
- * Helper: Select optimal move considering current HP and priority
+ * Helper: Select optimal move considering move sequence KO probability
  * 
  * Strategy:
- * 1. If a priority move GUARANTEES KO → use it
- * 2. Among moves that guarantee KO → use the one with highest damage
- * 3. Among moves that can potentially KO → use the one with highest max damage
+ * 1. If a priority move + previous moves GUARANTEES KO (100%) → use it
+ * 2. Among moves that + previous moves guarantee KO → use the one with highest damage
+ * 3. Among moves that + previous moves can potentially KO → use the one with highest KO probability
  * 4. Otherwise → use move with highest average damage
  */
-function selectOptimalMove(moveResults, defenderCurrentHP, needsPriority = false) {
+function selectOptimalMove(gen, attacker, defender, moveResults, defenderMaxHP, movesUsedSoFar = []) {
   if (!moveResults || moveResults.length === 0) {
     return null;
   }
   
   const priorityMoves = moveResults.filter(m => m.priority > 0);
   
-  // Strategy 1: Priority move that GUARANTEES KO
-  if (needsPriority && priorityMoves.length > 0) {
-    const priorityGuaranteedKO = priorityMoves.find(m => m.minDamage >= defenderCurrentHP);
-    if (priorityGuaranteedKO) return priorityGuaranteedKO;
+  // Strategy 1: Priority move that GUARANTEES KO when combined with previous moves
+  if (priorityMoves.length > 0 && movesUsedSoFar.length > 0) {
+    for (const priorityMove of priorityMoves) {
+      const testSequence = [...movesUsedSoFar, { move: priorityMove.name, damage: priorityMove.avgDamage }];
+      const koData = calculateMoveSequenceKOProbability(gen, attacker, defender, testSequence, defenderMaxHP);
+      if (koData.probability === 100) {
+        console.log(`  ⚡ Priority move ${priorityMove.name} guarantees KO with previous moves!`);
+        return priorityMove;
+      }
+    }
   }
   
-  // Strategy 2: Move that guarantees KO with highest damage
-  const guaranteedKOMoves = moveResults.filter(m => m.minDamage >= defenderCurrentHP);
-  if (guaranteedKOMoves.length > 0) {
-    return guaranteedKOMoves.reduce((best, current) => 
-      current.avgDamage > best.avgDamage ? current : best
-    );
+  // Strategy 2: Move that guarantees KO when combined with previous moves
+  // Priority: 1) Priority moves, 2) Higher damage
+  let bestGuaranteedKO = null;
+  let bestGuaranteedKOPriority = -1;
+  let bestGuaranteedKODamage = 0;
+  
+  for (const move of moveResults) {
+    const testSequence = [...movesUsedSoFar, { move: move.name, damage: move.avgDamage }];
+    const koData = calculateMoveSequenceKOProbability(gen, attacker, defender, testSequence, defenderMaxHP);
+    
+    if (koData.probability === 100) {
+      const movePriority = move.priority || 0;
+      const shouldSelect = 
+        !bestGuaranteedKO || // No previous best
+        movePriority > bestGuaranteedKOPriority || // Higher priority
+        (movePriority === bestGuaranteedKOPriority && move.avgDamage > bestGuaranteedKODamage); // Same priority, higher damage
+      
+      if (shouldSelect) {
+        bestGuaranteedKO = move;
+        bestGuaranteedKOPriority = movePriority;
+        bestGuaranteedKODamage = move.avgDamage;
+      }
+    }
   }
   
-  // Strategy 3: Move with best KO chance
-  const possibleKO = moveResults.filter(m => m.maxDamage >= defenderCurrentHP);
-  if (possibleKO.length > 0) {
-    return possibleKO.reduce((best, current) => 
-      current.maxDamage > best.maxDamage ? current : best
-    );
+  if (bestGuaranteedKO) {
+    return bestGuaranteedKO;
+  }
+  
+  // Strategy 3: Move with best KO probability when combined with previous moves
+  let bestPossibleKO = null;
+  let bestKOProbability = 0;
+  
+  for (const move of moveResults) {
+    const testSequence = [...movesUsedSoFar, { move: move.name, damage: move.avgDamage }];
+    const koData = calculateMoveSequenceKOProbability(gen, attacker, defender, testSequence, defenderMaxHP);
+    if (koData.probability > bestKOProbability) {
+      bestPossibleKO = move;
+      bestKOProbability = koData.probability;
+    }
+  }
+  
+  if (bestPossibleKO && bestKOProbability > 0) {
+    return bestPossibleKO;
   }
   
   // Strategy 4: Highest average damage
@@ -1084,10 +1120,10 @@ function calculateMatchup(gen, userMon, rivalMon) {
       console.log(`Turn ${turn}`);
       console.log(`${'─'.repeat(60)}`);
       
-      // Select optimal moves for this turn (based on full HP, not reduced)
-      const userSelectedMove = selectOptimalMove(userMoveOptions, rivalMaxHP, true);
+      // Select optimal moves for this turn considering previous moves
+      const userSelectedMove = selectOptimalMove(gen, userPokemon, rivalPokemon, userMoveOptions, rivalMaxHP, userMovesUsed);
       const rivalSelectedMove = rivalMoveOptions.length > 0 
-        ? selectOptimalMove(rivalMoveOptions, userMaxHP, true)
+        ? selectOptimalMove(gen, rivalPokemon, userPokemon, rivalMoveOptions, userMaxHP, rivalMovesUsed)
         : null;
       
       if (!userSelectedMove) {

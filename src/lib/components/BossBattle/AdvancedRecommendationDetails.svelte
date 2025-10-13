@@ -3,7 +3,7 @@
   import { capitalise, regionise } from '$utils/string'
   import { createEventDispatcher, onMount } from 'svelte'
   import { Icon } from '$c/core'
-  import { X, Sword, Shield, BarChart, Info, Settings } from '$icons'
+  import { X, Sword, Shield, BarChart, Info, Settings, Sort, Caret, Unfilter } from '$icons'
 
   export let recommendations = []
   export let bossTeam = []
@@ -21,6 +21,11 @@
   let loadingCalculations = false
   let calculationDetails = null
 
+  // State for filtering and sorting
+  let currentFilter = 'score' // 'score' or 'rival'
+  let selectedRivalForFilter = null
+  let filteredRecommendations = []
+
   function closeModal() {
     open = false
     dispatch('close')
@@ -29,6 +34,87 @@
     selectedPokemon = null
     selectedRivalPokemon = null
     calculationDetails = null
+    currentFilter = 'score'
+    selectedRivalForFilter = null
+  }
+
+  // Get all unique rival Pokémon from all recommendations
+  function getAllRivalPokemon() {
+    const rivals = new Set()
+    recommendations.forEach(rec => {
+      if (rec.matchups) {
+        rec.matchups.forEach(matchup => {
+          rivals.add(matchup.rivalPokemon)
+        })
+      }
+    })
+    return Array.from(rivals).sort()
+  }
+
+  // Calculate HP percentage lost for a matchup
+  function calculateHPLostPercentage(matchup) {
+    if (!matchup.userWins || !matchup.userMaxHP || matchup.userMaxHP === 0) {
+      return 100 // If lost or no HP data, consider 100% lost
+    }
+    
+    const remainingHP = matchup.winnerRemainingHP || 0
+    const hpLost = matchup.userMaxHP - remainingHP
+    const percentageLost = (hpLost / matchup.userMaxHP) * 100
+    
+    return Math.round(percentageLost * 10) / 10 // Round to 1 decimal place
+  }
+
+  // Filter and sort recommendations based on current filter
+  function applyFilter() {
+    if (currentFilter === 'score') {
+      // Default sorting by score (already sorted from server)
+      filteredRecommendations = [...recommendations]
+    } else if (currentFilter === 'rival' && selectedRivalForFilter) {
+      // Filter by rival Pokémon performance
+      filteredRecommendations = recommendations
+        .map(rec => {
+          // Find the matchup against the selected rival
+          const matchup = rec.matchups?.find(m => m.rivalPokemon === selectedRivalForFilter)
+          
+          if (!matchup || !matchup.userWins) {
+            return null // Exclude Pokémon that didn't win against this rival
+          }
+          
+          return {
+            ...rec,
+            hpLostPercentage: calculateHPLostPercentage(matchup),
+            rivalMatchup: matchup
+          }
+        })
+        .filter(rec => rec !== null) // Remove null entries
+        .sort((a, b) => a.hpLostPercentage - b.hpLostPercentage) // Sort by HP lost percentage (ascending)
+    } else {
+      filteredRecommendations = [...recommendations]
+    }
+  }
+
+  // Handle filter change
+  function handleFilterChange(newFilter) {
+    currentFilter = newFilter
+    if (newFilter === 'rival' && !selectedRivalForFilter) {
+      // Auto-select first rival if none selected
+      const rivals = getAllRivalPokemon()
+      if (rivals.length > 0) {
+        selectedRivalForFilter = rivals[0]
+      }
+    }
+    applyFilter()
+  }
+
+  // Handle rival selection change
+  function handleRivalChange(rivalName) {
+    selectedRivalForFilter = rivalName
+    applyFilter()
+  }
+
+  // Initialize filter when recommendations change
+  $: if (recommendations && recommendations.length > 0) {
+    applyFilter()
   }
 
   function toggleDetailedCalculations(pokemon) {
@@ -255,6 +341,94 @@
         </button>
       </div>
 
+      <!-- Filter Controls -->
+      <div class="px-6 py-4 border-b border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-700/50">
+        <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between">
+          <!-- Filter Type Selection -->
+          <div class="flex items-center gap-4">
+            <div class="flex items-center gap-2">
+              <Icon icon={Unfilter} class="w-4 h-4 text-gray-600 dark:text-gray-400" />
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Sort by:</span>
+            </div>
+            
+            <!-- Filter Buttons -->
+            <div class="flex rounded-lg border border-gray-300 dark:border-gray-600 overflow-hidden">
+              <button
+                on:click={() => handleFilterChange('score')}
+                class="px-3 py-2 text-sm font-medium transition-colors {currentFilter === 'score' 
+                  ? 'bg-green-500 text-white' 
+                  : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600'}"
+              >
+                Overall Score
+              </button>
+              <button
+                on:click={() => handleFilterChange('rival')}
+                class="px-3 py-2 text-sm font-medium transition-colors {currentFilter === 'rival' 
+                  ? 'bg-blue-500 text-white' 
+                  : 'bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600'}"
+              >
+                vs Specific Rival
+              </button>
+            </div>
+          </div>
+
+          <!-- Rival Selection (only show when rival filter is active) -->
+          {#if currentFilter === 'rival'}
+            <div class="flex items-center gap-3">
+              <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Rival:</span>
+              <div class="relative">
+                <select
+                  bind:value={selectedRivalForFilter}
+                  on:change={(e) => handleRivalChange(e.target.value)}
+                  class="appearance-none bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-lg px-3 py-2 pr-8 text-sm text-gray-700 dark:text-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  {#each getAllRivalPokemon() as rival}
+                    <option value={rival}>
+                      {regionise(capitalise(rival))}
+                    </option>
+                  {/each}
+                </select>
+                <Icon icon={Caret} class="absolute right-2 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+              </div>
+              
+              <!-- Results count -->
+              {#if selectedRivalForFilter}
+                <div class="text-xs text-gray-500 dark:text-gray-400 bg-gray-100 dark:bg-gray-600 px-2 py-1 rounded">
+                  {filteredRecommendations.length} Pokémon won
+                </div>
+              {/if}
+            </div>
+          {/if}
+        </div>
+
+        <!-- Filter Description -->
+        {#if currentFilter === 'rival' && selectedRivalForFilter}
+          <div class="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg border border-blue-200 dark:border-blue-700">
+            <div class="flex items-start gap-2">
+              <Icon icon={Info} class="w-4 h-4 text-blue-600 mt-0.5 flex-shrink-0" />
+              <div class="text-sm text-blue-800 dark:text-blue-200">
+                <p class="font-medium">Sorted by HP efficiency against {regionise(capitalise(selectedRivalForFilter))}</p>
+                <p class="text-xs mt-1">
+                  Pokémon are ranked by HP percentage lost (ascending). Pokémon that lost less HP appear first.
+                </p>
+              </div>
+            </div>
+          </div>
+        {:else if currentFilter === 'score'}
+          <div class="mt-3 p-3 bg-green-50 dark:bg-green-900/20 rounded-lg border border-green-200 dark:border-green-700">
+            <div class="flex items-start gap-2">
+              <Icon icon={Info} class="w-4 h-4 text-green-600 mt-0.5 flex-shrink-0" />
+              <div class="text-sm text-green-800 dark:text-green-200">
+                <p class="font-medium">Sorted by overall battle score</p>
+                <p class="text-xs mt-1">
+                  Pokémon are ranked by total victories across all rival Pokémon.
+                </p>
+              </div>
+            </div>
+          </div>
+        {/if}
+      </div>
+
       <!-- Content -->
       <div class="p-6">
 
@@ -265,7 +439,7 @@
           </h3>
           
           
-          {#each recommendations as pokemon, index}
+          {#each filteredRecommendations as pokemon, index}
             {@const userPokemonData = userTeam.find(p => (p.name || p.alias) === pokemon.name)}
             <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
               <div class="flex items-center justify-between mb-4">
@@ -277,6 +451,9 @@
                     </h4>
                     <p class="text-sm text-gray-600 dark:text-gray-400">
                       Rank #{index + 1} • Score: {pokemon.score || 'N/A'}
+                      {#if currentFilter === 'rival' && pokemon.hpLostPercentage !== undefined}
+                        • HP Lost: {pokemon.hpLostPercentage}%
+                      {/if}
                     </p>
                   </div>
                 </div>
@@ -300,11 +477,23 @@
                   </div>
                   <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
                     {#each pokemon.matchups as matchup}
-                      <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg border-2 {matchup.userWins ? 'border-green-400 dark:border-green-600' : 'border-red-400 dark:border-red-600'}">
+                      {@const isFilteredMatchup = currentFilter === 'rival' && matchup.rivalPokemon === selectedRivalForFilter}
+                      <div class="bg-gray-50 dark:bg-gray-700 p-3 rounded-lg border-2 {isFilteredMatchup 
+                        ? 'border-blue-400 dark:border-blue-500 bg-blue-50 dark:bg-blue-900/20' 
+                        : (matchup.userWins ? 'border-green-400 dark:border-green-600' : 'border-red-400 dark:border-red-600')}">
                         <div class="flex items-center gap-2 mb-2">
                           <PIcon name={matchup.rivalPokemon} class="w-6 h-6" />
-                          <div class="text-xs font-bold {matchup.userWins ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">
-                            {matchup.userWins ? '✓ WIN' : '✗ LOSS'}
+                          <div class="flex-1">
+                            <div class="flex items-center justify-between">
+                              <div class="text-xs font-bold {matchup.userWins ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">
+                                {matchup.userWins ? '✓ WIN' : '✗ LOSS'}
+                              </div>
+                              {#if isFilteredMatchup}
+                                <div class="text-xs bg-blue-500 text-white px-1.5 py-0.5 rounded-full font-medium">
+                                  FILTERED
+                                </div>
+                              {/if}
+                            </div>
                           </div>
                         </div>
                         <div class="text-xs font-medium text-gray-900 dark:text-white mb-1">

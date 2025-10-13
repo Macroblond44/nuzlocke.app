@@ -122463,7 +122463,7 @@
       },
       "707": {
         "ID": 707,
-        "name": "Burmy",
+        "name": "Burmy-Sandy",
         "stats": [
           40,
           29,
@@ -122542,14 +122542,14 @@
           5,
           13
         ],
-        "key": "Burmy",
+        "key": "Burmy-Sandy",
         "dexID": 412,
         "order": 1,
         "ancestor": 707
       },
       "708": {
         "ID": 708,
-        "name": "Burmy",
+        "name": "Burmy-Trash",
         "stats": [
           40,
           29,
@@ -122628,7 +122628,7 @@
           5,
           13
         ],
-        "key": "Burmy",
+        "key": "Burmy-Trash",
         "dexID": 412,
         "order": 2,
         "ancestor": 708

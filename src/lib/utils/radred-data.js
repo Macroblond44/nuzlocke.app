@@ -20,12 +20,17 @@ export function getSpecies(identifier) {
     return species[identifier] || null;
   }
   
-  // If string name, search by name
+  // If string name, search by name or key
   const normalizedName = identifier.toLowerCase().trim();
-  const entry = Object.values(species).find(s => 
-    s.name?.toLowerCase() === normalizedName ||
-    s.name?.toLowerCase().replace(/[^a-z0-9]/g, '') === normalizedName.replace(/[^a-z0-9]/g, '')
-  );
+  
+  const entry = Object.values(species).find(s => {
+    const nameMatch = s.name?.toLowerCase() === normalizedName;
+    const keyMatch = s.key?.toLowerCase() === normalizedName;
+    const nameNormalizedMatch = s.name?.toLowerCase().replace(/[^a-z0-9]/g, '') === normalizedName.replace(/[^a-z0-9]/g, '');
+    const keyNormalizedMatch = s.key?.toLowerCase().replace(/[^a-z0-9]/g, '') === normalizedName.replace(/[^a-z0-9]/g, '');
+    
+    return nameMatch || keyMatch || nameNormalizedMatch || keyNormalizedMatch;
+  });
   
   return entry || null;
 }
@@ -105,35 +110,38 @@ export function getPokemonMoves(pokemonName) {
   }
   
   const moves = pokemonData.radred?.moves || {};
-  const tmMovesList = pokemonData.radred?.tmMoves || [];
-  const tutorMovesList = pokemonData.radred?.tutorMoves || [];
-  
-  // Level-up moves: [[moveId, level], ...]
-  const levelUp = (species.levelupMoves || []).map(([moveId, level]) => {
-    const moveData = moves[moveId];
-    return moveData ? {
-      level,
-      ...formatMove(moveData, moveId)
-    } : null;
-  })
-  .filter(m => m)
-  .sort((a, b) => a.level - b.level); // Sort by level in ascending order
-  
-  // TM moves (array of moveIds that match TM list)
-  // TODO: Implement TM move extraction
-  
-  // Tutor moves
-  // TODO: Implement tutor move extraction
-  
-  // Egg moves
-  // TODO: Implement egg move extraction
-  
-  return {
-    levelUp,
+  const result = {
+    levelUp: [],
     tm: [],
     tutor: [],
     egg: []
   };
+  
+  // Level-up moves: [[moveId, level], ...]
+  if (species.levelupMoves && Array.isArray(species.levelupMoves)) {
+    species.levelupMoves.forEach(([moveId, level]) => {
+      const moveData = moves[moveId];
+      if (moveData) {
+        result.levelUp.push({
+          id: moveData.name.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, ''),
+          name: moveData.name,
+          type: getTypeName(moveData.type),
+          power: moveData.power,
+          accuracy: moveData.accuracy,
+          pp: moveData.pp,
+          damage_class: getDamageClassName(moveData.split),
+          priority: moveData.priority,
+          effect: moveData.description || '',
+          level: level
+        });
+      }
+    });
+  }
+  
+  // Sort level-up moves by level
+  result.levelUp.sort((a, b) => a.level - b.level);
+  
+  return result;
 }
 
 /**
@@ -286,4 +294,30 @@ export function getEvolvedFormAtLevel(pokemonName, level) {
   
   return evolved ? currentForm : null;
 }
+
+/**
+ * Get type name by ID
+ * @param {number} typeId - Type ID
+ * @returns {string} Type name
+ */
+function getTypeName(typeId) {
+  const types = pokemonData.radred?.types || {};
+  const typeData = types[typeId];
+  return typeData?.name?.toLowerCase() || 'normal';
+}
+
+/**
+ * Get damage class name by split value
+ * @param {number} split - Split value (0=physical, 1=special, 2=status)
+ * @returns {string} Damage class name
+ */
+function getDamageClassName(split) {
+  switch (split) {
+    case 0: return 'physical';
+    case 1: return 'special';
+    case 2: return 'status';
+    default: return 'status';
+  }
+}
+
 

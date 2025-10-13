@@ -30,7 +30,6 @@ export async function GET({ params, url }) {
       const abilities = getPokemonAbilities(pokemonName);
       
       if (abilities.length > 0) {
-        console.log(`[Abilities] Using Radical Red data for ${pokemonName}`);
         return new Response(JSON.stringify(abilities), {
           status: 200,
           headers: {

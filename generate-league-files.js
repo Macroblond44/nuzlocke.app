@@ -224,27 +224,45 @@ async function fetchAndFormatAbility(abilityName) {
 }
 
 /**
- * Format held item data from league.json format
+ * Fetch and format held item data from PokeAPI
  * 
  * @param {string|object} item - Item name or item object
- * @returns {object} Formatted item object
+ * @returns {Promise<object>} Formatted item object with PokeAPI data
  */
-function formatHeldItem(item) {
+async function fetchAndFormatHeldItem(item) {
   if (!item || item === 'none') return null;
   
-  if (typeof item === 'string') {
+  // If it's already an object with effect, return as is
+  if (typeof item === 'object' && item.effect) {
     return {
-      sprite: item,
-      name: titleCase(item),
-      effect: null
+      sprite: item.sprite || item.name,
+      name: item.name || titleCase(item.sprite || ''),
+      effect: item.effect || item.description
     };
   }
   
-  return {
-    sprite: item.sprite || item.name,
-    name: item.name || titleCase(item.sprite || ''),
-    effect: item.effect || item.description
-  };
+  const itemName = typeof item === 'string' ? item : (item.name || item.sprite);
+  
+  try {
+    const itemData = await P.getItemByName(itemName);
+    
+    return {
+      sprite: itemName,
+      name: itemData.names.find(n => n.language.name === 'en')?.name || titleCase(itemName),
+      effect: itemData.effect_entries?.[0]?.short_effect || 
+              itemData.flavor_text_entries?.find(entry => entry.language.name === 'en')?.text ||
+              null
+    };
+  } catch (error) {
+    debug(`    ⚠️ Failed to fetch item ${itemName} from PokeAPI:`, error.message);
+    
+    // Fallback: return basic formatted data
+    return {
+      sprite: itemName,
+      name: titleCase(itemName),
+      effect: null
+    };
+  }
 }
 
 /**
@@ -301,7 +319,11 @@ async function enrichPokemonData(pokemon, pokemonData, game) {
   const enrichedAbility = await fetchAndFormatAbility(abilityName);
   debug(`    Ability enriched: ${enrichedAbility.name}`);
   
-  // Step 3: Get correct data from pokemon-data.json (stats and types)
+  // Step 4: Fetch and enrich held item from PokeAPI
+  const enrichedHeldItem = await fetchAndFormatHeldItem(pokemon.held);
+  debug(`    Held item enriched: ${enrichedHeldItem?.name || 'none'}`);
+  
+  // Step 5: Get correct data from pokemon-data.json (stats and types)
   const radredData = getPokemonDataFromRadRed(pokemon.name, pokemonData, game);
   
   if (radredData?.stats) {
@@ -314,14 +336,14 @@ async function enrichPokemonData(pokemon, pokemonData, game) {
     debug(`    Types from pokemon-data.json: ${radredData.types.join(', ')}`);
   }
   
-  // Step 4: Combine everything
+  // Step 6: Combine everything
   return {
     name: pokemon.name,
     alias: pokemonAlias, // Important for frontend sprite lookup
     level: pokemon.level,
     moves: enrichedMoves,
     ability: enrichedAbility,
-    held: formatHeldItem(pokemon.held),
+    held: enrichedHeldItem, // Now enriched with PokeAPI data
     nature: pokemon.nature || 'Hardy',
     evs: pokemon.evs || { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
     ivs: pokemon.ivs || { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 },

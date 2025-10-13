@@ -49,7 +49,7 @@
         "held": {
           "sprite": "custap-berry",
           "name": "Custap Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/4 max HP when using a move to go first."
         },
         "nature": "Adamant",
         "evs": {
@@ -127,7 +127,7 @@
         "held": {
           "sprite": "air-balloon",
           "name": "Air Balloon",
-          "effect": null
+          "effect": "Held: Grants immunity to Ground-type moves, Spikes, and Toxic Spikes. Consumed when the holder takes damage from a move."
         },
         "nature": "Brave",
         "evs": {
@@ -197,7 +197,7 @@
         "held": {
           "sprite": "berry-juice",
           "name": "Berry Juice",
-          "effect": null
+          "effect": "Restores 20 HP."
         },
         "nature": "Bashful",
         "evs": {
@@ -275,7 +275,7 @@
         "held": {
           "sprite": "berry-juice",
           "name": "Berry Juice",
-          "effect": null
+          "effect": "Restores 20 HP."
         },
         "nature": "Jolly",
         "evs": {
@@ -360,7 +360,7 @@
         "held": {
           "sprite": "eviolite",
           "name": "Eviolite",
-          "effect": null
+          "effect": "Held: Holder has 1.5× Defense and Special Defense, as long as it’s not fully evolved."
         },
         "nature": "Lonely",
         "evs": {
@@ -437,7 +437,7 @@
         "held": {
           "sprite": "mystic-water",
           "name": "Mystic Water",
-          "effect": null
+          "effect": "Held: Water-Type moves from holder do 20% more damage."
         },
         "nature": "Timid",
         "evs": {
@@ -514,7 +514,7 @@
         "held": {
           "sprite": "sitrus-berry",
           "name": "Sitrus Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to recover 1/4 max HP."
         },
         "nature": "Timid",
         "evs": {
@@ -592,7 +592,7 @@
         "held": {
           "sprite": "iapapa-berry",
           "name": "Iapapa Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to restore 1/8 max HP. Confuses Pokémon that dislike sour flavor."
         },
         "nature": "Bold",
         "evs": {
@@ -677,7 +677,7 @@
         "held": {
           "sprite": "terrain-extender",
           "name": "Terrain Extender",
-          "effect": null
+          "effect": "Held: Extends the holder’s Terrain effects to 8 turns."
         },
         "nature": "Bold",
         "evs": {
@@ -754,7 +754,7 @@
         "held": {
           "sprite": "occa-berry",
           "name": "Occa Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Fire-type attack to halve the damage."
         },
         "nature": "Calm",
         "evs": {
@@ -832,7 +832,7 @@
         "held": {
           "sprite": "shuca-berry",
           "name": "Shuca Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Ground-type attack to halve the damage."
         },
         "nature": "Bold",
         "evs": {
@@ -909,7 +909,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Jolly",
         "evs": {
@@ -987,7 +987,7 @@
         "held": {
           "sprite": "manectite",
           "name": "Manectite",
-          "effect": null
+          "effect": "Held: Allows Manectric to Mega Evolve into Mega Manectric."
         },
         "nature": "Hardy",
         "evs": {
@@ -1071,7 +1071,7 @@
         "held": {
           "sprite": "terrain-extender",
           "name": "Terrain Extender",
-          "effect": null
+          "effect": "Held: Extends the holder’s Terrain effects to 8 turns."
         },
         "nature": "Jolly",
         "evs": {
@@ -1148,7 +1148,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Jolly",
         "evs": {
@@ -1226,7 +1226,7 @@
         "held": {
           "sprite": "venusaurite",
           "name": "Venusaurite",
-          "effect": null
+          "effect": "Held: Allows Venusaur to Mega Evolve into Mega Venusaur."
         },
         "nature": "Hardy",
         "evs": {
@@ -1304,7 +1304,7 @@
         "held": {
           "sprite": "grassy-seed",
           "name": "Grassy Seed",
-          "effect": null
+          "effect": "Held: Consumed on Grassy Terrain and raises the holder’s Defense by one stage."
         },
         "nature": "Modest",
         "evs": {
@@ -1381,7 +1381,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Naive",
         "evs": {
@@ -1466,7 +1466,7 @@
         "held": {
           "sprite": "psychic-seed",
           "name": "Psychic Seed",
-          "effect": null
+          "effect": "Held: Consumed on Psychic Terrain and raises the holder’s Special Defense by one stage."
         },
         "nature": "Quiet",
         "evs": {
@@ -1544,7 +1544,7 @@
         "held": {
           "sprite": "terrain-extender",
           "name": "Terrain Extender",
-          "effect": null
+          "effect": "Held: Extends the holder’s Terrain effects to 8 turns."
         },
         "nature": "Hardy",
         "evs": {
@@ -1700,7 +1700,7 @@
         "held": {
           "sprite": "eviolite",
           "name": "Eviolite",
-          "effect": null
+          "effect": "Held: Holder has 1.5× Defense and Special Defense, as long as it’s not fully evolved."
         },
         "nature": "Relaxed",
         "evs": {
@@ -1777,7 +1777,7 @@
         "held": {
           "sprite": "flame-orb",
           "name": "Flame Orb",
-          "effect": null
+          "effect": "Held: Inflicts Burn on the holder at the end of the turn. Activates after Burn damage would occur."
         },
         "nature": "Brave",
         "evs": {
@@ -1855,7 +1855,7 @@
         "held": {
           "sprite": "gardevoirite",
           "name": "Gardevoirite",
-          "effect": null
+          "effect": "Held: Allows Gardevoir to Mega Evolve into Mega Gardevoir."
         },
         "nature": "Hardy",
         "evs": {
@@ -1924,7 +1924,7 @@
         "held": {
           "sprite": "choice-specs",
           "name": "Choice Specs",
-          "effect": null
+          "effect": "Held: Increases Special Attack by 50%, but restricts the holder to only one move."
         },
         "nature": "Timid",
         "evs": {
@@ -2002,7 +2002,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Timid",
         "evs": {
@@ -2079,7 +2079,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Timid",
         "evs": {
@@ -2141,7 +2141,7 @@
         "held": {
           "sprite": "choice-scarf",
           "name": "Choice Scarf",
-          "effect": null
+          "effect": "Held: Increases Speed by 50%, but restricts the holder to only one move."
         },
         "nature": "Adamant",
         "evs": {
@@ -2382,7 +2382,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Timid",
         "evs": {
@@ -2460,7 +2460,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -2538,7 +2538,7 @@
         "held": {
           "sprite": "lum-berry",
           "name": "Lum Berry",
-          "effect": null
+          "effect": "Held: Consumed to cure any status condition or confusion."
         },
         "nature": "Timid",
         "evs": {
@@ -2615,8 +2615,8 @@
         },
         "held": {
           "sprite": "heavy-duty-boots",
-          "name": "Heavy Duty Boots",
-          "effect": null
+          "name": "Heavy-Duty Boots",
+          "effect": "These boots prevent the effects of traps set on\nthe battlefield."
         },
         "nature": "Modest",
         "evs": {
@@ -2771,7 +2771,7 @@
         "held": {
           "sprite": "charizardite-y",
           "name": "Charizardite Y",
-          "effect": null
+          "effect": "Held: Allows Charizard to Mega Evolve into Mega Charizard Y."
         },
         "nature": "Hardy",
         "evs": {
@@ -2856,7 +2856,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Jolly",
         "evs": {
@@ -3012,7 +3012,7 @@
         "held": {
           "sprite": "weakness-policy",
           "name": "Weakness Policy",
-          "effect": null
+          "effect": "Held: When the holder is hit by a super effective move, its Attack and Special Attack raise by two stages."
         },
         "nature": "Adamant",
         "evs": {
@@ -3090,7 +3090,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Modest",
         "evs": {
@@ -3246,7 +3246,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Timid",
         "evs": {
@@ -3331,7 +3331,7 @@
         "held": {
           "sprite": "oran-berry",
           "name": "Oran Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to recover 10 HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -3409,7 +3409,7 @@
         "held": {
           "sprite": "wise-glasses",
           "name": "Wise Glasses",
-          "effect": null
+          "effect": "Held: Boosts the damage of special moves used by the holder by 1/10 (10%)."
         },
         "nature": "Timid",
         "evs": {
@@ -3487,7 +3487,7 @@
         "held": {
           "sprite": "berry-juice",
           "name": "Berry Juice",
-          "effect": null
+          "effect": "Restores 20 HP."
         },
         "nature": "Jolly",
         "evs": {
@@ -3571,7 +3571,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Timid",
         "evs": {
@@ -3649,7 +3649,7 @@
         "held": {
           "sprite": "scope-lens",
           "name": "Scope Lens",
-          "effect": null
+          "effect": "Held: Raises the holder’s critical hit ratio by one stage."
         },
         "nature": "Jolly",
         "evs": {
@@ -3727,7 +3727,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -3805,7 +3805,7 @@
         "held": {
           "sprite": "sitrus-berry",
           "name": "Sitrus Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to recover 1/4 max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -3883,7 +3883,7 @@
         "held": {
           "sprite": "kangaskhanite",
           "name": "Kangaskhanite",
-          "effect": null
+          "effect": "Held: Allows Kangaskhan to Mega Evolve into Mega Kangaskhan."
         },
         "nature": "Hardy",
         "evs": {
@@ -4343,7 +4343,7 @@
         "held": {
           "sprite": "colbur-berry",
           "name": "Colbur Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Dark-type attack to halve the damage."
         },
         "nature": "Modest",
         "evs": {
@@ -4420,7 +4420,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -4498,7 +4498,7 @@
         "held": {
           "sprite": "houndoominite",
           "name": "Houndoominite",
-          "effect": null
+          "effect": "Held: Allows Houndoom to Mega Evolve into Mega Houndoom."
         },
         "nature": "Hardy",
         "evs": {
@@ -4576,7 +4576,7 @@
         "held": {
           "sprite": "sitrus-berry",
           "name": "Sitrus Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to recover 1/4 max HP."
         },
         "nature": "Adamant",
         "evs": {
@@ -4654,7 +4654,7 @@
         "held": {
           "sprite": "throat-spray",
           "name": "Throat Spray",
-          "effect": null
+          "effect": "Raises Sp. Atk when a Pokémon uses a sound-based\nmove."
         },
         "nature": "Modest",
         "evs": {
@@ -4732,7 +4732,7 @@
         "held": {
           "sprite": "mawilite",
           "name": "Mawilite",
-          "effect": null
+          "effect": "Held: Allows Mawile to Mega Evolve into Mega Mawile."
         },
         "nature": "Hardy",
         "evs": {
@@ -4817,7 +4817,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Jolly",
         "evs": {
@@ -4895,7 +4895,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Jolly",
         "evs": {
@@ -4973,7 +4973,7 @@
         "held": {
           "sprite": "lum-berry",
           "name": "Lum Berry",
-          "effect": null
+          "effect": "Held: Consumed to cure any status condition or confusion."
         },
         "nature": "Hardy",
         "evs": {
@@ -5051,7 +5051,7 @@
         "held": {
           "sprite": "houndoominite",
           "name": "Houndoominite",
-          "effect": null
+          "effect": "Held: Allows Houndoom to Mega Evolve into Mega Houndoom."
         },
         "nature": "Hardy",
         "evs": {
@@ -5136,7 +5136,7 @@
         "held": {
           "sprite": "smooth-rock",
           "name": "Smooth Rock",
-          "effect": null
+          "effect": "Held: Sandstorm by the holder lasts 8 rounds instead of 5."
         },
         "nature": "Hardy",
         "evs": {
@@ -5213,7 +5213,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -5291,7 +5291,7 @@
         "held": {
           "sprite": "kangaskhanite",
           "name": "Kangaskhanite",
-          "effect": null
+          "effect": "Held: Allows Kangaskhan to Mega Evolve into Mega Kangaskhan."
         },
         "nature": "Hardy",
         "evs": {
@@ -5368,7 +5368,7 @@
         "held": {
           "sprite": "yache-berry",
           "name": "Yache Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Ice-type attack to halve the damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -5446,7 +5446,7 @@
         "held": {
           "sprite": "white-herb",
           "name": "White Herb",
-          "effect": null
+          "effect": "Held: Resets all lowered stats to normal at end of turn. Consumed after use."
         },
         "nature": "Hardy",
         "evs": {
@@ -5530,7 +5530,7 @@
         "held": {
           "sprite": "sitrus-berry",
           "name": "Sitrus Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to recover 1/4 max HP."
         },
         "nature": "Modest",
         "evs": {
@@ -5608,7 +5608,7 @@
         "held": {
           "sprite": "weakness-policy",
           "name": "Weakness Policy",
-          "effect": null
+          "effect": "Held: When the holder is hit by a super effective move, its Attack and Special Attack raise by two stages."
         },
         "nature": "Adamant",
         "evs": {
@@ -5686,7 +5686,7 @@
         "held": {
           "sprite": "scope-lens",
           "name": "Scope Lens",
-          "effect": null
+          "effect": "Held: Raises the holder’s critical hit ratio by one stage."
         },
         "nature": "Jolly",
         "evs": {
@@ -5764,7 +5764,7 @@
         "held": {
           "sprite": "mawilite",
           "name": "Mawilite",
-          "effect": null
+          "effect": "Held: Allows Mawile to Mega Evolve into Mega Mawile."
         },
         "nature": "Hardy",
         "evs": {
@@ -5849,7 +5849,7 @@
         "held": {
           "sprite": "psychic-seed",
           "name": "Psychic Seed",
-          "effect": null
+          "effect": "Held: Consumed on Psychic Terrain and raises the holder’s Special Defense by one stage."
         },
         "nature": "Adamant",
         "evs": {
@@ -5927,7 +5927,7 @@
         "held": {
           "sprite": "terrain-extender",
           "name": "Terrain Extender",
-          "effect": null
+          "effect": "Held: Extends the holder’s Terrain effects to 8 turns."
         },
         "nature": "Hardy",
         "evs": {
@@ -6005,7 +6005,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Adamant",
         "evs": {
@@ -6083,7 +6083,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Careful",
         "evs": {
@@ -6161,7 +6161,7 @@
         "held": {
           "sprite": "power-herb",
           "name": "Power Herb",
-          "effect": null
+          "effect": "Held: Both turns of a two-turn charge move happen at once. Consumed upon use."
         },
         "nature": "Modest",
         "evs": {
@@ -6797,7 +6797,7 @@
         "held": {
           "sprite": "sitrus-berry",
           "name": "Sitrus Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to recover 1/4 max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -6882,7 +6882,7 @@
         "held": {
           "sprite": "sharp-beak",
           "name": "Sharp Beak",
-          "effect": null
+          "effect": "Held: Flying-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -6960,7 +6960,7 @@
         "held": {
           "sprite": "expert-belt",
           "name": "Expert Belt",
-          "effect": null
+          "effect": "Held: Holder’s Super Effective moves do 20% extra damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -7037,7 +7037,7 @@
         "held": {
           "sprite": "charcoal",
           "name": "Charcoal",
-          "effect": null
+          "effect": "Held: Fire-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -7114,7 +7114,7 @@
         "held": {
           "sprite": "sitrus-berry",
           "name": "Sitrus Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to recover 1/4 max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -7192,7 +7192,7 @@
         "held": {
           "sprite": "venusaurite",
           "name": "Venusaurite",
-          "effect": null
+          "effect": "Held: Allows Venusaur to Mega Evolve into Mega Venusaur."
         },
         "nature": "Hardy",
         "evs": {
@@ -7277,7 +7277,7 @@
         "held": {
           "sprite": "choice-band",
           "name": "Choice Band",
-          "effect": null
+          "effect": "Held: Increases Attack by 50%, but restricts the holder to only one move."
         },
         "nature": "Jolly",
         "evs": {
@@ -7355,7 +7355,7 @@
         "held": {
           "sprite": "expert-belt",
           "name": "Expert Belt",
-          "effect": null
+          "effect": "Held: Holder’s Super Effective moves do 20% extra damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -7432,7 +7432,7 @@
         "held": {
           "sprite": "mystic-water",
           "name": "Mystic Water",
-          "effect": null
+          "effect": "Held: Water-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -7510,7 +7510,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -7587,7 +7587,7 @@
         "held": {
           "sprite": "choice-scarf",
           "name": "Choice Scarf",
-          "effect": null
+          "effect": "Held: Increases Speed by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -7665,7 +7665,7 @@
         "held": {
           "sprite": "venusaurite",
           "name": "Venusaurite",
-          "effect": null
+          "effect": "Held: Allows Venusaur to Mega Evolve into Mega Venusaur."
         },
         "nature": "Hardy",
         "evs": {
@@ -7754,7 +7754,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Jolly",
         "evs": {
@@ -7832,7 +7832,7 @@
         "held": {
           "sprite": "toxic-orb",
           "name": "Toxic Orb",
-          "effect": null
+          "effect": "Held: Inflicts Toxic on the holder at the end of the turn. Activates after Poison damage would occur."
         },
         "nature": "Jolly",
         "evs": {
@@ -7910,7 +7910,7 @@
         "held": {
           "sprite": "choice-specs",
           "name": "Choice Specs",
-          "effect": null
+          "effect": "Held: Increases Special Attack by 50%, but restricts the holder to only one move."
         },
         "nature": "Timid",
         "evs": {
@@ -7987,7 +7987,7 @@
         "held": {
           "sprite": "choice-band",
           "name": "Choice Band",
-          "effect": null
+          "effect": "Held: Increases Attack by 50%, but restricts the holder to only one move."
         },
         "nature": "Adamant",
         "evs": {
@@ -8065,7 +8065,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hasty",
         "evs": {
@@ -8143,7 +8143,7 @@
         "held": {
           "sprite": "blazikenite",
           "name": "Blazikenite",
-          "effect": null
+          "effect": "Held: Allows Blaziken to Mega Evolve into Mega Blaziken."
         },
         "nature": "Hardy",
         "evs": {
@@ -8373,7 +8373,7 @@
         "held": {
           "sprite": "chople-berry",
           "name": "Chople Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Fighting-type attack to halve the damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -8450,7 +8450,7 @@
         "held": {
           "sprite": "colbur-berry",
           "name": "Colbur Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Dark-type attack to halve the damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -8528,7 +8528,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -8606,7 +8606,7 @@
         "held": {
           "sprite": "sitrus-berry",
           "name": "Sitrus Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to recover 1/4 max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -8690,7 +8690,7 @@
         "held": {
           "sprite": "air-balloon",
           "name": "Air Balloon",
-          "effect": null
+          "effect": "Held: Grants immunity to Ground-type moves, Spikes, and Toxic Spikes. Consumed when the holder takes damage from a move."
         },
         "nature": "Hardy",
         "evs": {
@@ -8768,7 +8768,7 @@
         "held": {
           "sprite": "choice-scarf",
           "name": "Choice Scarf",
-          "effect": null
+          "effect": "Held: Increases Speed by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -8846,7 +8846,7 @@
         "held": {
           "sprite": "choice-band",
           "name": "Choice Band",
-          "effect": null
+          "effect": "Held: Increases Attack by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -8924,7 +8924,7 @@
         "held": {
           "sprite": "silk-scarf",
           "name": "Silk Scarf",
-          "effect": null
+          "effect": "Held: Normal-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -9001,7 +9001,7 @@
         "held": {
           "sprite": "pixie-plate",
           "name": "Pixie Plate",
-          "effect": null
+          "effect": "Held: Fairy-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Fairy."
         },
         "nature": "Timid",
         "evs": {
@@ -9079,7 +9079,7 @@
         "held": {
           "sprite": "sceptilite",
           "name": "Sceptilite",
-          "effect": null
+          "effect": "Held: Allows Sceptile to Mega Evolve into Mega Sceptile."
         },
         "nature": "Hardy",
         "evs": {
@@ -9163,7 +9163,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Naive",
         "evs": {
@@ -9240,7 +9240,7 @@
         "held": {
           "sprite": "choice-scarf",
           "name": "Choice Scarf",
-          "effect": null
+          "effect": "Held: Increases Speed by 50%, but restricts the holder to only one move."
         },
         "nature": "Jolly",
         "evs": {
@@ -9318,7 +9318,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -9396,7 +9396,7 @@
         "held": {
           "sprite": "choice-band",
           "name": "Choice Band",
-          "effect": null
+          "effect": "Held: Increases Attack by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -9474,7 +9474,7 @@
         "held": {
           "sprite": "white-herb",
           "name": "White Herb",
-          "effect": null
+          "effect": "Held: Resets all lowered stats to normal at end of turn. Consumed after use."
         },
         "nature": "Jolly",
         "evs": {
@@ -9551,7 +9551,7 @@
         "held": {
           "sprite": "sceptilite",
           "name": "Sceptilite",
-          "effect": null
+          "effect": "Held: Allows Sceptile to Mega Evolve into Mega Sceptile."
         },
         "nature": "Hardy",
         "evs": {
@@ -9635,7 +9635,7 @@
         "held": {
           "sprite": "berry-juice",
           "name": "Berry Juice",
-          "effect": null
+          "effect": "Restores 20 HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -9713,7 +9713,7 @@
         "held": {
           "sprite": "berry-juice",
           "name": "Berry Juice",
-          "effect": null
+          "effect": "Restores 20 HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -9791,7 +9791,7 @@
         "held": {
           "sprite": "berry-juice",
           "name": "Berry Juice",
-          "effect": null
+          "effect": "Restores 20 HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -9875,7 +9875,7 @@
         "held": {
           "sprite": "poison-barb",
           "name": "Poison Barb",
-          "effect": null
+          "effect": "Held: Poison-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -9953,7 +9953,7 @@
         "held": {
           "sprite": "charti-berry",
           "name": "Charti Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Rock-type attack to halve the damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -10031,7 +10031,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -10109,7 +10109,7 @@
         "held": {
           "sprite": "sitrus-berry",
           "name": "Sitrus Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to recover 1/4 max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -10194,7 +10194,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -10272,7 +10272,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -10350,7 +10350,7 @@
         "held": {
           "sprite": "scizorite",
           "name": "Scizorite",
-          "effect": null
+          "effect": "Held: Allows Scizor to Mega Evolve into Mega Scizor."
         },
         "nature": "Hardy",
         "evs": {
@@ -10428,7 +10428,7 @@
         "held": {
           "sprite": "eviolite",
           "name": "Eviolite",
-          "effect": null
+          "effect": "Held: Holder has 1.5× Defense and Special Defense, as long as it’s not fully evolved."
         },
         "nature": "Hardy",
         "evs": {
@@ -10506,7 +10506,7 @@
         "held": {
           "sprite": "occa-berry",
           "name": "Occa Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Fire-type attack to halve the damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -10584,7 +10584,7 @@
         "held": {
           "sprite": "magnet",
           "name": "Magnet",
-          "effect": null
+          "effect": "Held: Electric-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -10669,7 +10669,7 @@
         "held": {
           "sprite": "sitrus-berry",
           "name": "Sitrus Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to recover 1/4 max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -10747,7 +10747,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -10824,7 +10824,7 @@
         "held": {
           "sprite": "eviolite",
           "name": "Eviolite",
-          "effect": null
+          "effect": "Held: Holder has 1.5× Defense and Special Defense, as long as it’s not fully evolved."
         },
         "nature": "Hardy",
         "evs": {
@@ -10901,7 +10901,7 @@
         "held": {
           "sprite": "twisted-spoon",
           "name": "Twisted Spoon",
-          "effect": null
+          "effect": "Held: Psychic-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -10979,7 +10979,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -11064,7 +11064,7 @@
         "held": {
           "sprite": "lum-berry",
           "name": "Lum Berry",
-          "effect": null
+          "effect": "Held: Consumed to cure any status condition or confusion."
         },
         "nature": "Hardy",
         "evs": {
@@ -11142,7 +11142,7 @@
         "held": {
           "sprite": "colbur-berry",
           "name": "Colbur Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Dark-type attack to halve the damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -11220,7 +11220,7 @@
         "held": {
           "sprite": "reaper-cloth",
           "name": "Reaper Cloth",
-          "effect": null
+          "effect": "Traded on a Dusclops: Holder evolves into Dusknoir."
         },
         "nature": "Hardy",
         "evs": {
@@ -11297,7 +11297,7 @@
         "held": {
           "sprite": "gengarite",
           "name": "Gengarite",
-          "effect": null
+          "effect": "Held: Allows Gengar to Mega Evolve into Mega Gengar."
         },
         "nature": "Hardy",
         "evs": {
@@ -11375,7 +11375,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -11453,7 +11453,7 @@
         "held": {
           "sprite": "charcoal",
           "name": "Charcoal",
-          "effect": null
+          "effect": "Held: Fire-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -11538,7 +11538,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -11615,7 +11615,7 @@
         "held": {
           "sprite": "mystic-water",
           "name": "Mystic Water",
-          "effect": null
+          "effect": "Held: Water-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -11693,7 +11693,7 @@
         "held": {
           "sprite": "toxic-orb",
           "name": "Toxic Orb",
-          "effect": null
+          "effect": "Held: Inflicts Toxic on the holder at the end of the turn. Activates after Poison damage would occur."
         },
         "nature": "Hardy",
         "evs": {
@@ -11771,7 +11771,7 @@
         "held": {
           "sprite": "shuca-berry",
           "name": "Shuca Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Ground-type attack to halve the damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -11849,7 +11849,7 @@
         "held": {
           "sprite": "galladite",
           "name": "Galladite",
-          "effect": null
+          "effect": "Held: Allows Gallade to Mega Evolve into Mega Gallade."
         },
         "nature": "Hardy",
         "evs": {
@@ -11927,7 +11927,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -12012,7 +12012,7 @@
         "held": {
           "sprite": "light-clay",
           "name": "Light Clay",
-          "effect": null
+          "effect": "Held: Light Screen and Reflect used by the holder last 8 rounds instead of 5."
         },
         "nature": "Hardy",
         "evs": {
@@ -12089,7 +12089,7 @@
         "held": {
           "sprite": "choice-band",
           "name": "Choice Band",
-          "effect": null
+          "effect": "Held: Increases Attack by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -12167,7 +12167,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Hardy",
         "evs": {
@@ -12245,7 +12245,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -12323,7 +12323,7 @@
         "held": {
           "sprite": "choice-band",
           "name": "Choice Band",
-          "effect": null
+          "effect": "Held: Increases Attack by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -12401,7 +12401,7 @@
         "held": {
           "sprite": "glalitite",
           "name": "Glalitite",
-          "effect": null
+          "effect": "Held: Allows Glalie to Mega Evolve into Mega Glalie."
         },
         "nature": "Hardy",
         "evs": {
@@ -12485,7 +12485,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -12563,7 +12563,7 @@
         "held": {
           "sprite": "choice-specs",
           "name": "Choice Specs",
-          "effect": null
+          "effect": "Held: Increases Special Attack by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -12641,7 +12641,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -12719,7 +12719,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -12797,7 +12797,7 @@
         "held": {
           "sprite": "choice-scarf",
           "name": "Choice Scarf",
-          "effect": null
+          "effect": "Held: Increases Speed by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -12875,7 +12875,7 @@
         "held": {
           "sprite": "glalitite",
           "name": "Glalitite",
-          "effect": null
+          "effect": "Held: Allows Glalie to Mega Evolve into Mega Glalie."
         },
         "nature": "Hardy",
         "evs": {
@@ -12959,7 +12959,7 @@
         "held": {
           "sprite": "icy-rock",
           "name": "Icy Rock",
-          "effect": null
+          "effect": "Held: Hail by the holder lasts 8 rounds instead of 5."
         },
         "nature": "Hardy",
         "evs": {
@@ -13037,7 +13037,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Hardy",
         "evs": {
@@ -13115,7 +13115,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -13192,7 +13192,7 @@
         "held": {
           "sprite": "choice-band",
           "name": "Choice Band",
-          "effect": null
+          "effect": "Held: Increases Attack by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -13270,7 +13270,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -13348,7 +13348,7 @@
         "held": {
           "sprite": "glalitite",
           "name": "Glalitite",
-          "effect": null
+          "effect": "Held: Allows Glalie to Mega Evolve into Mega Glalie."
         },
         "nature": "Hardy",
         "evs": {
@@ -13432,7 +13432,7 @@
         "held": {
           "sprite": "chople-berry",
           "name": "Chople Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Fighting-type attack to halve the damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -13510,7 +13510,7 @@
         "held": {
           "sprite": "choice-band",
           "name": "Choice Band",
-          "effect": null
+          "effect": "Held: Increases Attack by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -13587,7 +13587,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -13665,7 +13665,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -13743,7 +13743,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Hardy",
         "evs": {
@@ -13821,7 +13821,7 @@
         "held": {
           "sprite": "aggronite",
           "name": "Aggronite",
-          "effect": null
+          "effect": "Held: Allows Aggron to Mega Evolve into Mega Aggron."
         },
         "nature": "Hardy",
         "evs": {
@@ -13906,7 +13906,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -13984,7 +13984,7 @@
         "held": {
           "sprite": "choice-band",
           "name": "Choice Band",
-          "effect": null
+          "effect": "Held: Increases Attack by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -14061,7 +14061,7 @@
         "held": {
           "sprite": "air-balloon",
           "name": "Air Balloon",
-          "effect": null
+          "effect": "Held: Grants immunity to Ground-type moves, Spikes, and Toxic Spikes. Consumed when the holder takes damage from a move."
         },
         "nature": "Hardy",
         "evs": {
@@ -14139,7 +14139,7 @@
         "held": {
           "sprite": "magnet",
           "name": "Magnet",
-          "effect": null
+          "effect": "Held: Electric-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -14217,7 +14217,7 @@
         "held": {
           "sprite": "choice-band",
           "name": "Choice Band",
-          "effect": null
+          "effect": "Held: Increases Attack by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -14295,7 +14295,7 @@
         "held": {
           "sprite": "aggronite",
           "name": "Aggronite",
-          "effect": null
+          "effect": "Held: Allows Aggron to Mega Evolve into Mega Aggron."
         },
         "nature": "Hardy",
         "evs": {
@@ -14380,7 +14380,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -14458,7 +14458,7 @@
         "held": {
           "sprite": "choice-band",
           "name": "Choice Band",
-          "effect": null
+          "effect": "Held: Increases Attack by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -14535,7 +14535,7 @@
         "held": {
           "sprite": "magnet",
           "name": "Magnet",
-          "effect": null
+          "effect": "Held: Electric-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -14613,7 +14613,7 @@
         "held": {
           "sprite": "air-balloon",
           "name": "Air Balloon",
-          "effect": null
+          "effect": "Held: Grants immunity to Ground-type moves, Spikes, and Toxic Spikes. Consumed when the holder takes damage from a move."
         },
         "nature": "Hardy",
         "evs": {
@@ -14691,7 +14691,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -14769,7 +14769,7 @@
         "held": {
           "sprite": "aggronite",
           "name": "Aggronite",
-          "effect": null
+          "effect": "Held: Allows Aggron to Mega Evolve into Mega Aggron."
         },
         "nature": "Hardy",
         "evs": {
@@ -14854,7 +14854,7 @@
         "held": {
           "sprite": "smooth-rock",
           "name": "Smooth Rock",
-          "effect": null
+          "effect": "Held: Sandstorm by the holder lasts 8 rounds instead of 5."
         },
         "nature": "Hardy",
         "evs": {
@@ -14931,7 +14931,7 @@
         "held": {
           "sprite": "weakness-policy",
           "name": "Weakness Policy",
-          "effect": null
+          "effect": "Held: When the holder is hit by a super effective move, its Attack and Special Attack raise by two stages."
         },
         "nature": "Hardy",
         "evs": {
@@ -15009,7 +15009,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -15086,7 +15086,7 @@
         "held": {
           "sprite": "power-herb",
           "name": "Power Herb",
-          "effect": null
+          "effect": "Held: Both turns of a two-turn charge move happen at once. Consumed upon use."
         },
         "nature": "Hardy",
         "evs": {
@@ -15164,7 +15164,7 @@
         "held": {
           "sprite": "soft-sand",
           "name": "Soft Sand",
-          "effect": null
+          "effect": "Held: Ground-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -15241,7 +15241,7 @@
         "held": {
           "sprite": "aerodactylite",
           "name": "Aerodactylite",
-          "effect": null
+          "effect": "Held: Allows Aerodactyl to Mega Evolve into Mega Aerodactyl."
         },
         "nature": "Hardy",
         "evs": {
@@ -15326,7 +15326,7 @@
         "held": {
           "sprite": "damp-rock",
           "name": "Damp Rock",
-          "effect": null
+          "effect": "Held: Rain Dance by the holder lasts 8 rounds instead of 5."
         },
         "nature": "Hardy",
         "evs": {
@@ -15403,7 +15403,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -15481,7 +15481,7 @@
         "held": {
           "sprite": "white-herb",
           "name": "White Herb",
-          "effect": null
+          "effect": "Held: Resets all lowered stats to normal at end of turn. Consumed after use."
         },
         "nature": "Hardy",
         "evs": {
@@ -15558,7 +15558,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -15636,7 +15636,7 @@
         "held": {
           "sprite": "scope-lens",
           "name": "Scope Lens",
-          "effect": null
+          "effect": "Held: Raises the holder’s critical hit ratio by one stage."
         },
         "nature": "Hardy",
         "evs": {
@@ -15713,7 +15713,7 @@
         "held": {
           "sprite": "gyaradosite",
           "name": "Gyaradosite",
-          "effect": null
+          "effect": "Held: Allows Gyarados to Mega Evolve into Mega Gyarados."
         },
         "nature": "Hardy",
         "evs": {
@@ -15798,7 +15798,7 @@
         "held": {
           "sprite": "light-clay",
           "name": "Light Clay",
-          "effect": null
+          "effect": "Held: Light Screen and Reflect used by the holder last 8 rounds instead of 5."
         },
         "nature": "Hardy",
         "evs": {
@@ -15875,7 +15875,7 @@
         "held": {
           "sprite": "choice-scarf",
           "name": "Choice Scarf",
-          "effect": null
+          "effect": "Held: Increases Speed by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -15953,7 +15953,7 @@
         "held": {
           "sprite": "terrain-extender",
           "name": "Terrain Extender",
-          "effect": null
+          "effect": "Held: Extends the holder’s Terrain effects to 8 turns."
         },
         "nature": "Hardy",
         "evs": {
@@ -16031,7 +16031,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -16109,7 +16109,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -16187,7 +16187,7 @@
         "held": {
           "sprite": "manectite",
           "name": "Manectite",
-          "effect": null
+          "effect": "Held: Allows Manectric to Mega Evolve into Mega Manectric."
         },
         "nature": "Hardy",
         "evs": {
@@ -16271,7 +16271,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -16348,7 +16348,7 @@
         "held": {
           "sprite": "grassy-seed",
           "name": "Grassy Seed",
-          "effect": null
+          "effect": "Held: Consumed on Grassy Terrain and raises the holder’s Defense by one stage."
         },
         "nature": "Hardy",
         "evs": {
@@ -16426,7 +16426,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -16503,7 +16503,7 @@
         "held": {
           "sprite": "grassy-seed",
           "name": "Grassy Seed",
-          "effect": null
+          "effect": "Held: Consumed on Grassy Terrain and raises the holder’s Defense by one stage."
         },
         "nature": "Hardy",
         "evs": {
@@ -16580,7 +16580,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -16657,7 +16657,7 @@
         "held": {
           "sprite": "venusaurite",
           "name": "Venusaurite",
-          "effect": null
+          "effect": "Held: Allows Venusaur to Mega Evolve into Mega Venusaur."
         },
         "nature": "Hardy",
         "evs": {
@@ -16742,7 +16742,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -16820,7 +16820,7 @@
         "held": {
           "sprite": "damp-rock",
           "name": "Damp Rock",
-          "effect": null
+          "effect": "Held: Rain Dance by the holder lasts 8 rounds instead of 5."
         },
         "nature": "Hardy",
         "evs": {
@@ -16897,7 +16897,7 @@
         "held": {
           "sprite": "swampertite",
           "name": "Swampertite",
-          "effect": null
+          "effect": "Held: Allows Swampert to Mega Evolve into Mega Swampert."
         },
         "nature": "Hardy",
         "evs": {
@@ -16975,7 +16975,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -17053,7 +17053,7 @@
         "held": {
           "sprite": "blue-orb",
           "name": "Blue Orb",
-          "effect": null
+          "effect": "Summons Kyogre to the Embedded Tower."
         },
         "nature": "Hardy",
         "evs": {
@@ -17130,7 +17130,7 @@
         "held": {
           "sprite": "choice-scarf",
           "name": "Choice Scarf",
-          "effect": null
+          "effect": "Held: Increases Speed by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -17215,7 +17215,7 @@
         "held": {
           "sprite": "light-clay",
           "name": "Light Clay",
-          "effect": null
+          "effect": "Held: Light Screen and Reflect used by the holder last 8 rounds instead of 5."
         },
         "nature": "Hardy",
         "evs": {
@@ -17293,7 +17293,7 @@
         "held": {
           "sprite": "choice-specs",
           "name": "Choice Specs",
-          "effect": null
+          "effect": "Held: Increases Special Attack by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -17370,7 +17370,7 @@
         "held": {
           "sprite": "choice-band",
           "name": "Choice Band",
-          "effect": null
+          "effect": "Held: Increases Attack by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -17448,7 +17448,7 @@
         "held": {
           "sprite": "wiki-berry",
           "name": "Wiki Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to restore 1/8 max HP. Confuses Pokémon that dislike dry flavor."
         },
         "nature": "Hardy",
         "evs": {
@@ -17526,7 +17526,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Hardy",
         "evs": {
@@ -17604,7 +17604,7 @@
         "held": {
           "sprite": "abomasite",
           "name": "Abomasite",
-          "effect": null
+          "effect": "Held: Allows Abomasnow to Mega Evolve into Mega Abomasnow."
         },
         "nature": "Hardy",
         "evs": {
@@ -17689,7 +17689,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -17767,7 +17767,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Hardy",
         "evs": {
@@ -17844,7 +17844,7 @@
         "held": {
           "sprite": "choice-scarf",
           "name": "Choice Scarf",
-          "effect": null
+          "effect": "Held: Increases Speed by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -17922,7 +17922,7 @@
         "held": {
           "sprite": "rusted-sword",
           "name": "Rusted Sword",
-          "effect": null
+          "effect": "It is said that a hero used this sword to halt a terrible\ndisaster in ancient times. But it’s grown rusty and worn."
         },
         "nature": "Hardy",
         "evs": {
@@ -18000,7 +18000,7 @@
         "held": {
           "sprite": "throat-spray",
           "name": "Throat Spray",
-          "effect": null
+          "effect": "Raises Sp. Atk when a Pokémon uses a sound-based\nmove."
         },
         "nature": "Hardy",
         "evs": {
@@ -18078,7 +18078,7 @@
         "held": {
           "sprite": "lucarionite",
           "name": "Lucarionite",
-          "effect": null
+          "effect": "Held: Allows Lucario to Mega Evolve into Mega Lucario."
         },
         "nature": "Hardy",
         "evs": {
@@ -18163,7 +18163,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -18241,7 +18241,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -18319,7 +18319,7 @@
         "held": {
           "sprite": "choice-scarf",
           "name": "Choice Scarf",
-          "effect": null
+          "effect": "Held: Increases Speed by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -18397,7 +18397,7 @@
         "held": {
           "sprite": "rusted-sword",
           "name": "Rusted Sword",
-          "effect": null
+          "effect": "It is said that a hero used this sword to halt a terrible\ndisaster in ancient times. But it’s grown rusty and worn."
         },
         "nature": "Hardy",
         "evs": {
@@ -18475,7 +18475,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Hardy",
         "evs": {
@@ -18552,7 +18552,7 @@
         "held": {
           "sprite": "lucarionite",
           "name": "Lucarionite",
-          "effect": null
+          "effect": "Held: Allows Lucario to Mega Evolve into Mega Lucario."
         },
         "nature": "Hardy",
         "evs": {
@@ -18637,7 +18637,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -18714,7 +18714,7 @@
         "held": {
           "sprite": "choice-scarf",
           "name": "Choice Scarf",
-          "effect": null
+          "effect": "Held: Increases Speed by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -18791,7 +18791,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -18869,7 +18869,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -18946,7 +18946,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -19024,7 +19024,7 @@
         "held": {
           "sprite": "gengarite",
           "name": "Gengarite",
-          "effect": null
+          "effect": "Held: Allows Gengar to Mega Evolve into Mega Gengar."
         },
         "nature": "Hardy",
         "evs": {
@@ -19109,7 +19109,7 @@
         "held": {
           "sprite": "light-clay",
           "name": "Light Clay",
-          "effect": null
+          "effect": "Held: Light Screen and Reflect used by the holder last 8 rounds instead of 5."
         },
         "nature": "Hardy",
         "evs": {
@@ -19187,7 +19187,7 @@
         "held": {
           "sprite": "choice-scarf",
           "name": "Choice Scarf",
-          "effect": null
+          "effect": "Held: Increases Speed by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -19264,7 +19264,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -19342,7 +19342,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -19420,7 +19420,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -19498,7 +19498,7 @@
         "held": {
           "sprite": "gengarite",
           "name": "Gengarite",
-          "effect": null
+          "effect": "Held: Allows Gengar to Mega Evolve into Mega Gengar."
         },
         "nature": "Hardy",
         "evs": {
@@ -19583,7 +19583,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -19661,7 +19661,7 @@
         "held": {
           "sprite": "lum-berry",
           "name": "Lum Berry",
-          "effect": null
+          "effect": "Held: Consumed to cure any status condition or confusion."
         },
         "nature": "Hardy",
         "evs": {
@@ -19739,7 +19739,7 @@
         "held": {
           "sprite": "choice-scarf",
           "name": "Choice Scarf",
-          "effect": null
+          "effect": "Held: Increases Speed by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -19817,7 +19817,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Hardy",
         "evs": {
@@ -19894,7 +19894,7 @@
         "held": {
           "sprite": "adamant-orb",
           "name": "Adamant Orb",
-          "effect": null
+          "effect": "Boosts the damage from Dialga’s Dragon-type and Steel-type moves by 20%."
         },
         "nature": "Hardy",
         "evs": {
@@ -19972,7 +19972,7 @@
         "held": {
           "sprite": "salamencite",
           "name": "Salamencite",
-          "effect": null
+          "effect": "Held: Allows Salamence to Mega Evolve into Mega Salamence."
         },
         "nature": "Hardy",
         "evs": {
@@ -20057,7 +20057,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -20135,7 +20135,7 @@
         "held": {
           "sprite": "choice-scarf",
           "name": "Choice Scarf",
-          "effect": null
+          "effect": "Held: Increases Speed by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -20213,7 +20213,7 @@
         "held": {
           "sprite": "choice-band",
           "name": "Choice Band",
-          "effect": null
+          "effect": "Held: Increases Attack by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -20291,7 +20291,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Hardy",
         "evs": {
@@ -20368,7 +20368,7 @@
         "held": {
           "sprite": "adamant-orb",
           "name": "Adamant Orb",
-          "effect": null
+          "effect": "Boosts the damage from Dialga’s Dragon-type and Steel-type moves by 20%."
         },
         "nature": "Hardy",
         "evs": {
@@ -20446,7 +20446,7 @@
         "held": {
           "sprite": "salamencite",
           "name": "Salamencite",
-          "effect": null
+          "effect": "Held: Allows Salamence to Mega Evolve into Mega Salamence."
         },
         "nature": "Hardy",
         "evs": {
@@ -20531,7 +20531,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Jolly",
         "evs": {
@@ -20609,7 +20609,7 @@
         "held": {
           "sprite": "metagrossite",
           "name": "Metagrossite",
-          "effect": null
+          "effect": "Held: Allows Metagross to Mega Evolve into Mega Metagross."
         },
         "nature": "Hardy",
         "evs": {
@@ -20687,7 +20687,7 @@
         "held": {
           "sprite": "red-orb",
           "name": "Red Orb",
-          "effect": null
+          "effect": "Summons Groudon to the Embedded Tower."
         },
         "nature": "Hardy",
         "evs": {
@@ -20763,7 +20763,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Modest",
         "evs": {
@@ -20841,7 +20841,7 @@
         "held": {
           "sprite": "power-herb",
           "name": "Power Herb",
-          "effect": null
+          "effect": "Held: Both turns of a two-turn charge move happen at once. Consumed upon use."
         },
         "nature": "Timid",
         "evs": {
@@ -20895,7 +20895,7 @@
         "held": {
           "sprite": "choice-scarf",
           "name": "Choice Scarf",
-          "effect": null
+          "effect": "Held: Increases Speed by 50%, but restricts the holder to only one move."
         },
         "nature": "Timid",
         "evs": {
@@ -20979,7 +20979,7 @@
         "held": {
           "sprite": "berry-juice",
           "name": "Berry Juice",
-          "effect": null
+          "effect": "Restores 20 HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -21056,7 +21056,7 @@
         "held": {
           "sprite": "eviolite",
           "name": "Eviolite",
-          "effect": null
+          "effect": "Held: Holder has 1.5× Defense and Special Defense, as long as it’s not fully evolved."
         },
         "nature": "Hardy",
         "evs": {
@@ -21133,7 +21133,7 @@
         "held": {
           "sprite": "lum-berry",
           "name": "Lum Berry",
-          "effect": null
+          "effect": "Held: Consumed to cure any status condition or confusion."
         },
         "nature": "Hardy",
         "evs": {
@@ -21211,7 +21211,7 @@
         "held": {
           "sprite": "oran-berry",
           "name": "Oran Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to recover 10 HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -21289,7 +21289,7 @@
         "held": {
           "sprite": "iapapa-berry",
           "name": "Iapapa Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to restore 1/8 max HP. Confuses Pokémon that dislike sour flavor."
         },
         "nature": "Hardy",
         "evs": {
@@ -21367,7 +21367,7 @@
         "held": {
           "sprite": "soft-sand",
           "name": "Soft Sand",
-          "effect": null
+          "effect": "Held: Ground-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -21451,7 +21451,7 @@
         "held": {
           "sprite": "iapapa-berry",
           "name": "Iapapa Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to restore 1/8 max HP. Confuses Pokémon that dislike sour flavor."
         },
         "nature": "Hardy",
         "evs": {
@@ -21528,7 +21528,7 @@
         "held": {
           "sprite": "sitrus-berry",
           "name": "Sitrus Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to recover 1/4 max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -21606,7 +21606,7 @@
         "held": {
           "sprite": "wacan-berry",
           "name": "Wacan Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Electric-type attack to halve the damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -21684,7 +21684,7 @@
         "held": {
           "sprite": "eviolite",
           "name": "Eviolite",
-          "effect": null
+          "effect": "Held: Holder has 1.5× Defense and Special Defense, as long as it’s not fully evolved."
         },
         "nature": "Hardy",
         "evs": {
@@ -21762,7 +21762,7 @@
         "held": {
           "sprite": "mystic-water",
           "name": "Mystic Water",
-          "effect": null
+          "effect": "Held: Water-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -21840,7 +21840,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -21924,8 +21924,8 @@
         },
         "held": {
           "sprite": "icium-z--held",
-          "name": "Icium Z  Held",
-          "effect": null
+          "name": "Icium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Ice moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -22003,7 +22003,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -22081,7 +22081,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -22159,7 +22159,7 @@
         "held": {
           "sprite": "electric-seed",
           "name": "Electric Seed",
-          "effect": null
+          "effect": "Held: Consumed on Electric Terrain and raises the holder’s Defense by one stage."
         },
         "nature": "Hardy",
         "evs": {
@@ -22236,7 +22236,7 @@
         "held": {
           "sprite": "black-belt",
           "name": "Black Belt",
-          "effect": null
+          "effect": "Held: Fighting-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -22313,7 +22313,7 @@
         "held": {
           "sprite": "ampharosite",
           "name": "Ampharosite",
-          "effect": null
+          "effect": "Held: Allows Ampharos to Mega Evolve into Mega Ampharos."
         },
         "nature": "Hardy",
         "evs": {
@@ -22398,7 +22398,7 @@
         "held": {
           "sprite": "grassy-seed",
           "name": "Grassy Seed",
-          "effect": null
+          "effect": "Held: Consumed on Grassy Terrain and raises the holder’s Defense by one stage."
         },
         "nature": "Hardy",
         "evs": {
@@ -22476,7 +22476,7 @@
         "held": {
           "sprite": "grassy-seed",
           "name": "Grassy Seed",
-          "effect": null
+          "effect": "Held: Consumed on Grassy Terrain and raises the holder’s Defense by one stage."
         },
         "nature": "Hardy",
         "evs": {
@@ -22552,7 +22552,7 @@
         "held": {
           "sprite": "sceptilite",
           "name": "Sceptilite",
-          "effect": null
+          "effect": "Held: Allows Sceptile to Mega Evolve into Mega Sceptile."
         },
         "nature": "Hardy",
         "evs": {
@@ -22630,7 +22630,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -22708,7 +22708,7 @@
         "held": {
           "sprite": "black-sludge",
           "name": "Black Sludge",
-          "effect": null
+          "effect": "Held: Poison-type holder recovers 1/16 (6.25%) max HP each turn. Non-Poison-Types take 1/8 (12.5%) max HP damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -22786,7 +22786,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -22871,7 +22871,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -22949,7 +22949,7 @@
         "held": {
           "sprite": "cameruptite",
           "name": "Cameruptite",
-          "effect": null
+          "effect": "Held: Allows Camerupt to Mega Evolve into Mega Camerupt."
         },
         "nature": "Hardy",
         "evs": {
@@ -23027,7 +23027,7 @@
         "held": {
           "sprite": "iapapa-berry",
           "name": "Iapapa Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to restore 1/8 max HP. Confuses Pokémon that dislike sour flavor."
         },
         "nature": "Hardy",
         "evs": {
@@ -23103,8 +23103,8 @@
         },
         "held": {
           "sprite": "fightinium-z--held",
-          "name": "Fightinium Z  Held",
-          "effect": null
+          "name": "Fightinium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Fighting moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -23182,7 +23182,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Hardy",
         "evs": {
@@ -23259,7 +23259,7 @@
         "held": {
           "sprite": "water-gem",
           "name": "Water Gem",
-          "effect": null
+          "effect": "Held: When the holder uses a damaging water-type move, the move has 1.5× power and this item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -23344,7 +23344,7 @@
         "held": {
           "sprite": "twisted-spoon",
           "name": "Twisted Spoon",
-          "effect": null
+          "effect": "Held: Psychic-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -23421,8 +23421,8 @@
         },
         "held": {
           "sprite": "darkinium-z--held",
-          "name": "Darkinium Z  Held",
-          "effect": null
+          "name": "Darkinium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Dark moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -23500,7 +23500,7 @@
         "held": {
           "sprite": "black-glasses",
           "name": "Black Glasses",
-          "effect": null
+          "effect": "Held: Dark-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -23578,7 +23578,7 @@
         "held": {
           "sprite": "dragon-fang",
           "name": "Dragon Fang",
-          "effect": null
+          "effect": "Held: Dragon-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -23656,7 +23656,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -23818,7 +23818,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -23896,7 +23896,7 @@
         "held": {
           "sprite": "red-orb",
           "name": "Red Orb",
-          "effect": null
+          "effect": "Summons Groudon to the Embedded Tower."
         },
         "nature": "Hardy",
         "evs": {
@@ -23974,7 +23974,7 @@
         "held": {
           "sprite": "ice-gem",
           "name": "Ice Gem",
-          "effect": null
+          "effect": "Held: When the holder uses a damaging ice-type move, the move has 1.5× power and this item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -24051,7 +24051,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -24128,8 +24128,8 @@
         },
         "held": {
           "sprite": "flyinium-z--held",
-          "name": "Flyinium Z  Held",
-          "effect": null
+          "name": "Flyinium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Flying moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -24207,7 +24207,7 @@
         "held": {
           "sprite": "charizardite-x",
           "name": "Charizardite X",
-          "effect": null
+          "effect": "Held: Allows Charizard to Mega Evolve into Mega Charizard X."
         },
         "nature": "Hardy",
         "evs": {
@@ -24292,7 +24292,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -24370,7 +24370,7 @@
         "held": {
           "sprite": "griseous-orb",
           "name": "Griseous Orb",
-          "effect": null
+          "effect": "Boosts the damage from Giratina’s Dragon-type and Ghost-type moves by 20%, and transforms it into Origin Forme."
         },
         "nature": "Hardy",
         "evs": {
@@ -24448,7 +24448,7 @@
         "held": {
           "sprite": "weakness-policy",
           "name": "Weakness Policy",
-          "effect": null
+          "effect": "Held: When the holder is hit by a super effective move, its Attack and Special Attack raise by two stages."
         },
         "nature": "Modest",
         "evs": {
@@ -24525,8 +24525,8 @@
         },
         "held": {
           "sprite": "ultranecrozium-z--held",
-          "name": "Ultranecrozium Z  Held",
-          "effect": null
+          "name": "Ultranecrozium Z",
+          "effect": "XXX new effect for ultranecrozium-z--held"
         },
         "nature": "Hardy",
         "evs": {
@@ -24604,7 +24604,7 @@
         "held": {
           "sprite": "power-herb",
           "name": "Power Herb",
-          "effect": null
+          "effect": "Held: Both turns of a two-turn charge move happen at once. Consumed upon use."
         },
         "nature": "Hardy",
         "evs": {
@@ -24767,7 +24767,7 @@
         "held": {
           "sprite": "lum-berry",
           "name": "Lum Berry",
-          "effect": null
+          "effect": "Held: Consumed to cure any status condition or confusion."
         },
         "nature": "Hardy",
         "evs": {
@@ -24845,7 +24845,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -24923,7 +24923,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -25000,8 +25000,8 @@
         },
         "held": {
           "sprite": "groundium-z--held",
-          "name": "Groundium Z  Held",
-          "effect": null
+          "name": "Groundium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Ground moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -25078,7 +25078,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -25156,7 +25156,7 @@
         "held": {
           "sprite": "aerodactylite",
           "name": "Aerodactylite",
-          "effect": null
+          "effect": "Held: Allows Aerodactyl to Mega Evolve into Mega Aerodactyl."
         },
         "nature": "Hardy",
         "evs": {
@@ -25241,7 +25241,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -25317,7 +25317,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -25395,7 +25395,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -25473,7 +25473,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -25550,8 +25550,8 @@
         },
         "held": {
           "sprite": "fightinium-z--held",
-          "name": "Fightinium Z  Held",
-          "effect": null
+          "name": "Fightinium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Fighting moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -25629,7 +25629,7 @@
         "held": {
           "sprite": "gyaradosite",
           "name": "Gyaradosite",
-          "effect": null
+          "effect": "Held: Allows Gyarados to Mega Evolve into Mega Gyarados."
         },
         "nature": "Hardy",
         "evs": {
@@ -25714,7 +25714,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -25791,7 +25791,7 @@
         "held": {
           "sprite": "colbur-berry",
           "name": "Colbur Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Dark-type attack to halve the damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -25869,7 +25869,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Hardy",
         "evs": {
@@ -25947,7 +25947,7 @@
         "held": {
           "sprite": "lum-berry",
           "name": "Lum Berry",
-          "effect": null
+          "effect": "Held: Consumed to cure any status condition or confusion."
         },
         "nature": "Hardy",
         "evs": {
@@ -26024,8 +26024,8 @@
         },
         "held": {
           "sprite": "fightinium-z--held",
-          "name": "Fightinium Z  Held",
-          "effect": null
+          "name": "Fightinium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Fighting moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -26102,7 +26102,7 @@
         "held": {
           "sprite": "manectite",
           "name": "Manectite",
-          "effect": null
+          "effect": "Held: Allows Manectric to Mega Evolve into Mega Manectric."
         },
         "nature": "Hardy",
         "evs": {
@@ -26186,7 +26186,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -26263,7 +26263,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -26340,7 +26340,7 @@
         "held": {
           "sprite": "grassy-seed",
           "name": "Grassy Seed",
-          "effect": null
+          "effect": "Held: Consumed on Grassy Terrain and raises the holder’s Defense by one stage."
         },
         "nature": "Hardy",
         "evs": {
@@ -26418,7 +26418,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -26496,7 +26496,7 @@
         "held": {
           "sprite": "grassy-seed",
           "name": "Grassy Seed",
-          "effect": null
+          "effect": "Held: Consumed on Grassy Terrain and raises the holder’s Defense by one stage."
         },
         "nature": "Hardy",
         "evs": {
@@ -26572,7 +26572,7 @@
         "held": {
           "sprite": "ampharosite",
           "name": "Ampharosite",
-          "effect": null
+          "effect": "Held: Allows Ampharos to Mega Evolve into Mega Ampharos."
         },
         "nature": "Hardy",
         "evs": {
@@ -26657,7 +26657,7 @@
         "held": {
           "sprite": "lum-berry",
           "name": "Lum Berry",
-          "effect": null
+          "effect": "Held: Consumed to cure any status condition or confusion."
         },
         "nature": "Hardy",
         "evs": {
@@ -26735,7 +26735,7 @@
         "held": {
           "sprite": "oran-berry",
           "name": "Oran Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to recover 10 HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -26813,7 +26813,7 @@
         "held": {
           "sprite": "lum-berry",
           "name": "Lum Berry",
-          "effect": null
+          "effect": "Held: Consumed to cure any status condition or confusion."
         },
         "nature": "Hardy",
         "evs": {
@@ -26891,7 +26891,7 @@
         "held": {
           "sprite": "sharp-beak",
           "name": "Sharp Beak",
-          "effect": null
+          "effect": "Held: Flying-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -26969,7 +26969,7 @@
         "held": {
           "sprite": "large-leek",
           "name": "Large Leek",
-          "effect": null
+          "effect": "One of the many ingredients that can be used for\ncooking at your camp. Whether this is the kind of\nvegetable stalk that Farfetch’d like is unknown."
         },
         "nature": "Hardy",
         "evs": {
@@ -27053,7 +27053,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -27131,7 +27131,7 @@
         "held": {
           "sprite": "scizorite",
           "name": "Scizorite",
-          "effect": null
+          "effect": "Held: Allows Scizor to Mega Evolve into Mega Scizor."
         },
         "nature": "Hardy",
         "evs": {
@@ -27209,7 +27209,7 @@
         "held": {
           "sprite": "eviolite",
           "name": "Eviolite",
-          "effect": null
+          "effect": "Held: Holder has 1.5× Defense and Special Defense, as long as it’s not fully evolved."
         },
         "nature": "Hardy",
         "evs": {
@@ -27287,7 +27287,7 @@
         "held": {
           "sprite": "coba-berry",
           "name": "Coba Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Flying-type attack to halve the damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -27365,7 +27365,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -27443,7 +27443,7 @@
         "held": {
           "sprite": "magnet",
           "name": "Magnet",
-          "effect": null
+          "effect": "Held: Electric-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -27528,7 +27528,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -27606,7 +27606,7 @@
         "held": {
           "sprite": "normal-gem",
           "name": "Normal Gem",
-          "effect": null
+          "effect": "Held: When the holder uses a damaging normal-type move, the move has 1.5× power and this item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -27684,7 +27684,7 @@
         "held": {
           "sprite": "mystic-water",
           "name": "Mystic Water",
-          "effect": null
+          "effect": "Held: Water-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -27761,7 +27761,7 @@
         "held": {
           "sprite": "eviolite",
           "name": "Eviolite",
-          "effect": null
+          "effect": "Held: Holder has 1.5× Defense and Special Defense, as long as it’s not fully evolved."
         },
         "nature": "Hardy",
         "evs": {
@@ -27838,7 +27838,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -27916,7 +27916,7 @@
         "held": {
           "sprite": "altarianite",
           "name": "Altarianite",
-          "effect": null
+          "effect": "Held: Allows Altaria to Mega Evolve into Mega Altaria."
         },
         "nature": "Hardy",
         "evs": {
@@ -28001,7 +28001,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -28079,7 +28079,7 @@
         "held": {
           "sprite": "reaper-cloth",
           "name": "Reaper Cloth",
-          "effect": null
+          "effect": "Traded on a Dusclops: Holder evolves into Dusknoir."
         },
         "nature": "Hardy",
         "evs": {
@@ -28156,7 +28156,7 @@
         "held": {
           "sprite": "spell-tag",
           "name": "Spell Tag",
-          "effect": null
+          "effect": "Held: Ghost-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -28233,7 +28233,7 @@
         "held": {
           "sprite": "choice-scarf",
           "name": "Choice Scarf",
-          "effect": null
+          "effect": "Held: Increases Speed by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -28311,7 +28311,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -28389,7 +28389,7 @@
         "held": {
           "sprite": "gengarite",
           "name": "Gengarite",
-          "effect": null
+          "effect": "Held: Allows Gengar to Mega Evolve into Mega Gengar."
         },
         "nature": "Hardy",
         "evs": {
@@ -28474,7 +28474,7 @@
         "held": {
           "sprite": "rocky-helmet",
           "name": "Rocky Helmet",
-          "effect": null
+          "effect": "Held: When the holder is hit by a contact move, the attacking Pokémon takes 1/6 its max HP in damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -28552,7 +28552,7 @@
         "held": {
           "sprite": "liechi-berry",
           "name": "Liechi Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/4 max HP to boost Attack."
         },
         "nature": "Hardy",
         "evs": {
@@ -28629,8 +28629,8 @@
         },
         "held": {
           "sprite": "kommonium-z--held",
-          "name": "Kommonium Z  Held",
-          "effect": null
+          "name": "Kommonium Z",
+          "effect": "XXX new effect for kommonium-z--held"
         },
         "nature": "Hardy",
         "evs": {
@@ -28708,7 +28708,7 @@
         "held": {
           "sprite": "liechi-berry",
           "name": "Liechi Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/4 max HP to boost Attack."
         },
         "nature": "Hardy",
         "evs": {
@@ -28786,7 +28786,7 @@
         "held": {
           "sprite": "rusted-shield",
           "name": "Rusted Shield",
-          "effect": null
+          "effect": "It is said that a hero used this shield to halt a terrible\ndisaster in ancient times. But it’s grown rusty and worn."
         },
         "nature": "Hardy",
         "evs": {
@@ -28864,7 +28864,7 @@
         "held": {
           "sprite": "galladite",
           "name": "Galladite",
-          "effect": null
+          "effect": "Held: Allows Gallade to Mega Evolve into Mega Gallade."
         },
         "nature": "Hardy",
         "evs": {
@@ -28949,7 +28949,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -29027,7 +29027,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -29104,7 +29104,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -29180,8 +29180,8 @@
         },
         "held": {
           "sprite": "icium-z--held",
-          "name": "Icium Z  Held",
-          "effect": null
+          "name": "Icium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Ice moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -29259,7 +29259,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -29337,7 +29337,7 @@
         "held": {
           "sprite": "glalitite",
           "name": "Glalitite",
-          "effect": null
+          "effect": "Held: Allows Glalie to Mega Evolve into Mega Glalie."
         },
         "nature": "Hardy",
         "evs": {
@@ -29421,7 +29421,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -29499,7 +29499,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -29576,7 +29576,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -29652,8 +29652,8 @@
         },
         "held": {
           "sprite": "icium-z--held",
-          "name": "Icium Z  Held",
-          "effect": null
+          "name": "Icium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Ice moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -29731,7 +29731,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -29809,7 +29809,7 @@
         "held": {
           "sprite": "glalitite",
           "name": "Glalitite",
-          "effect": null
+          "effect": "Held: Allows Glalie to Mega Evolve into Mega Glalie."
         },
         "nature": "Hardy",
         "evs": {
@@ -29893,7 +29893,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -29971,7 +29971,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -30048,7 +30048,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -30124,8 +30124,8 @@
         },
         "held": {
           "sprite": "icium-z--held",
-          "name": "Icium Z  Held",
-          "effect": null
+          "name": "Icium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Ice moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -30203,7 +30203,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -30281,7 +30281,7 @@
         "held": {
           "sprite": "glalitite",
           "name": "Glalitite",
-          "effect": null
+          "effect": "Held: Allows Glalie to Mega Evolve into Mega Glalie."
         },
         "nature": "Hardy",
         "evs": {
@@ -30365,7 +30365,7 @@
         "held": {
           "sprite": "toxic-orb",
           "name": "Toxic Orb",
-          "effect": null
+          "effect": "Held: Inflicts Toxic on the holder at the end of the turn. Activates after Poison damage would occur."
         },
         "nature": "Hardy",
         "evs": {
@@ -30443,7 +30443,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -30521,7 +30521,7 @@
         "held": {
           "sprite": "weakness-policy",
           "name": "Weakness Policy",
-          "effect": null
+          "effect": "Held: When the holder is hit by a super effective move, its Attack and Special Attack raise by two stages."
         },
         "nature": "Hardy",
         "evs": {
@@ -30599,7 +30599,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -30677,7 +30677,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Hardy",
         "evs": {
@@ -30755,7 +30755,7 @@
         "held": {
           "sprite": "aggronite",
           "name": "Aggronite",
-          "effect": null
+          "effect": "Held: Allows Aggron to Mega Evolve into Mega Aggron."
         },
         "nature": "Hardy",
         "evs": {
@@ -30840,7 +30840,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -30916,7 +30916,7 @@
         "held": {
           "sprite": "mystic-water",
           "name": "Mystic Water",
-          "effect": null
+          "effect": "Held: Water-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -30994,7 +30994,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Hardy",
         "evs": {
@@ -31071,8 +31071,8 @@
         },
         "held": {
           "sprite": "flyinium-z--held",
-          "name": "Flyinium Z  Held",
-          "effect": null
+          "name": "Flyinium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Flying moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -31148,7 +31148,7 @@
         "held": {
           "sprite": "lustrous-orb",
           "name": "Lustrous Orb",
-          "effect": null
+          "effect": "Boosts the damage from Palkia’s Dragon-type and Water-type moves by 20%."
         },
         "nature": "Hardy",
         "evs": {
@@ -31226,7 +31226,7 @@
         "held": {
           "sprite": "swampertite",
           "name": "Swampertite",
-          "effect": null
+          "effect": "Held: Allows Swampert to Mega Evolve into Mega Swampert."
         },
         "nature": "Hardy",
         "evs": {
@@ -31311,7 +31311,7 @@
         "held": {
           "sprite": "choice-specs",
           "name": "Choice Specs",
-          "effect": null
+          "effect": "Held: Increases Special Attack by 50%, but restricts the holder to only one move."
         },
         "nature": "Hardy",
         "evs": {
@@ -31388,7 +31388,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Hardy",
         "evs": {
@@ -31466,7 +31466,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -31543,7 +31543,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -31618,8 +31618,8 @@
         },
         "held": {
           "sprite": "dragonium-z--held",
-          "name": "Dragonium Z  Held",
-          "effect": null
+          "name": "Dragonium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Dragon moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -31697,7 +31697,7 @@
         "held": {
           "sprite": "abomasite",
           "name": "Abomasite",
-          "effect": null
+          "effect": "Held: Allows Abomasnow to Mega Evolve into Mega Abomasnow."
         },
         "nature": "Hardy",
         "evs": {
@@ -31782,7 +31782,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -31860,7 +31860,7 @@
         "held": {
           "sprite": "misty-seed",
           "name": "Misty Seed",
-          "effect": null
+          "effect": "Held: Consumed on Misty Terrain and raises the holder’s Special Defense by one stage."
         },
         "nature": "Hardy",
         "evs": {
@@ -31937,7 +31937,7 @@
         "held": {
           "sprite": "rusted-shield",
           "name": "Rusted Shield",
-          "effect": null
+          "effect": "It is said that a hero used this shield to halt a terrible\ndisaster in ancient times. But it’s grown rusty and worn."
         },
         "nature": "Hardy",
         "evs": {
@@ -32015,7 +32015,7 @@
         "held": {
           "sprite": "weakness-policy",
           "name": "Weakness Policy",
-          "effect": null
+          "effect": "Held: When the holder is hit by a super effective move, its Attack and Special Attack raise by two stages."
         },
         "nature": "Hardy",
         "evs": {
@@ -32093,7 +32093,7 @@
         "held": {
           "sprite": "rusted-sword",
           "name": "Rusted Sword",
-          "effect": null
+          "effect": "It is said that a hero used this sword to halt a terrible\ndisaster in ancient times. But it’s grown rusty and worn."
         },
         "nature": "Hardy",
         "evs": {
@@ -32171,7 +32171,7 @@
         "held": {
           "sprite": "lucarionite",
           "name": "Lucarionite",
-          "effect": null
+          "effect": "Held: Allows Lucario to Mega Evolve into Mega Lucario."
         },
         "nature": "Hardy",
         "evs": {
@@ -32256,7 +32256,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -32334,7 +32334,7 @@
         "held": {
           "sprite": "misty-seed",
           "name": "Misty Seed",
-          "effect": null
+          "effect": "Held: Consumed on Misty Terrain and raises the holder’s Special Defense by one stage."
         },
         "nature": "Hardy",
         "evs": {
@@ -32412,7 +32412,7 @@
         "held": {
           "sprite": "rusted-shield",
           "name": "Rusted Shield",
-          "effect": null
+          "effect": "It is said that a hero used this shield to halt a terrible\ndisaster in ancient times. But it’s grown rusty and worn."
         },
         "nature": "Hardy",
         "evs": {
@@ -32490,7 +32490,7 @@
         "held": {
           "sprite": "weakness-policy",
           "name": "Weakness Policy",
-          "effect": null
+          "effect": "Held: When the holder is hit by a super effective move, its Attack and Special Attack raise by two stages."
         },
         "nature": "Hardy",
         "evs": {
@@ -32568,7 +32568,7 @@
         "held": {
           "sprite": "rusted-sword",
           "name": "Rusted Sword",
-          "effect": null
+          "effect": "It is said that a hero used this sword to halt a terrible\ndisaster in ancient times. But it’s grown rusty and worn."
         },
         "nature": "Hardy",
         "evs": {
@@ -32646,7 +32646,7 @@
         "held": {
           "sprite": "medichamite",
           "name": "Medichamite",
-          "effect": null
+          "effect": "Held: Allows Medicham to Mega Evolve into Mega Medicham."
         },
         "nature": "Hardy",
         "evs": {
@@ -32731,7 +32731,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -32809,7 +32809,7 @@
         "held": {
           "sprite": "mewtwonite-x",
           "name": "Mewtwonite X",
-          "effect": null
+          "effect": "Held: Allows Mewtwo to Mega Evolve into Mega Mewtwo X."
         },
         "nature": "Hardy",
         "evs": {
@@ -32885,7 +32885,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Hardy",
         "evs": {
@@ -32963,7 +32963,7 @@
         "held": {
           "sprite": "psychic-seed",
           "name": "Psychic Seed",
-          "effect": null
+          "effect": "Held: Consumed on Psychic Terrain and raises the holder’s Special Defense by one stage."
         },
         "nature": "Hardy",
         "evs": {
@@ -33040,8 +33040,8 @@
         },
         "held": {
           "sprite": "normalium-z--held",
-          "name": "Normalium Z  Held",
-          "effect": null
+          "name": "Normalium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Normal moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -33119,7 +33119,7 @@
         "held": {
           "sprite": "colbur-berry",
           "name": "Colbur Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Dark-type attack to halve the damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -33204,7 +33204,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -33281,7 +33281,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Hardy",
         "evs": {
@@ -33358,7 +33358,7 @@
         "held": {
           "sprite": "pixie-plate",
           "name": "Pixie Plate",
-          "effect": null
+          "effect": "Held: Fairy-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Fairy."
         },
         "nature": "Hardy",
         "evs": {
@@ -33434,8 +33434,8 @@
         },
         "held": {
           "sprite": "flyinium-z--held",
-          "name": "Flyinium Z  Held",
-          "effect": null
+          "name": "Flyinium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Flying moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -33513,7 +33513,7 @@
         "held": {
           "sprite": "adamant-orb",
           "name": "Adamant Orb",
-          "effect": null
+          "effect": "Boosts the damage from Dialga’s Dragon-type and Steel-type moves by 20%."
         },
         "nature": "Hardy",
         "evs": {
@@ -33591,7 +33591,7 @@
         "held": {
           "sprite": "sharp-beak",
           "name": "Sharp Beak",
-          "effect": null
+          "effect": "Held: Flying-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -33676,7 +33676,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -33753,7 +33753,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Hardy",
         "evs": {
@@ -33830,7 +33830,7 @@
         "held": {
           "sprite": "pixie-plate",
           "name": "Pixie Plate",
-          "effect": null
+          "effect": "Held: Fairy-Type moves from holder do 20% more damage. Changes Arceus’s and Judgment’s type to Fairy."
         },
         "nature": "Hardy",
         "evs": {
@@ -33906,8 +33906,8 @@
         },
         "held": {
           "sprite": "flyinium-z--held",
-          "name": "Flyinium Z  Held",
-          "effect": null
+          "name": "Flyinium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Flying moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -33985,7 +33985,7 @@
         "held": {
           "sprite": "adamant-orb",
           "name": "Adamant Orb",
-          "effect": null
+          "effect": "Boosts the damage from Dialga’s Dragon-type and Steel-type moves by 20%."
         },
         "nature": "Hardy",
         "evs": {
@@ -34063,7 +34063,7 @@
         "held": {
           "sprite": "sharp-beak",
           "name": "Sharp Beak",
-          "effect": null
+          "effect": "Held: Flying-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -34148,7 +34148,7 @@
         "held": {
           "sprite": "blue-orb",
           "name": "Blue Orb",
-          "effect": null
+          "effect": "Summons Kyogre to the Embedded Tower."
         },
         "nature": "Hardy",
         "evs": {
@@ -34225,7 +34225,7 @@
         "held": {
           "sprite": "swampertite",
           "name": "Swampertite",
-          "effect": null
+          "effect": "Held: Allows Swampert to Mega Evolve into Mega Swampert."
         },
         "nature": "Hardy",
         "evs": {
@@ -34303,7 +34303,7 @@
         "held": {
           "sprite": "power-herb",
           "name": "Power Herb",
-          "effect": null
+          "effect": "Held: Both turns of a two-turn charge move happen at once. Consumed upon use."
         },
         "nature": "Hardy",
         "evs": {
@@ -34379,8 +34379,8 @@
         },
         "held": {
           "sprite": "ultranecrozium-z--held",
-          "name": "Ultranecrozium Z  Held",
-          "effect": null
+          "name": "Ultranecrozium Z",
+          "effect": "XXX new effect for ultranecrozium-z--held"
         },
         "nature": "Hardy",
         "evs": {
@@ -34457,8 +34457,8 @@
         },
         "held": {
           "sprite": "steelium-z--held",
-          "name": "Steelium Z  Held",
-          "effect": null
+          "name": "Steelium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Steel moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -34618,7 +34618,7 @@
         "held": {
           "sprite": "hard-stone",
           "name": "Hard Stone",
-          "effect": null
+          "effect": "Held: Rock-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -34696,7 +34696,7 @@
         "held": {
           "sprite": "shuca-berry",
           "name": "Shuca Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Ground-type attack to halve the damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -34773,7 +34773,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -34851,7 +34851,7 @@
         "held": {
           "sprite": "berry-juice",
           "name": "Berry Juice",
-          "effect": null
+          "effect": "Restores 20 HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -34928,7 +34928,7 @@
         "held": {
           "sprite": "muscle-band",
           "name": "Muscle Band",
-          "effect": null
+          "effect": "Held: Boosts the damage of physical moves used by the holder by 10%."
         },
         "nature": "Hardy",
         "evs": {
@@ -35013,7 +35013,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -35091,7 +35091,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -35169,7 +35169,7 @@
         "held": {
           "sprite": "white-herb",
           "name": "White Herb",
-          "effect": null
+          "effect": "Held: Resets all lowered stats to normal at end of turn. Consumed after use."
         },
         "nature": "Hardy",
         "evs": {
@@ -35247,7 +35247,7 @@
         "held": {
           "sprite": "ghost-gem",
           "name": "Ghost Gem",
-          "effect": null
+          "effect": "Held: When the holder uses a damaging ghost-type move, the move has 1.5× power and this item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -35323,8 +35323,8 @@
         },
         "held": {
           "sprite": "flyinium-z--held",
-          "name": "Flyinium Z  Held",
-          "effect": null
+          "name": "Flyinium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Flying moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -35402,7 +35402,7 @@
         "held": {
           "sprite": "kangaskhanite",
           "name": "Kangaskhanite",
-          "effect": null
+          "effect": "Held: Allows Kangaskhan to Mega Evolve into Mega Kangaskhan."
         },
         "nature": "Hardy",
         "evs": {
@@ -35486,7 +35486,7 @@
         "held": {
           "sprite": "sitrus-berry",
           "name": "Sitrus Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to recover 1/4 max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -35564,7 +35564,7 @@
         "held": {
           "sprite": "colbur-berry",
           "name": "Colbur Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Dark-type attack to halve the damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -35642,7 +35642,7 @@
         "held": {
           "sprite": "throat-spray",
           "name": "Throat Spray",
-          "effect": null
+          "effect": "Raises Sp. Atk when a Pokémon uses a sound-based\nmove."
         },
         "nature": "Modest",
         "evs": {
@@ -35719,8 +35719,8 @@
         },
         "held": {
           "sprite": "ghostium-z--held",
-          "name": "Ghostium Z  Held",
-          "effect": null
+          "name": "Ghostium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Ghost moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -35798,7 +35798,7 @@
         "held": {
           "sprite": "mawilite",
           "name": "Mawilite",
-          "effect": null
+          "effect": "Held: Allows Mawile to Mega Evolve into Mega Mawile."
         },
         "nature": "Hardy",
         "evs": {
@@ -35876,7 +35876,7 @@
         "held": {
           "sprite": "houndoominite",
           "name": "Houndoominite",
-          "effect": null
+          "effect": "Held: Allows Houndoom to Mega Evolve into Mega Houndoom."
         },
         "nature": "Hardy",
         "evs": {
@@ -35961,7 +35961,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -36039,7 +36039,7 @@
         "held": {
           "sprite": "water-gem",
           "name": "Water Gem",
-          "effect": null
+          "effect": "Held: When the holder uses a damaging water-type move, the move has 1.5× power and this item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -36116,8 +36116,8 @@
         },
         "held": {
           "sprite": "flyinium-z--held",
-          "name": "Flyinium Z  Held",
-          "effect": null
+          "name": "Flyinium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Flying moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -36195,7 +36195,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -36272,7 +36272,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Adamant",
         "evs": {
@@ -36350,7 +36350,7 @@
         "held": {
           "sprite": "garchompite",
           "name": "Garchompite",
-          "effect": null
+          "effect": "Held: Allows Garchomp to Mega Evolve into Mega Garchomp."
         },
         "nature": "Jolly",
         "evs": {
@@ -36435,7 +36435,7 @@
         "held": {
           "sprite": "charcoal",
           "name": "Charcoal",
-          "effect": null
+          "effect": "Held: Fire-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -36512,7 +36512,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -36589,8 +36589,8 @@
         },
         "held": {
           "sprite": "flyinium-z--held",
-          "name": "Flyinium Z  Held",
-          "effect": null
+          "name": "Flyinium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Flying moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -36666,7 +36666,7 @@
         "held": {
           "sprite": "houndoominite",
           "name": "Houndoominite",
-          "effect": null
+          "effect": "Held: Allows Houndoom to Mega Evolve into Mega Houndoom."
         },
         "nature": "Hardy",
         "evs": {
@@ -36744,7 +36744,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -36826,7 +36826,7 @@
         "held": {
           "sprite": "mystic-water",
           "name": "Mystic Water",
-          "effect": null
+          "effect": "Held: Water-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -36902,8 +36902,8 @@
         },
         "held": {
           "sprite": "eevium-z--held",
-          "name": "Eevium Z  Held",
-          "effect": null
+          "name": "Eevium Z",
+          "effect": "Held: Allows Eevee to upgrade Last Resort into Extreme Evoboost."
         },
         "nature": "Hardy",
         "evs": {
@@ -36980,7 +36980,7 @@
         "held": {
           "sprite": "coba-berry",
           "name": "Coba Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Flying-type attack to halve the damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -37058,7 +37058,7 @@
         "held": {
           "sprite": "mawilite",
           "name": "Mawilite",
-          "effect": null
+          "effect": "Held: Allows Mawile to Mega Evolve into Mega Mawile."
         },
         "nature": "Hardy",
         "evs": {
@@ -37143,7 +37143,7 @@
         "held": {
           "sprite": "figy-berry",
           "name": "Figy Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to restore 1/8 max HP. Confuses Pokémon that dislike spicy flavor."
         },
         "nature": "Hardy",
         "evs": {
@@ -37221,7 +37221,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -37299,7 +37299,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -37375,8 +37375,8 @@
         },
         "held": {
           "sprite": "flyinium-z--held",
-          "name": "Flyinium Z  Held",
-          "effect": null
+          "name": "Flyinium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Flying moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -37454,7 +37454,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Hardy",
         "evs": {
@@ -37610,7 +37610,7 @@
         "held": {
           "sprite": "muscle-band",
           "name": "Muscle Band",
-          "effect": null
+          "effect": "Held: Boosts the damage of physical moves used by the holder by 10%."
         },
         "nature": "Hardy",
         "evs": {
@@ -37687,7 +37687,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -37765,7 +37765,7 @@
         "held": {
           "sprite": "oran-berry",
           "name": "Oran Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to recover 10 HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -37850,7 +37850,7 @@
         "held": {
           "sprite": "black-belt",
           "name": "Black Belt",
-          "effect": null
+          "effect": "Held: Fighting-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -37926,8 +37926,8 @@
         },
         "held": {
           "sprite": "eevium-z--held",
-          "name": "Eevium Z  Held",
-          "effect": null
+          "name": "Eevium Z",
+          "effect": "Held: Allows Eevee to upgrade Last Resort into Extreme Evoboost."
         },
         "nature": "Hardy",
         "evs": {
@@ -38004,7 +38004,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -38081,7 +38081,7 @@
         "held": {
           "sprite": "mystic-water",
           "name": "Mystic Water",
-          "effect": null
+          "effect": "Held: Water-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -38158,7 +38158,7 @@
         "held": {
           "sprite": "poison-barb",
           "name": "Poison Barb",
-          "effect": null
+          "effect": "Held: Poison-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -38235,7 +38235,7 @@
         "held": {
           "sprite": "eviolite",
           "name": "Eviolite",
-          "effect": null
+          "effect": "Held: Holder has 1.5× Defense and Special Defense, as long as it’s not fully evolved."
         },
         "nature": "Hardy",
         "evs": {
@@ -38320,7 +38320,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -38397,7 +38397,7 @@
         "held": {
           "sprite": "weakness-policy",
           "name": "Weakness Policy",
-          "effect": null
+          "effect": "Held: When the holder is hit by a super effective move, its Attack and Special Attack raise by two stages."
         },
         "nature": "Hardy",
         "evs": {
@@ -38475,7 +38475,7 @@
         "held": {
           "sprite": "white-herb",
           "name": "White Herb",
-          "effect": null
+          "effect": "Held: Resets all lowered stats to normal at end of turn. Consumed after use."
         },
         "nature": "Hardy",
         "evs": {
@@ -38552,7 +38552,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -38629,7 +38629,7 @@
         "held": {
           "sprite": "fighting-gem",
           "name": "Fighting Gem",
-          "effect": null
+          "effect": "Held: When the holder uses a damaging fighting-type move, the move has 1.5× power and this item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -38706,7 +38706,7 @@
         "held": {
           "sprite": "venusaurite",
           "name": "Venusaurite",
-          "effect": null
+          "effect": "Held: Allows Venusaur to Mega Evolve into Mega Venusaur."
         },
         "nature": "Hardy",
         "evs": {
@@ -38791,7 +38791,7 @@
         "held": {
           "sprite": "assault-vest",
           "name": "Assault Vest",
-          "effect": null
+          "effect": "Raises the holder’s Special Defense to 1.5×.  Prevents the holder from selecting a status move."
         },
         "nature": "Hardy",
         "evs": {
@@ -38868,7 +38868,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -38946,7 +38946,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -39024,7 +39024,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -39101,8 +39101,8 @@
         },
         "held": {
           "sprite": "darkinium-z--held",
-          "name": "Darkinium Z  Held",
-          "effect": null
+          "name": "Darkinium Z",
+          "effect": "Held: Allows a Pokémon to use the Z-move equivalents of its Dark moves."
         },
         "nature": "Hardy",
         "evs": {
@@ -39180,7 +39180,7 @@
         "held": {
           "sprite": "venusaurite",
           "name": "Venusaurite",
-          "effect": null
+          "effect": "Held: Allows Venusaur to Mega Evolve into Mega Venusaur."
         },
         "nature": "Hardy",
         "evs": {
@@ -39265,7 +39265,7 @@
         "held": {
           "sprite": "muscle-band",
           "name": "Muscle Band",
-          "effect": null
+          "effect": "Held: Boosts the damage of physical moves used by the holder by 10%."
         },
         "nature": "Hardy",
         "evs": {
@@ -39343,7 +39343,7 @@
         "held": {
           "sprite": "mystic-water",
           "name": "Mystic Water",
-          "effect": null
+          "effect": "Held: Water-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -39420,7 +39420,7 @@
         "held": {
           "sprite": "passho-berry",
           "name": "Passho Berry",
-          "effect": null
+          "effect": "Held: Consumed when struck by a super-effective Water-type attack to halve the damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -39498,7 +39498,7 @@
         "held": {
           "sprite": "oran-berry",
           "name": "Oran Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/2 max HP to recover 10 HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -39582,7 +39582,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -39660,7 +39660,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -39737,7 +39737,7 @@
         "held": {
           "sprite": "magnet",
           "name": "Magnet",
-          "effect": null
+          "effect": "Held: Electric-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -39814,7 +39814,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -39892,7 +39892,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -39969,7 +39969,7 @@
         "held": {
           "sprite": "flame-orb",
           "name": "Flame Orb",
-          "effect": null
+          "effect": "Held: Inflicts Burn on the holder at the end of the turn. Activates after Burn damage would occur."
         },
         "nature": "Hardy",
         "evs": {
@@ -40053,7 +40053,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -40131,7 +40131,7 @@
         "held": {
           "sprite": "power-herb",
           "name": "Power Herb",
-          "effect": null
+          "effect": "Held: Both turns of a two-turn charge move happen at once. Consumed upon use."
         },
         "nature": "Hardy",
         "evs": {
@@ -40209,7 +40209,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -40287,7 +40287,7 @@
         "held": {
           "sprite": "mystic-water",
           "name": "Mystic Water",
-          "effect": null
+          "effect": "Held: Water-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -40365,7 +40365,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -40442,7 +40442,7 @@
         "held": {
           "sprite": "sceptilite",
           "name": "Sceptilite",
-          "effect": null
+          "effect": "Held: Allows Sceptile to Mega Evolve into Mega Sceptile."
         },
         "nature": "Hardy",
         "evs": {
@@ -40527,7 +40527,7 @@
         "held": {
           "sprite": "focus-sash",
           "name": "Focus Sash",
-          "effect": null
+          "effect": "Held: Holder survives any single-hit attack at 1 HP if at max HP, then the item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -40605,7 +40605,7 @@
         "held": {
           "sprite": "thick-club",
           "name": "Thick Club",
-          "effect": null
+          "effect": "Doubles Cubone or Marowak’s Attack."
         },
         "nature": "Hardy",
         "evs": {
@@ -40683,7 +40683,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -40761,7 +40761,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -40839,7 +40839,7 @@
         "held": {
           "sprite": "silk-scarf",
           "name": "Silk Scarf",
-          "effect": null
+          "effect": "Held: Normal-Type moves from holder do 20% more damage."
         },
         "nature": "Hardy",
         "evs": {
@@ -40916,7 +40916,7 @@
         "held": {
           "sprite": "sceptilite",
           "name": "Sceptilite",
-          "effect": null
+          "effect": "Held: Allows Sceptile to Mega Evolve into Mega Sceptile."
         },
         "nature": "Hardy",
         "evs": {
@@ -41001,7 +41001,7 @@
         "held": {
           "sprite": "custap-berry",
           "name": "Custap Berry",
-          "effect": null
+          "effect": "Held: Consumed at 1/4 max HP when using a move to go first."
         },
         "nature": "Hardy",
         "evs": {
@@ -41079,7 +41079,7 @@
         "held": {
           "sprite": "flying-gem",
           "name": "Flying Gem",
-          "effect": null
+          "effect": "Held: When the holder uses a damaging flying-type move, the move has 1.5× power and this item is consumed."
         },
         "nature": "Hardy",
         "evs": {
@@ -41157,7 +41157,7 @@
         "held": {
           "sprite": "life-orb",
           "name": "Life Orb",
-          "effect": null
+          "effect": "Held: Holder’s moves inflict 30% extra damage, but cost 10% max HP."
         },
         "nature": "Hardy",
         "evs": {
@@ -41234,7 +41234,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -41312,7 +41312,7 @@
         "held": {
           "sprite": "leftovers",
           "name": "Leftovers",
-          "effect": null
+          "effect": "Held: Restores 1/16 (6.25%) holder’s max HP at the end of each turn."
         },
         "nature": "Hardy",
         "evs": {
@@ -41389,7 +41389,7 @@
         "held": {
           "sprite": "blazikenite",
           "name": "Blazikenite",
-          "effect": null
+          "effect": "Held: Allows Blaziken to Mega Evolve into Mega Blaziken."
         },
         "nature": "Adamant",
         "evs": {

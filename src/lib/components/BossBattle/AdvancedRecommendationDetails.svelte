@@ -334,6 +334,21 @@
                             {capitalise(matchup.bestMove.replace(/-/g, ' '))}
                           </div>
                         {/if}
+                        
+                        <!-- Max Turns Warning for this specific battle -->
+                        {#if matchup.maxTurnsReached}
+                          <div class="mt-2 p-2 bg-amber-100 dark:bg-amber-900/40 rounded border border-amber-300 dark:border-amber-700">
+                            <div class="flex items-center gap-1 text-xs">
+                              <Icon icon={Info} class="w-3 h-3 text-amber-600" />
+                              <span class="font-medium text-amber-800 dark:text-amber-200">
+                                Calculation stopped at 6 turns
+                              </span>
+                            </div>
+                            <div class="text-xs text-amber-700 dark:text-amber-300 mt-1">
+                              Too complex (16⁷ = 2.1M combinations)
+                            </div>
+                          </div>
+                        {/if}
                       </div>
                     {/each}
                   </div>
@@ -635,6 +650,7 @@
           {/each}
         </div>
 
+
         <!-- Algorithm Info -->
         <div class="mt-8 p-4 bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-lg border-2 border-green-200 dark:border-green-700">
           <h4 class="font-medium text-green-900 dark:text-green-100 mb-3 flex items-center gap-2">
@@ -643,7 +659,7 @@
           </h4>
           <ul class="text-sm text-green-800 dark:text-green-200 space-y-2">
             <li>• <strong>Calculator:</strong> @smogon/calc v0.10.0 with Generation 9 data</li>
-            <li>• <strong>Simulation:</strong> Full turn-by-turn 1v1 battle simulation (up to 20 turns)</li>
+            <li>• <strong>Simulation:</strong> Full turn-by-turn 1v1 battle simulation (up to 6 turns max for performance)</li>
             <li>• <strong>Move Selection:</strong> Dynamic per-turn optimal move selection based on:
               <ul class="ml-6 mt-1 space-y-1 text-xs">
                 <li>→ Priority moves that guarantee KO</li>

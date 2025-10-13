@@ -45,7 +45,7 @@ import gamesData from '$lib/data/games.json';
 import { applyAbilityModifiers, wouldSturdyPreventKO } from '$lib/utils/ability-modifiers.js';
 
 // ========== CONSTANTS ==========
-const MAX_BATTLE_TURNS = 20; // Prevent infinite battle loops
+const MAX_BATTLE_TURNS = 6; // Limit to prevent exponential calculation complexity (16^7 = 2.1M combinations)
 const DEFAULT_IVS = { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 };
 const DEFAULT_EVS = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
 
@@ -1394,8 +1394,14 @@ function calculateMatchup(gen, userMon, rivalMon) {
       turn++;
     }
     
-    // Determine final battle outcome
+    // Determine final battle outcome and check if max turns was reached
+    const maxTurnsReached = turn > MAX_BATTLE_TURNS && !userWins && !rivalWins;
     const battleOutcome = battleLog[battleLog.length - 1] || `Battle timeout after ${MAX_BATTLE_TURNS} turns`;
+    
+    if (maxTurnsReached) {
+      console.log(`\n⚠️  MAX TURNS LIMIT REACHED (${MAX_BATTLE_TURNS} turns)`);
+      console.log(`    Calculation stopped to prevent exponential complexity (16^${MAX_BATTLE_TURNS + 1} combinations)`);
+    }
     
     // ========== STEP 3: Calculate final KO probabilities ==========
     console.log(`${'═'.repeat(60)}`);
@@ -1431,6 +1437,7 @@ function calculateMatchup(gen, userMon, rivalMon) {
       battleOutcome,
       battleLog,
       turns: turn - 1,
+      maxTurnsReached, // Flag to indicate if calculation was stopped due to complexity
       
       // ===== User Attack Data =====
       bestMove: userMovesUsed[0]?.move || 'No valid moves',

@@ -49,6 +49,25 @@ const MAX_BATTLE_TURNS = 20; // Prevent infinite battle loops
 const DEFAULT_IVS = { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 };
 const DEFAULT_EVS = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
 
+/**
+ * Blacklist of moves that should NOT be considered for user Pokémon in Nuzlocke mode
+ * These moves are too risky because they can KO the user's Pokémon, and in Nuzlocke,
+ * dead Pokémon are lost forever.
+ * 
+ * Categories:
+ * - Self-destruct moves: Explosion, Self-Destruct, Misty Explosion, etc.
+ * - High recoil moves: Take Down, Double-Edge, Brave Bird, Flare Blitz, etc.
+ * - HP sacrifice moves: Belly Drum, Curse (Ghost-type), Mind Blown, etc.
+ * - Moves with serious drawbacks: Final Gambit, Memento, Healing Wish, Lunar Dance
+ * 
+ * Note: This only applies to user Pokémon, not rival Pokémon.
+ */
+const BLACKLISTED_MOVES = new Set([
+  // Self-destruct moves (KO user)
+  'explosion',
+  'self-destruct'
+]);
+
 // Pokémon with cosmetic-only forms that @smogon/calc doesn't recognize
 // These forms have identical stats/types/abilities, only appearance differs
 const COSMETIC_FORMS = {
@@ -732,7 +751,7 @@ function calculateCombinationProbability(damageArrays, targetDamage, moveIndex =
  * Helper: Calculate all moves with their damage and priority
  * Returns array of all valid moves with their calculation results
  */
-function calculateAllMoves(gen, attacker, defender, movesList) {
+function calculateAllMoves(gen, attacker, defender, movesList, isUserPokemon = false) {
   const moveResults = [];
   
   if (!movesList || movesList.length === 0) {
@@ -749,6 +768,13 @@ function calculateAllMoves(gen, attacker, defender, movesList) {
     
     try {
       const move = new Move(gen, actualMoveName);
+      
+      // Skip blacklisted moves for user Pokémon in Nuzlocke mode
+      // These moves are too risky (self-destruct, high recoil, etc.)
+      if (isUserPokemon && BLACKLISTED_MOVES.has(move.name.toLowerCase().replace(/\s+/g, '-'))) {
+        console.log(`     🚫 Skipping blacklisted move: ${move.name} (too risky for Nuzlocke)`);
+        continue;
+      }
       
       // Skip status moves (no damage)
       if (move.category === 'Status') continue;
@@ -1202,7 +1228,7 @@ function calculateMatchup(gen, userMon, rivalMon) {
     
     // ========== STEP 1: Calculate all possible moves for both Pokémon ==========
     console.log(`\n[1v1 SIMULATION] Calculating all move options...`);
-    const userMoveOptions = calculateAllMoves(gen, userPokemon, rivalPokemon, userMon.moves);
+    const userMoveOptions = calculateAllMoves(gen, userPokemon, rivalPokemon, userMon.moves, true);
     
     // Process rival moves, handling special cases like Hidden Power with type
     const rivalMoves = rivalMon.moves?.map(m => {
@@ -1216,7 +1242,7 @@ function calculateMatchup(gen, userMon, rivalMon) {
       return m.name || m;
     }) || [];
     
-    const rivalMoveOptions = calculateAllMoves(gen, rivalPokemon, userPokemon, rivalMoves);
+    const rivalMoveOptions = calculateAllMoves(gen, rivalPokemon, userPokemon, rivalMoves, false);
     
     if (userMoveOptions.length === 0) {
       console.log(`  ❌ User has no valid attacking moves`);

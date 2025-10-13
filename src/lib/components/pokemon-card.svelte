@@ -11,6 +11,7 @@
     ability = '',
     stats,
     nature = undefined,
+    gender = null, // 'male' | 'female' | 'genderless' | null
     minimal = false,
     movesCols = 2,
     // New editable props
@@ -35,6 +36,7 @@
   import AbilitySelector from './AbilitySelector.svelte'
   import MovesSelector from './MovesSelector.svelte'
   import NatureSelector from './NatureSelector.svelte'
+  import GenderSelector from './GenderSelector.svelte'
 
   import { UNOWN } from '$utils/rewrites'
   import { Stars as Pattern } from '$utils/pattern'
@@ -44,6 +46,7 @@
   let abilityModalOpen = false
   let movesModalOpen = false
   let natureModalOpen = false
+  let genderModalOpen = false
 
   const canonname = name.replace(/-(Alola|Galar)/, '')
 
@@ -78,6 +81,12 @@
     }
   }
 
+  function openGenderSelector() {
+    if (editable) {
+      genderModalOpen = true
+    }
+  }
+
   function handleAbilityUpdate(event) {
     const { ability: newAbility } = event.detail
     if (onUpdate) {
@@ -97,6 +106,24 @@
     if (onUpdate) {
       onUpdate({ nature: newNature })
     }
+  }
+
+  function handleGenderUpdate(event) {
+    const { gender: newGender } = event.detail
+    if (onUpdate) {
+      onUpdate({ gender: newGender })
+    }
+  }
+
+  // Helper to get gender display
+  function getGenderDisplay(genderValue) {
+    if (!genderValue) return null
+    const genderMap = {
+      male: { symbol: '♂', color: 'text-blue-500' },
+      female: { symbol: '♀', color: 'text-pink-500' },
+      genderless: { symbol: '○', color: 'text-gray-500' }
+    }
+    return genderMap[genderValue] || null
   }
 </script>
 
@@ -154,7 +181,31 @@
             {/if}
           </p>
 
-          {regionise(capitalise(name))}
+          <span class="inline-flex items-center gap-1">
+            {regionise(capitalise(name))}
+            
+            <!-- Gender Display -->
+            {#if gender}
+              {@const genderDisplay = getGenderDisplay(gender)}
+              {#if genderDisplay}
+                <span
+                  class="text-lg {genderDisplay.color} {editable ? 'cursor-pointer editable-zone' : ''}"
+                  class:cursor-pointer={editable}
+                  class:editable-zone={editable}
+                  on:click={openGenderSelector}
+                  on:keydown={(e) => e.key === 'Enter' && openGenderSelector()}
+                  role={editable ? 'button' : undefined}
+                  tabindex={editable ? 0 : undefined}
+                  title={capitalise(gender)}
+                >
+                  {genderDisplay.symbol}
+                  {#if editable}
+                    <Icon icon={Edit} class="inline ml-0.5 h-2.5 w-2.5 opacity-50" />
+                  {/if}
+                </span>
+              {/if}
+            {/if}
+          </span>
 
           {#if nature && nature.id}
             <p
@@ -433,5 +484,13 @@
     open={natureModalOpen}
     on:save={handleNatureUpdate}
     on:close={() => natureModalOpen = false}
+  />
+
+  <GenderSelector
+    pokemonName={name}
+    currentGender={gender}
+    open={genderModalOpen}
+    on:save={handleGenderUpdate}
+    on:close={() => genderModalOpen = false}
   />
 {/if}

@@ -45,7 +45,7 @@
   import RouteRecommendations from './RouteRecommendations.svelte'
   import PokemonConfigModal from './PokemonConfigModal.svelte'
 
-  let selected, nickname, status, nature, ability, hidden, death
+  let selected, nickname, status, nature, ability, hidden, death, gender
   let prevstatus = 'loading'
   let showConfigModal = false
   let moves = []
@@ -161,6 +161,8 @@
         hidden = pkmn.hidden
         nickname = pkmn.nickname
         death = pkmn.death
+        gender = pkmn.gender || null
+        console.log('🔍 [pokemon-selector] Loaded from store:', { gender: pkmn.gender })
         if (pkmn.pokemon)
           getPkmn(pkmn.pokemon).then((p) => {
             selected = p
@@ -180,11 +182,12 @@
       ...(nickname ? { nickname } : {}),
       ...(hidden ? { hidden: true } : {}),
       ...(status?.id === 5 && death ? { death } : {}),
-      ...(moves && moves.length > 0 ? { moves } : {})
+      ...(moves && moves.length > 0 ? { moves } : {}),
+      ...(gender ? { gender } : {})
     })
 
     if (selected && !oEqual(topatch, resetd)) {
-      console.log('Patching', location)
+      console.log('🔄 [pokemon-selector] Patching', location, 'with gender:', gender)
       store.update(patch({ [location]: topatch }))
     }
 
@@ -233,7 +236,7 @@
   }
 
   function handleClear() {
-    status = nickname = selected = death = resetd = nature = ability = null
+    status = nickname = selected = death = resetd = nature = ability = gender = null
     moves = []
     search = statusSearch = natureSearch = abilitySearch = null
     availableAbilities = []
@@ -246,12 +249,24 @@
   }
   
   function handleModalSave(event) {
-    const { nickname: nick, status: stat, nature: nat, ability: abil, moves: movesData } = event.detail
+    const { nickname: nick, status: stat, nature: nat, ability: abil, moves: movesData, gender: genderData } = event.detail
+    console.log('🔍 [PokemonConfigModal] Received save event:', { 
+      nickname: nick, 
+      status: stat, 
+      nature: nat, 
+      ability: abil, 
+      moves: movesData?.length, 
+      gender: genderData 
+    })
+    
     nickname = nick
     status = Object.values(NuzlockeStates).find(s => s.id === stat) || status
     nature = Natures.find(n => n.id === nat) || nature
     ability = abil ? { id: abil, name: abil.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ') } : ability
     moves = movesData || []
+    gender = genderData || null
+    
+    console.log('💾 [PokemonConfigModal] Assigned gender to local variable:', gender)
     showConfigModal = false
   }
   

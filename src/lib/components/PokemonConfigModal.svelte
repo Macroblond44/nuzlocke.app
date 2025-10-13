@@ -21,6 +21,7 @@
   let nickname = initialData.nickname || ''
   let status = initialData.status ? Object.values(NuzlockeStates).find(s => s.id === initialData.status) : null
   let nature = initialData.nature ? Natures.find(n => n.id === initialData.nature) : null
+  let gender = initialData.gender || null // 'male' | 'female' | 'genderless' | null
   
   // Handle ability - it can be a string (ability id) or an object
   let ability = null
@@ -98,13 +99,18 @@
     // Filter out null/undefined moves
     const validMoves = selectedMoves.filter(m => m && m.id)
     
-    dispatch('save', {
+    const dataToSave = {
       nickname,
       status: status?.id,
       nature: nature?.id,
       ability: ability?.id,
-      moves: validMoves
-    })
+      moves: validMoves,
+      gender
+    }
+    
+    console.log('📤 [PokemonConfigModal] Dispatching save with data:', dataToSave)
+    
+    dispatch('save', dataToSave)
   }
   
   function handleClose() {
@@ -234,6 +240,63 @@
               {/if}
             </div>
           </AutoCompleteV2>
+        </div>
+        
+        <!-- Gender -->
+        <div>
+          <label class="mb-1 block text-sm font-medium text-gray-700 dark:text-gray-300">
+            Gender
+          </label>
+          <div class="grid grid-cols-3 gap-2">
+            <button
+              type="button"
+              on:click={() => gender = 'male'}
+              class="p-3 rounded-lg border-2 transition-all duration-200 {gender === 'male'
+                ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'}"
+            >
+              <div class="flex flex-col items-center gap-1">
+                <span class="text-2xl text-blue-500">♂</span>
+                <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Male</span>
+              </div>
+            </button>
+            
+            <button
+              type="button"
+              on:click={() => gender = 'female'}
+              class="p-3 rounded-lg border-2 transition-all duration-200 {gender === 'female'
+                ? 'border-pink-500 bg-pink-50 dark:bg-pink-900/20'
+                : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'}"
+            >
+              <div class="flex flex-col items-center gap-1">
+                <span class="text-2xl text-pink-500">♀</span>
+                <span class="text-xs font-medium text-gray-700 dark:text-gray-300">Female</span>
+              </div>
+            </button>
+            
+            <button
+              type="button"
+              on:click={() => gender = 'genderless'}
+              class="p-3 rounded-lg border-2 transition-all duration-200 {gender === 'genderless'
+                ? 'border-gray-500 bg-gray-50 dark:bg-gray-900/20'
+                : 'border-gray-200 dark:border-gray-600 hover:border-gray-300 dark:hover:border-gray-500'}"
+            >
+              <div class="flex flex-col items-center gap-1">
+                <span class="text-2xl text-gray-500">○</span>
+                <span class="text-xs font-medium text-gray-700 dark:text-gray-300">None</span>
+              </div>
+            </button>
+          </div>
+          
+          {#if gender !== null}
+            <button
+              type="button"
+              on:click={() => gender = null}
+              class="mt-2 w-full text-sm text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 underline"
+            >
+              Clear selection
+            </button>
+          {/if}
         </div>
         
         <!-- Ability -->

@@ -568,6 +568,7 @@
                     moves={userPokemonData?.original?.moves || []}
                     ability={userPokemonData?.original?.ability ? { name: userPokemonData.original.ability } : ''}
                     nature={userPokemonData?.original?.nature ? NaturesMap[userPokemonData.original.nature] || { id: userPokemonData.original.nature, label: capitalise(userPokemonData.original.nature), value: [] } : undefined}
+                    gender={userPokemonData?.original?.gender || null}
                     stats={pokemonData.baseStats || { hp: 100, atk: 100, def: 100, spa: 100, spd: 100, spe: 100 }}
                     held={''}
                     maxStat={Math.max(150, ...Object.values(pokemonData.baseStats || {}))}

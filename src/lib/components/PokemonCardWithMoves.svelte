@@ -16,6 +16,7 @@
   export let ability = ''
   export let stats
   export let nature = undefined
+  export let gender = null // 'male' | 'female' | 'genderless' | null
   export let minimal = false
   export let movesCols = 2
   // Editable props
@@ -69,6 +70,7 @@
   {ability}
   {stats}
   {nature}
+  {gender}
   {minimal}
   {movesCols}
   {editable}

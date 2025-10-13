@@ -18,6 +18,10 @@
   export let nature = undefined
   export let minimal = false
   export let movesCols = 2
+  // Editable props
+  export let editable = false
+  export let gameKey = ''
+  export let onUpdate = null
 
   let transformedMoves = []
   let loadingMoves = false
@@ -67,6 +71,9 @@
   {nature}
   {minimal}
   {movesCols}
+  {editable}
+  {gameKey}
+  {onUpdate}
 >
   <svelte:fragment slot="badges">
     <slot name="badges" />

@@ -4,6 +4,10 @@
   import { createEventDispatcher, onMount } from 'svelte'
   import { Icon } from '$c/core'
   import { X, Sword, Shield, BarChart, Info, Settings, Sort, Caret, Filter } from '$icons'
+  import PokemonCardWithMoves from '../PokemonCardWithMoves.svelte'
+  import { NaturesMap } from '$lib/data/natures'
+  import { getContext } from 'svelte'
+  import { createImgUrl, UNOWN } from '$utils/rewrites'
 
   export let recommendations = []
   export let bossTeam = []
@@ -13,6 +17,7 @@
   export let open = false
 
   const dispatch = createEventDispatcher()
+  const { getPkmn } = getContext('game')
 
   // State for showing detailed calculations
   let showDetailedCalculations = false
@@ -25,6 +30,13 @@
   let currentFilter = 'score' // 'score' or 'rival'
   let selectedRivalForFilter = null
   let filteredRecommendations = []
+
+  // State for recalculation
+  let isRecalculating = false
+
+  // State for Pokemon data
+  let Pokemon = {}
+  let loadingPokemonData = false
 
   function closeModal() {
     open = false
@@ -115,6 +127,67 @@
   // Initialize filter when recommendations change
   $: if (recommendations && recommendations.length > 0) {
     applyFilter()
+  }
+
+  // Load Pokemon data when modal opens
+  $: if (open && recommendations && recommendations.length > 0) {
+    loadPokemonData()
+  }
+
+  async function loadPokemonData() {
+    if (loadingPokemonData) return
+    
+    loadingPokemonData = true
+    try {
+      const pokemonNames = recommendations.map(r => r.name)
+      const pokemonData = await Promise.all(
+        pokemonNames.map(name => getPkmn(name))
+      )
+      
+      // Create Pokemon object similar to /box
+      Pokemon = {}
+      pokemonData.forEach((data, index) => {
+        if (data) {
+          Pokemon[pokemonNames[index]] = data
+        }
+      })
+    } catch (error) {
+      console.error('Error loading Pokemon data:', error)
+    } finally {
+      loadingPokemonData = false
+    }
+  }
+
+
+  // Recalculate recommendations with updated Pokemon data
+  function recalculateRecommendations() {
+    isRecalculating = true
+    
+    // Dispatch event to parent to recalculate
+    dispatch('recalculate', {
+      userTeam: [...userTeam]
+    })
+    
+    // Reset recalculation flag after a delay
+    setTimeout(() => {
+      isRecalculating = false
+    }, 2000)
+  }
+
+  // Handle Pokemon updates from editable PokemonCards
+  function handlePokemonUpdate(pokemonName, updateData) {
+    const pokemonIndex = userTeam.findIndex(p => (p.name || p.alias) === pokemonName)
+    
+    if (pokemonIndex !== -1) {
+      // Update the Pokemon data
+      userTeam[pokemonIndex] = {
+        ...userTeam[pokemonIndex],
+        ...updateData
+      }
+      
+      // Trigger recalculation
+      recalculateRecommendations()
+    }
   }
 
   function toggleDetailedCalculations(pokemon) {
@@ -328,10 +401,16 @@
       <!-- Header -->
       <div class="flex items-center justify-between p-6 border-b border-gray-200 dark:border-gray-700">
         <div class="flex items-center gap-3">
-                   <Icon icon={Settings} class="text-green-600 dark:text-green-400" />
+          <Icon icon={Settings} class="text-green-600 dark:text-green-400" />
           <h2 class="text-xl font-bold text-gray-900 dark:text-white">
             Advanced Recommendation Analysis
           </h2>
+          {#if isRecalculating}
+            <div class="flex items-center gap-2 text-sm text-blue-600 dark:text-blue-400">
+              <div class="animate-spin rounded-full h-4 w-4 border-2 border-blue-600 border-t-transparent"></div>
+              Recalculating...
+            </div>
+          {/if}
         </div>
         <button 
           on:click={closeModal}
@@ -440,11 +519,39 @@
           
           
           {#each filteredRecommendations as pokemon, index}
-            {@const userPokemonData = userTeam.find(p => (p.name || p.alias) === pokemon.name)}
+            {@const userPokemonData = userTeam.find(p => p.original?.pokemon === pokemon.name)}
+            {@const pokemonData = Pokemon[pokemon.name]}
+            
             <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+              <!-- Pokemon Card with editable capabilities -->
+              <div class="mb-4">
+                {#if pokemonData}
+                  <PokemonCardWithMoves
+                    sprite={createImgUrl(pokemonData, { ext: 'png' })}
+                    fallback={UNOWN}
+                    name={pokemonData.name}
+                    types={pokemonData.types || ['normal']}
+                    level={50}
+                    moves={userPokemonData?.original?.moves || []}
+                    ability={userPokemonData?.original?.ability ? { name: userPokemonData.original.ability } : ''}
+                    nature={userPokemonData?.original?.nature ? NaturesMap[userPokemonData.original.nature] || { id: userPokemonData.original.nature, label: capitalise(userPokemonData.original.nature), value: [] } : undefined}
+                    stats={pokemonData.baseStats || { hp: 100, atk: 100, def: 100, spa: 100, spd: 100, spe: 100 }}
+                    held={''}
+                    maxStat={Math.max(150, ...Object.values(pokemonData.baseStats || {}))}
+                    editable={true}
+                    gameKey={gameMode === 'normal' ? '' : 'radred'}
+                    onUpdate={(updateData) => handlePokemonUpdate(pokemon.name, updateData)}
+                  />
+                {:else}
+                  <div class="text-center py-8 text-gray-500 dark:text-gray-400">
+                    No Pokemon data found for {pokemon.name}
+                  </div>
+                {/if}
+              </div>
+
+              <!-- Pokemon Info and Controls -->
               <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center gap-4">
-                  <PIcon name={userPokemonData?.sprite || userPokemonData?.name || pokemon.name} class="w-12 h-12" />
                   <div>
                     <h4 class="text-lg font-semibold text-gray-900 dark:text-white">
                       {regionise(capitalise(pokemon.name))}
@@ -461,7 +568,7 @@
                   on:click={() => toggleDetailedCalculations(pokemon)}
                   class="flex items-center gap-2 px-3 py-2 text-sm bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300 rounded-lg hover:bg-green-200 dark:hover:bg-green-800 transition-colors"
                 >
-                           <Icon icon={Settings} class="w-4 h-4" />
+                  <Icon icon={BarChart} class="w-4 h-4" />
                   {selectedPokemon === pokemon.name ? 'Hide Details' : 'Show 1v1 Analysis'}
                 </button>
               </div>
@@ -866,3 +973,4 @@
     </div>
   </div>
 {/if}
+

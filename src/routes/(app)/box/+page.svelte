@@ -16,6 +16,7 @@
   import { capitalise } from '$utils/string'
   import { drag } from '$utils/drag'
   import { locid } from '$utils/pokemon'
+  import { NaturesMap } from '$lib/data/natures'
 
   import {
     getGameStore,
@@ -206,6 +207,30 @@
     ogbox = ogbox.filter((i) => toid(i) !== toid(o))
     killPokemon({ ...o, death })
     handleTeamRemove(o)
+  }
+
+  // Handle Pokemon updates from editable cards
+  function handlePokemonUpdate(pokemonData, updateData) {
+    console.log('Pokemon update:', pokemonData, updateData)
+    
+    // Find the Pokemon in the box
+    const pokemonToUpdate = ogbox.find(p => toid(p) === toid(pokemonData))
+    
+    if (pokemonToUpdate) {
+      // Update the Pokemon data
+      const updatedPokemon = {
+        ...pokemonToUpdate,
+        ...updateData
+      }
+      
+      // Update in ogbox
+      ogbox = ogbox.map(p => 
+        toid(p) === toid(pokemonData) ? updatedPokemon : p
+      )
+      
+      // Persist the update
+      updatePokemon(updatedPokemon)
+    }
   }
 
   /** Team management */
@@ -416,10 +441,13 @@
                   : null}
                 name={Pokemon[p.pokemon].name}
                 stats={Pokemon[p.pokemon].baseStats}
-                nature={p.nature}
+                nature={p.nature ? NaturesMap[p.nature] || { id: p.nature, label: capitalise(p.nature), value: [] } : undefined}
                 types={(Pokemon[p.pokemon].types || []).map((t) =>
                   t.toLowerCase()
                 )}
+                editable={true}
+                gameKey="radred"
+                onUpdate={(updateData) => handlePokemonUpdate(p, updateData)}
               >
                 <svelte:fragment slot="badges">
                   {#if badgeSummary}

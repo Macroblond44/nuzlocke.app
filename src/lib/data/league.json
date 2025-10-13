@@ -62872,13 +62872,14 @@
       "pokemon": [
         {
           "name": "rufflet",
-          "level": "13",
+          "level": "12",
           "moves": [
             "aerial-ace",
-            "slash",
+            "rock-tomb",
             "rock-smash",
             "roost"
           ],
+          "nature": "Jolly",
           "ability": "hustle",
           "abilities": [
             "hustle"
@@ -62886,34 +62887,36 @@
           "held": "berry-juice"
         },
         {
-          "name": "emolga",
-          "level": "13",
+          "name": "wattrel",
+          "level": "14",
           "moves": [
-            "shock-wave",
-            "air-cutter",
+            "flash",
+            "air-slash",
             "sleep-talk",
             "roost"
           ],
-          "ability": "lightning-rod",
+          "nature": "Timid",
+          "ability": "volt-absorb",
           "abilities": [
-            "lightning-rod"
+            "volt-absorb"
           ],
           "held": "berry-juice"
         },
         {
-          "name": "corvisquire",
+          "name": "flittle",
           "level": "14",
           "moves": [
-            "pluck",
+            "disarming-voice",
             "roost",
-            "rock-smash",
-            "hone-claws"
+            "psybeam",
+            "calm-mind"
           ],
-          "ability": "unnerve",
+          "nature": "Bold",
+          "ability": "speed-boost",
           "abilities": [
-            "unnerve"
+            "speed-boost"
           ],
-          "held": "berry-juice"
+          "held": "eviolite"
         }
       ]
     },

@@ -44399,6 +44399,28 @@
       "boss": "Brendan"
     },
     {
+      "type": "route",
+      "name": "Digletts Cave",
+      "encounters": [
+        "diglett",
+        "nacli",
+        "numel",
+        "yamask",
+        "sandshrew",
+        "geodude",
+        "trapinch",
+        "silicobra",
+        "bronzor",
+        "machop",
+        "noibat",
+        "diglett-alola",
+        "yamask-galar",
+        "geodude-alola",
+        "sandile",
+        "pancham"
+      ]
+    },
+    {
       "type": "gym",
       "name": "Pewter City Museum",
       "value": "mb1",
@@ -44429,10 +44451,10 @@
         "axew",
         "bonsly",
         "grimer-alola",
-        "exeggutor-alola",
         "espurr",
         "skiddo",
-        "gastly"
+        "gastly",
+        "poltchageist"
       ]
     },
     {
@@ -44707,28 +44729,6 @@
       "value": "3",
       "group": "gym-leader",
       "boss": "Lt. Surge"
-    },
-    {
-      "type": "route",
-      "name": "Digletts Cave",
-      "encounters": [
-        "diglett",
-        "nacli",
-        "numel",
-        "yamask",
-        "sandshrew",
-        "geodude",
-        "trapinch",
-        "silicobra",
-        "bronzor",
-        "machop",
-        "noibat",
-        "diglett-alola",
-        "yamask-galar",
-        "geodude-alola",
-        "sandile",
-        "pancham"
-      ]
     },
     {
       "type": "route",

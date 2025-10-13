@@ -9576,7 +9576,7 @@
       {
         "name": "rufflet",
         "alias": null,
-        "level": "13",
+        "level": "12",
         "moves": [
           {
             "name": "Aerial Ace",
@@ -9587,12 +9587,12 @@
             "effect": "Never misses."
           },
           {
-            "name": "Slash",
-            "type": "normal",
-            "power": 70,
+            "name": "Rock Tomb",
+            "type": "rock",
+            "power": 60,
             "damage_class": "physical",
             "priority": 0,
-            "effect": "Has an increased chance for a critical hit."
+            "effect": "Has a 100% chance to lower the target’s Speed by one stage."
           },
           {
             "name": "Rock Smash",
@@ -9620,7 +9620,7 @@
           "name": "Berry Juice",
           "effect": "Restores 20 HP."
         },
-        "nature": "Hardy",
+        "nature": "Jolly",
         "evs": {
           "hp": 0,
           "atk": 0,
@@ -9652,25 +9652,25 @@
         }
       },
       {
-        "name": "emolga",
+        "name": "wattrel",
         "alias": null,
-        "level": "13",
+        "level": "14",
         "moves": [
           {
-            "name": "Shock Wave",
-            "type": "electric",
-            "power": 60,
-            "damage_class": "special",
+            "name": "Flash",
+            "type": "normal",
+            "power": null,
+            "damage_class": "status",
             "priority": 0,
-            "effect": "Never misses."
+            "effect": "Lowers the target’s accuracy by one stage."
           },
           {
-            "name": "Air Cutter",
+            "name": "Air Slash",
             "type": "flying",
-            "power": 60,
+            "power": 75,
             "damage_class": "special",
             "priority": 0,
-            "effect": "Has an increased chance for a critical hit."
+            "effect": "Has a 30% chance to make the target flinch."
           },
           {
             "name": "Sleep Talk",
@@ -9690,15 +9690,15 @@
           }
         ],
         "ability": {
-          "name": "Lightning Rod",
-          "effect": "Redirects single-target electric moves to this Pokémon where possible.  Absorbs Electric moves, raising Special Attack one stage."
+          "name": "Volt Absorb",
+          "effect": "Absorbs electric moves, healing for 1/4 max HP."
         },
         "held": {
           "sprite": "berry-juice",
           "name": "Berry Juice",
           "effect": "Restores 20 HP."
         },
-        "nature": "Hardy",
+        "nature": "Timid",
         "evs": {
           "hp": 0,
           "atk": 0,
@@ -9715,32 +9715,32 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "587",
+        "sprite": "940",
         "types": [
           "electric",
           "flying"
         ],
         "stats": {
-          "hp": 55,
-          "atk": 55,
-          "def": 60,
-          "spa": 95,
-          "spd": 60,
-          "spe": 103
+          "hp": 40,
+          "atk": 40,
+          "def": 35,
+          "spa": 55,
+          "spd": 40,
+          "spe": 70
         }
       },
       {
-        "name": "corvisquire",
+        "name": "flittle",
         "alias": null,
         "level": "14",
         "moves": [
           {
-            "name": "Pluck",
-            "type": "flying",
-            "power": 60,
-            "damage_class": "physical",
+            "name": "Disarming Voice",
+            "type": "fairy",
+            "power": 40,
+            "damage_class": "special",
             "priority": 0,
-            "effect": "If target has a berry, inflicts double damage and uses the berry."
+            "effect": "Never misses."
           },
           {
             "name": "Roost",
@@ -9751,32 +9751,32 @@
             "effect": "Heals the user by half its max HP."
           },
           {
-            "name": "Rock Smash",
-            "type": "fighting",
-            "power": 40,
-            "damage_class": "physical",
+            "name": "Psybeam",
+            "type": "psychic",
+            "power": 65,
+            "damage_class": "special",
             "priority": 0,
-            "effect": "Has a 50% chance to lower the target’s Defense by one stage."
+            "effect": "Has a 10% chance to confuse the target."
           },
           {
-            "name": "Hone Claws",
-            "type": "dark",
+            "name": "Calm Mind",
+            "type": "psychic",
             "power": null,
             "damage_class": "status",
             "priority": 0,
-            "effect": "Raises the user’s Attack and accuracy by one stage."
+            "effect": "Raises the user’s Special Attack and Special Defense by one stage."
           }
         ],
         "ability": {
-          "name": "Unnerve",
-          "effect": "Prevents opposing Pokémon from eating held Berries."
+          "name": "Speed Boost",
+          "effect": "Raises Speed one stage after each turn."
         },
         "held": {
-          "sprite": "berry-juice",
-          "name": "Berry Juice",
-          "effect": "Restores 20 HP."
+          "sprite": "eviolite",
+          "name": "Eviolite",
+          "effect": "Held: Holder has 1.5× Defense and Special Defense, as long as it’s not fully evolved."
         },
-        "nature": "Hardy",
+        "nature": "Bold",
         "evs": {
           "hp": 0,
           "atk": 0,
@@ -9793,17 +9793,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "822",
+        "sprite": "955",
         "types": [
-          "flying"
+          "psychic"
         ],
         "stats": {
-          "hp": 68,
-          "atk": 67,
-          "def": 55,
-          "spa": 43,
-          "spd": 55,
-          "spe": 77
+          "hp": 30,
+          "atk": 35,
+          "def": 30,
+          "spa": 55,
+          "spd": 30,
+          "spe": 75
         }
       }
     ]

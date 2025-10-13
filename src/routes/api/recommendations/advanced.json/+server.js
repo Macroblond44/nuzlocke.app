@@ -42,6 +42,7 @@
 
 import { calculate, Pokemon, Move, Generations } from '@smogon/calc';
 import gamesData from '$lib/data/games.json';
+import { applyAbilityModifiers, wouldSturdyPreventKO } from '$lib/utils/ability-modifiers.js';
 
 // ========== CONSTANTS ==========
 const MAX_BATTLE_TURNS = 20; // Prevent infinite battle loops
@@ -464,7 +465,18 @@ function calculateMoveSequenceKOProbability(gen, attacker, defender, movesUsed, 
  */
 function calculateSingleMoveKO(gen, attacker, defender, moveUsed, defenderHP) {
   const moveResult = calculate(gen, attacker, defender, new Move(gen, moveUsed.move));
-  const damageArray = moveResult.damage;
+  
+  // Apply ability modifiers (e.g., Sturdy)
+  const modifiedResult = applyAbilityModifiers(
+    moveResult, 
+    attacker, 
+    defender, 
+    moveUsed, 
+    defenderHP, 
+    defenderHP // Current HP = Max HP for single move calculation
+  );
+  
+  const damageArray = modifiedResult.damage;
   
   if (!damageArray || damageArray.length === 0) {
     return createKOAnalysisResult(0, false, 'No damage', SINGLE_MOVE_THRESHOLD);
@@ -503,7 +515,18 @@ function calculateMultiMoveKO(gen, attacker, defender, movesUsed, defenderHP) {
   // Get exact damage arrays from @smogon/calc for each move
   const damageArrays = movesUsed.map((moveUsed, index) => {
     const moveResult = calculate(gen, attacker, defender, new Move(gen, moveUsed.move));
-    const damageArray = moveResult.damage;
+    
+    // Apply ability modifiers (e.g., Sturdy) for each move
+    const modifiedResult = applyAbilityModifiers(
+      moveResult, 
+      attacker, 
+      defender, 
+      moveUsed, 
+      defenderHP, 
+      defenderHP // Current HP = Max HP for multi-move calculation
+    );
+    
+    const damageArray = modifiedResult.damage;
     
     console.log(`     Turn ${index + 1}: ${moveUsed.move.padEnd(15)} | Damage range: ${Math.min(...damageArray)}-${Math.max(...damageArray)} HP (${damageArray.length} possible values)`);
     
@@ -628,12 +651,22 @@ function calculateAllMoves(gen, attacker, defender, movesList) {
       
       const result = calculate(gen, attacker, defender, move);
       
-      if (!result.damage || (Array.isArray(result.damage) && result.damage.length === 0)) {
+      // Apply ability modifiers (e.g., Sturdy)
+      const modifiedResult = applyAbilityModifiers(
+        result, 
+        attacker, 
+        defender, 
+        move, 
+        defender.calculatedStats?.hp || defender.rawStats?.hp || defender.stats?.hp || defender.hp || 0,
+        defender.calculatedStats?.hp || defender.rawStats?.hp || defender.stats?.hp || defender.hp || 0
+      );
+      
+      if (!modifiedResult.damage || (Array.isArray(modifiedResult.damage) && modifiedResult.damage.length === 0)) {
         continue; // Skip moves with no damage
       }
       
-      const damageRange = extractDamage(result);
-      const medianDamage = calculateMedianDamage(result.damage);
+      const damageRange = extractDamage(modifiedResult);
+      const medianDamage = calculateMedianDamage(modifiedResult.damage);
       const minDamage = damageRange[0];
       const maxDamage = damageRange[1];
       const priorityIndicator = move.priority > 0 ? ` [Priority +${move.priority}]` : '';
@@ -647,7 +680,7 @@ function calculateAllMoves(gen, attacker, defender, movesList) {
         minDamage,
         maxDamage,
         damageRange,
-        result
+        result: modifiedResult
       });
     } catch (moveError) {
       // Silently skip failed moves to reduce noise

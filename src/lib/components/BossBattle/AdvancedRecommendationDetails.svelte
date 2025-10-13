@@ -8,6 +8,7 @@
   import { NaturesMap } from '$lib/data/natures'
   import { getContext } from 'svelte'
   import { createImgUrl, UNOWN } from '$utils/rewrites'
+  import { updatePokemon } from '$lib/store'
 
   export let recommendations = []
   export let bossTeam = []
@@ -161,6 +162,7 @@
 
   // Recalculate recommendations with updated Pokemon data
   function recalculateRecommendations() {
+    console.log('🔄 [AdvancedRecommendations] recalculateRecommendations called')
     isRecalculating = true
     
     // Dispatch event to parent to recalculate
@@ -168,25 +170,56 @@
       userTeam: [...userTeam]
     })
     
+    console.log('📡 [AdvancedRecommendations] Dispatched recalculate event with userTeam:', userTeam.length, 'pokemon')
+    
     // Reset recalculation flag after a delay
     setTimeout(() => {
       isRecalculating = false
+      console.log('✅ [AdvancedRecommendations] Recalculation completed')
     }, 2000)
   }
 
   // Handle Pokemon updates from editable PokemonCards
   function handlePokemonUpdate(pokemonName, updateData) {
-    const pokemonIndex = userTeam.findIndex(p => (p.name || p.alias) === pokemonName)
+    console.log('🔄 [AdvancedRecommendations] handlePokemonUpdate called:', {
+      pokemonName,
+      updateData,
+      userTeamLength: userTeam.length
+    })
+    
+    // Find the Pokemon in userTeam (using the correct structure)
+    const pokemonIndex = userTeam.findIndex(p => p.original?.pokemon === pokemonName)
+    
+    console.log('🔍 [AdvancedRecommendations] Found Pokemon index:', pokemonIndex)
     
     if (pokemonIndex !== -1) {
-      // Update the Pokemon data
-      userTeam[pokemonIndex] = {
+      console.log('✅ [AdvancedRecommendations] Before update:', userTeam[pokemonIndex])
+      
+      // Update the Pokemon data in the original structure
+      const updatedPokemon = {
         ...userTeam[pokemonIndex],
-        ...updateData
+        original: {
+          ...userTeam[pokemonIndex].original,
+          ...updateData
+        }
+      }
+      
+      userTeam[pokemonIndex] = updatedPokemon
+      
+      console.log('✅ [AdvancedRecommendations] After update:', userTeam[pokemonIndex])
+      
+      // Persist the change globally using updatePokemon
+      try {
+        updatePokemon(updatedPokemon.original)
+        console.log('💾 [AdvancedRecommendations] Persisted change globally')
+      } catch (error) {
+        console.error('❌ [AdvancedRecommendations] Failed to persist change:', error)
       }
       
       // Trigger recalculation
       recalculateRecommendations()
+    } else {
+      console.error('❌ [AdvancedRecommendations] Pokemon not found in userTeam:', pokemonName)
     }
   }
 

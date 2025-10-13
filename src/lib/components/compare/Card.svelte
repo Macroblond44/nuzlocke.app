@@ -93,10 +93,10 @@
             class="absolute right-0 top-1/2 z-20 mb-1 flex -translate-y-3 -translate-x-5 cursor-help flex-col items-center p-1"
           >
             <Tooltip>
-              {def.original.held.name}: {def.original.held.effect.replace(
+              {def.original.held.name}: {def.original.held.effect?.replace(
                 /^Held: +/g,
                 ''
-              )}
+              ) || def.original.held.effect || 'No effect description'}
             </Tooltip>
             <span>
               <PIcon type="item" name={def.original.held.sprite} />

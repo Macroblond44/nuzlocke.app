@@ -48,11 +48,121 @@ import { applyAbilityModifiers, wouldSturdyPreventKO } from '$lib/utils/ability-
 const MAX_BATTLE_TURNS = 20; // Prevent infinite battle loops
 const DEFAULT_IVS = { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 };
 const DEFAULT_EVS = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
+
+// Pokémon with cosmetic-only forms that @smogon/calc doesn't recognize
+// These forms have identical stats/types/abilities, only appearance differs
+const COSMETIC_FORMS = {
+  // Burmy forms (trash/sandy/plant are cosmetic)
+  'burmy-trash': 'burmy',
+  'burmy-sandy': 'burmy',
+  'burmy-plant': 'burmy',
+  
+  // Shellos forms (east/west are cosmetic)
+  'shellos-east': 'shellos',
+  'shellos-west': 'shellos',
+  
+  // Gastrodon forms (east/west are cosmetic)
+  'gastrodon-east': 'gastrodon',
+  'gastrodon-west': 'gastrodon',
+  
+  // Vivillon patterns (cosmetic variants)
+  'vivillon-meadow': 'vivillon',
+  'vivillon-polar': 'vivillon',
+  'vivillon-tundra': 'vivillon',
+  'vivillon-continental': 'vivillon',
+  'vivillon-garden': 'vivillon',
+  'vivillon-elegant': 'vivillon',
+  'vivillon-icy-snow': 'vivillon',
+  'vivillon-modern': 'vivillon',
+  'vivillon-marine': 'vivillon',
+  'vivillon-archipelago': 'vivillon',
+  'vivillon-high-plains': 'vivillon',
+  'vivillon-sandstorm': 'vivillon',
+  'vivillon-river': 'vivillon',
+  'vivillon-monsoon': 'vivillon',
+  'vivillon-savanna': 'vivillon',
+  'vivillon-sun': 'vivillon',
+  'vivillon-ocean': 'vivillon',
+  'vivillon-jungle': 'vivillon',
+  'vivillon-fancy': 'vivillon',
+  'vivillon-pokeball': 'vivillon',
+  
+  // Flabébé colors (cosmetic)
+  'flabebe-red': 'flabebe',
+  'flabebe-yellow': 'flabebe',
+  'flabebe-orange': 'flabebe',
+  'flabebe-blue': 'flabebe',
+  'flabebe-white': 'flabebe',
+  
+  // Floette colors (cosmetic)
+  'floette-red': 'floette',
+  'floette-yellow': 'floette',
+  'floette-orange': 'floette',
+  'floette-blue': 'floette',
+  'floette-white': 'floette',
+  
+  // Florges colors (cosmetic)
+  'florges-red': 'florges',
+  'florges-yellow': 'florges',
+  'florges-orange': 'florges',
+  'florges-blue': 'florges',
+  'florges-white': 'florges',
+  
+  // Furfrou trims (cosmetic)
+  'furfrou-heart': 'furfrou',
+  'furfrou-star': 'furfrou',
+  'furfrou-diamond': 'furfrou',
+  'furfrou-debutante': 'furfrou',
+  'furfrou-matron': 'furfrou',
+  'furfrou-dandy': 'furfrou',
+  'furfrou-la-reine': 'furfrou',
+  'furfrou-kabuki': 'furfrou',
+  'furfrou-pharaoh': 'furfrou',
+  
+  // Minior cores (cosmetic, Shell form is the battle form)
+  'minior-red': 'minior',
+  'minior-orange': 'minior',
+  'minior-yellow': 'minior',
+  'minior-green': 'minior',
+  'minior-blue': 'minior',
+  'minior-indigo': 'minior',
+  'minior-violet': 'minior'
+};
 const DEFAULT_CALC_GEN = 9; // Modern romhacks use Gen 9
 
 // KO Analysis constants
 const GUARANTEED_KO_THRESHOLD = 100; // 100% chance = guaranteed
 const SINGLE_MOVE_THRESHOLD = 1; // For single move vs multi-move logic
+
+/**
+ * Normalize Pokémon name for @smogon/calc compatibility
+ * 
+ * Some Pokémon have cosmetic-only forms (Burmy, Shellos, Vivillon, etc.) that:
+ * - Have identical stats, types, and abilities across all forms
+ * - Are not recognized by @smogon/calc (which only knows the base form)
+ * - Only differ in appearance/sprite
+ * 
+ * This function maps cosmetic forms to their base form so the calculator works.
+ * 
+ * Regional forms (Alolan, Galarian, etc.) are NOT cosmetic and should NOT be normalized.
+ * 
+ * @param {string} pokemonName - Original Pokémon name (e.g., "burmy-trash", "geodude-alola")
+ * @returns {string} Normalized name for calculator (e.g., "burmy", "geodude-alola")
+ */
+function normalizeForCalculator(pokemonName) {
+  if (!pokemonName) return pokemonName;
+  
+  const normalized = pokemonName.toLowerCase().trim();
+  
+  // Check if this is a cosmetic form
+  if (COSMETIC_FORMS[normalized]) {
+    console.log(`[Name Normalization] ${pokemonName} → ${COSMETIC_FORMS[normalized]} (cosmetic form)`);
+    return COSMETIC_FORMS[normalized];
+  }
+  
+  // Not a cosmetic form, return as-is (preserves regional forms like "geodude-alola")
+  return normalized;
+}
 const PERCENTAGE_DECIMAL_PLACES = 1; // Round percentages to 1 decimal place
 
 // ========== SCORING WEIGHTS ==========
@@ -998,8 +1108,9 @@ function calculateMatchup(gen, userMon, rivalMon) {
     
     // Normalize ability name for @smogon/calc (converts 'strong-jaw' → 'Strong Jaw')
     const userAbility = normalizeAbilityName(userMon.ability);
+    const userNameForCalc = normalizeForCalculator(userMon.name);
     
-    const userPokemon = new Pokemon(gen, userMon.name, {
+    const userPokemon = new Pokemon(gen, userNameForCalc, {
       level: userMon.level || 50,
       ability: userAbility,
       nature: userMon.nature || 'Hardy',
@@ -1058,7 +1169,9 @@ function calculateMatchup(gen, userMon, rivalMon) {
     
     console.log(`[Base Stats] Using ${baseStats ? 'provided' : 'default'} base stats for ${rivalMon.name}:`, baseStats);
     
-    const rivalPokemon = new Pokemon(gen, rivalMon.name, {
+    const rivalNameForCalc = normalizeForCalculator(rivalMon.name);
+    
+    const rivalPokemon = new Pokemon(gen, rivalNameForCalc, {
       level: parseInt(rivalMon.level) || 50,
       ability: rivalAbilityName || undefined,
       nature: rivalMon.nature || 'Hardy',

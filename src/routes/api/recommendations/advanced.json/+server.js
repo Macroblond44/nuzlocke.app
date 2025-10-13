@@ -71,6 +71,28 @@ const BLACKLISTED_MOVES = new Set([
   'future-sight'
 ]);
 
+/**
+ * Blacklist of abilities that require gender data we don't have for rival Pokémon.
+ * These abilities affect damage calculations based on gender, which we can't accurately calculate
+ * without knowing the gender of opponent Pokémon. When a user's Pokémon has one of these abilities,
+ * we'll replace it with a neutral ability for calculation purposes.
+ * 
+ * Examples:
+ * - Rivalry: Boosts damage by 25% if same gender, reduces by 25% if opposite
+ * - Cute Charm: May infatuate opponent of opposite gender
+ */
+const BLACKLISTED_ABILITIES = new Set([
+  'rivalry',
+  'cute-charm'
+]);
+
+/**
+ * Neutral ability to use when replacing blacklisted abilities.
+ * Illuminate has no effect on damage calculations or battle mechanics,
+ * making it perfect as a neutral replacement.
+ */
+const NEUTRAL_ABILITY = 'Illuminate';
+
 // Pokémon with cosmetic-only forms that @smogon/calc doesn't recognize
 // These forms have identical stats/types/abilities, only appearance differs
 const COSMETIC_FORMS = {
@@ -1136,7 +1158,15 @@ function calculateMatchup(gen, userMon, rivalMon) {
     const userItem = userMon.item && userMon.item !== 'none' ? userMon.item : undefined;
     
     // Normalize ability name for @smogon/calc (converts 'strong-jaw' → 'Strong Jaw')
-    const userAbility = normalizeAbilityName(userMon.ability);
+    let userAbility = normalizeAbilityName(userMon.ability);
+    
+    // Check if ability is blacklisted (requires gender data we don't have)
+    const abilityIdLower = userMon.ability?.toLowerCase().replace(/\s+/g, '-');
+    if (BLACKLISTED_ABILITIES.has(abilityIdLower)) {
+      console.log(`⚠️ [Ability Blacklist] ${userMon.name}'s ability "${userAbility}" requires gender data. Replacing with "${NEUTRAL_ABILITY}".`);
+      userAbility = NEUTRAL_ABILITY; // Use neutral ability that doesn't affect damage calculations
+    }
+    
     const userNameForCalc = normalizeForCalculator(userMon.name);
     
     const userPokemon = new Pokemon(gen, userNameForCalc, {

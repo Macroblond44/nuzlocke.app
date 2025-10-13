@@ -3,7 +3,7 @@
   import { capitalise, regionise } from '$utils/string'
   import { createEventDispatcher, onMount } from 'svelte'
   import { Icon } from '$c/core'
-  import { X, Sword, Shield, BarChart, Info, Settings, Sort, Caret, Unfilter } from '$icons'
+  import { X, Sword, Shield, BarChart, Info, Settings, Sort, Caret, Filter } from '$icons'
 
   export let recommendations = []
   export let bossTeam = []
@@ -347,7 +347,7 @@
           <!-- Filter Type Selection -->
           <div class="flex items-center gap-4">
             <div class="flex items-center gap-2">
-              <Icon icon={Unfilter} class="w-4 h-4 text-gray-600 dark:text-gray-400" />
+              <Icon icon={Filter} class="w-4 h-4 text-gray-600 dark:text-gray-400" />
               <span class="text-sm font-medium text-gray-700 dark:text-gray-300">Sort by:</span>
             </div>
             

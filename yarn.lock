@@ -127,10 +127,10 @@
   dependencies:
     "@iconify/types" "*"
 
-"@iconify-icons/ph@^1.2.3":
-  version "1.2.3"
-  resolved "https://registry.npmjs.org/@iconify-icons/ph/-/ph-1.2.3.tgz"
-  integrity sha512-6+HomDiD5OBZDEZNkwh14kJf3dFRf+Lomb85PYctzlam5HPBKoU2kbByc8sCXPPSDE8stjruJBhf4LrFMBpugA==
+"@iconify-icons/ph@^1.2.5":
+  version "1.2.5"
+  resolved "https://registry.npmjs.org/@iconify-icons/ph/-/ph-1.2.5.tgz"
+  integrity sha512-Ox2VkJDoFowrf0e74LlLUuLMiN73PsCN28MUx9wCQfyZAFrL8ntfBnMpzukfi/0vN9qpJKAiKYZ3dQ5JjBqt/A==
   dependencies:
     "@iconify/types" "*"
 

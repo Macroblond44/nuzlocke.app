@@ -44239,6 +44239,13 @@
       ]
     },
     {
+      "type": "gym",
+      "name": "Oak's Laboratory",
+      "value": "r1",
+      "group": "rival",
+      "boss": "Gary"
+    },
+    {
       "type": "route",
       "name": "Pallet Town",
       "encounters": [
@@ -44254,11 +44261,38 @@
       ]
     },
     {
-      "type": "gym",
-      "name": "Oak's Laboratory",
-      "value": "r1",
-      "group": "rival",
-      "boss": "Gary"
+      "type": "route",
+      "name": "Route 21",
+      "encounters": [
+        "magikarp",
+        "shellder",
+        "krabby",
+        "qwilfish",
+        "corsola-galar",
+        "octillery",
+        "lumineon",
+        "kingler",
+        "relicanth",
+        "tentacruel",
+        "barraskewda",
+        "cramorant",
+        "corsola",
+        "sharpedo",
+        "mantine",
+        "jellicent",
+        "weepinbell",
+        "nidorino",
+        "kricketune",
+        "ariados",
+        "victreebel",
+        "psyduck",
+        "corphish",
+        "mantyke",
+        "mareanie",
+        "luvdisc",
+        "basculin",
+        "wailord"
+      ]
     },
     {
       "type": "route",
@@ -44280,13 +44314,6 @@
         "meowth-galar",
         "hoothoot"
       ]
-    },
-    {
-      "type": "gym",
-      "name": "Route 1",
-      "value": "r2",
-      "group": "rival",
-      "boss": "Gary"
     },
     {
       "type": "route",
@@ -44320,29 +44347,6 @@
         "dwebble",
         "swinub",
         "lotad"
-      ]
-    },
-    {
-      "type": "route",
-      "name": "Route 22",
-      "encounters": [
-        "starly",
-        "budew",
-        "mankey",
-        "morelull",
-        "snubbull",
-        "lillipup",
-        "oddish",
-        "sandygast",
-        "bellsprout",
-        "rockruff",
-        "panpour",
-        "sandshrew-alola",
-        "flabebe",
-        "skwovet",
-        "applin",
-        "paras",
-        "roggenrola"
       ]
     },
     {
@@ -44392,6 +44396,36 @@
       ]
     },
     {
+      "type": "route",
+      "name": "Route 22",
+      "encounters": [
+        "starly",
+        "budew",
+        "mankey",
+        "morelull",
+        "snubbull",
+        "lillipup",
+        "oddish",
+        "sandygast",
+        "bellsprout",
+        "rockruff",
+        "panpour",
+        "sandshrew-alola",
+        "flabebe",
+        "skwovet",
+        "applin",
+        "paras",
+        "roggenrola"
+      ]
+    },
+    {
+      "type": "gym",
+      "name": "Route 22",
+      "value": "r2",
+      "group": "rival",
+      "boss": "Gary"
+    },
+    {
       "type": "gym",
       "name": "Virdian Forest",
       "value": "b1",
@@ -44421,20 +44455,6 @@
       ]
     },
     {
-      "type": "gym",
-      "name": "Pewter City Museum",
-      "value": "mb1",
-      "group": "mini-boss",
-      "boss": "Falkner"
-    },
-    {
-      "type": "gym",
-      "name": "Pewter City Gym",
-      "value": "1",
-      "group": "gym-leader",
-      "boss": "Brock"
-    },
-    {
       "type": "route",
       "name": "Pewter City",
       "encounters": [
@@ -44458,6 +44478,20 @@
       ]
     },
     {
+      "type": "gym",
+      "name": "Pewter City Museum",
+      "value": "mb1",
+      "group": "mini-boss",
+      "boss": "Falkner"
+    },
+    {
+      "type": "gym",
+      "name": "Pewter City Gym",
+      "value": "1",
+      "group": "gym-leader",
+      "boss": "Brock"
+    },
+    {
       "type": "route",
       "name": "Route 3",
       "encounters": [
@@ -44474,6 +44508,7 @@
         "meowth-alola",
         "nidoran-f",
         "skiddo",
+        "shroodle",
         "glameow"
       ]
     },
@@ -45508,40 +45543,6 @@
       "value": "7",
       "group": "gym-leader",
       "boss": "Blaine"
-    },
-    {
-      "type": "route",
-      "name": "Route 21",
-      "encounters": [
-        "magikarp",
-        "shellder",
-        "krabby",
-        "qwilfish",
-        "corsola-galar",
-        "octillery",
-        "lumineon",
-        "kingler",
-        "relicanth",
-        "tentacruel",
-        "barraskewda",
-        "cramorant",
-        "corsola",
-        "sharpedo",
-        "mantine",
-        "jellicent",
-        "weepinbell",
-        "nidorino",
-        "kricketune",
-        "ariados",
-        "victreebel",
-        "psyduck",
-        "corphish",
-        "mantyke",
-        "mareanie",
-        "luvdisc",
-        "basculin",
-        "wailord"
-      ]
     },
     {
       "type": "gym",

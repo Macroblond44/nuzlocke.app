@@ -3287,53 +3287,53 @@
     "img": "/leaders/gs-archer",
     "pokemon": [
       {
-        "name": "impidimp",
+        "name": "glimmet",
         "alias": null,
         "level": "18",
         "moves": [
           {
-            "name": "Thunder Wave",
-            "type": "electric",
-            "power": null,
-            "damage_class": "status",
-            "priority": 0,
-            "effect": "Paralyzes the target."
-          },
-          {
-            "name": "Bite",
-            "type": "dark",
+            "name": "Ancient Power",
+            "type": "rock",
             "power": 60,
-            "damage_class": "physical",
-            "priority": 0,
-            "effect": "Has a 30% chance to make the target flinch."
-          },
-          {
-            "name": "Draining Kiss",
-            "type": "fairy",
-            "power": 50,
             "damage_class": "special",
             "priority": 0,
-            "effect": "Drains 75% of the damage inflicted to heal the user."
+            "effect": "Has a 10% chance to raise all of the user’s stats by one stage."
           },
           {
-            "name": "Fake Out",
+            "name": "Venoshock",
+            "type": "poison",
+            "power": 65,
+            "damage_class": "special",
+            "priority": 0,
+            "effect": "Inflicts double damage if the target is Poisoned."
+          },
+          {
+            "name": "Mud Shot",
+            "type": "ground",
+            "power": 55,
+            "damage_class": "special",
+            "priority": 0,
+            "effect": "Has a 100% chance to lower the target’s Speed by one stage."
+          },
+          {
+            "name": "Protect",
             "type": "normal",
-            "power": 40,
-            "damage_class": "physical",
-            "priority": 3,
-            "effect": "Can only be used as the first move after the user enters battle.  Causes the target to flinch."
+            "power": null,
+            "damage_class": "status",
+            "priority": 4,
+            "effect": "Prevents any moves from hitting the user this turn."
           }
         ],
         "ability": {
-          "name": "Prankster",
-          "effect": "Raises non-damaging moves' priority by one stage."
+          "name": "Toxic Debris",
+          "effect": "Scatters poison spikes at the feet of the opposing team when the Pokémon takes damage from physical moves."
         },
         "held": {
-          "sprite": "oran-berry",
-          "name": "Oran Berry",
-          "effect": "Held: Consumed at 1/2 max HP to recover 10 HP."
+          "sprite": "shuca-berry",
+          "name": "Shuca Berry",
+          "effect": "Held: Consumed when struck by a super-effective Ground-type attack to halve the damage."
         },
-        "nature": "Hardy",
+        "nature": "Timid",
         "evs": {
           "hp": 0,
           "atk": 0,
@@ -3350,18 +3350,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "859",
+        "sprite": "969",
         "types": [
-          "dark",
-          "fairy"
+          "rock",
+          "poison"
         ],
         "stats": {
-          "hp": 45,
-          "atk": 45,
-          "def": 30,
-          "spa": 55,
-          "spd": 40,
-          "spe": 50
+          "hp": 48,
+          "atk": 35,
+          "def": 42,
+          "spa": 105,
+          "spd": 60,
+          "spe": 60
         }
       },
       {
@@ -3371,7 +3371,7 @@
         "moves": [
           {
             "name": "Hidden Power",
-            "type": "normal",
+            "type": "grass",
             "power": 60,
             "damage_class": "special",
             "priority": 0,
@@ -3386,12 +3386,12 @@
             "effect": "Destroys the target’s held berry."
           },
           {
-            "name": "Thunder Fang",
-            "type": "electric",
-            "power": 65,
-            "damage_class": "physical",
-            "priority": 0,
-            "effect": "Has a 10% chance to paralyze the target and a 10% chance to make the target flinch."
+            "name": "Protect",
+            "type": "normal",
+            "power": null,
+            "damage_class": "status",
+            "priority": 4,
+            "effect": "Prevents any moves from hitting the user this turn."
           },
           {
             "name": "Snarl",
@@ -3403,8 +3403,8 @@
           }
         ],
         "ability": {
-          "name": "Early Bird",
-          "effect": "Makes sleep pass twice as quickly."
+          "name": "Unnerve",
+          "effect": "Prevents opposing Pokémon from eating held Berries."
         },
         "held": {
           "sprite": "wise-glasses",
@@ -3464,12 +3464,12 @@
             "effect": "Has a 10% chance to freeze the target and a 10% chance to make the target flinch."
           },
           {
-            "name": "Poison Fang",
-            "type": "poison",
-            "power": 50,
+            "name": "Fire Fang",
+            "type": "fire",
+            "power": 65,
             "damage_class": "physical",
             "priority": 0,
-            "effect": "Has a 50% chance to badly poison the target."
+            "effect": "Has a 10% chance to burn the target and a 10% chance to make the target flinch."
           },
           {
             "name": "Bite",

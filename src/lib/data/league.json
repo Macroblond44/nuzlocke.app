@@ -60862,34 +60862,33 @@
       "img": "/leaders/gs-archer",
       "pokemon": [
         {
-          "name": "impidimp",
+          "name": "glimmet",
           "level": "18",
           "moves": [
-            "thunder-wave",
-            "bite",
-            "draining-kiss",
-            "fake-out"
+            "ancient-power",
+            "venoshock",
+            "mud-shot",
+            "protect"
           ],
-          "ability": "prankster",
+          "nature": "Timid",
+          "ability": "toxic-debris",
           "abilities": [
-            "prankster",
-            "frisk"
+            "toxic-debris"
           ],
-          "held": "oran-berry"
+          "held": "shuca-berry"
         },
         {
           "name": "houndour",
           "level": "19",
           "moves": [
-            "hidden-power",
+            "hidden-power-grass",
             "incinerate",
-            "thunder-fang",
+            "protect",
             "snarl"
           ],
-          "ability": "early-bird",
+          "ability": "unnerve",
           "abilities": [
-            "early-bird",
-            "flash-fire"
+            "unnerve"
           ],
           "held": "wise-glasses",
           "nature": "Timid",
@@ -60908,7 +60907,7 @@
           "moves": [
             "howl",
             "ice-fang",
-            "poison-fang",
+            "fire-fang",
             "bite"
           ],
           "ability": "strong-jaw",

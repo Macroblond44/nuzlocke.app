@@ -79,9 +79,16 @@
 
   // Filter and sort recommendations based on current filter
   function applyFilter() {
+    console.log('🔄 [AdvancedRecommendations] applyFilter called', {
+      currentFilter,
+      selectedRivalForFilter,
+      recommendationsLength: recommendations.length
+    })
+    
     if (currentFilter === 'score') {
       // Default sorting by score (already sorted from server)
       filteredRecommendations = [...recommendations]
+      console.log('📊 [AdvancedRecommendations] Using score filter, recommendations:', filteredRecommendations.map(r => ({ name: r.name, fullObject: r })))
     } else if (currentFilter === 'rival' && selectedRivalForFilter) {
       // Filter by rival Pokémon performance
       filteredRecommendations = recommendations
@@ -101,13 +108,22 @@
         })
         .filter(rec => rec !== null) // Remove null entries
         .sort((a, b) => a.hpLostPercentage - b.hpLostPercentage) // Sort by HP lost percentage (ascending)
+      
+      console.log('🎯 [AdvancedRecommendations] Using rival filter for', selectedRivalForFilter, 'filtered recommendations:', filteredRecommendations.map(r => ({ name: r.name, fullObject: r })))
     } else {
       filteredRecommendations = [...recommendations]
+      console.log('⚠️ [AdvancedRecommendations] Fallback filter, recommendations:', filteredRecommendations.map(r => ({ name: r.name, fullObject: r })))
     }
   }
 
   // Handle filter change
   function handleFilterChange(newFilter) {
+    console.log('🔄 [AdvancedRecommendations] handleFilterChange called', {
+      newFilter,
+      currentFilter,
+      selectedRivalForFilter
+    })
+    
     currentFilter = newFilter
     if (newFilter === 'rival' && !selectedRivalForFilter) {
       // Auto-select first rival if none selected
@@ -117,16 +133,40 @@
       }
     }
     applyFilter()
+    
+    // Ensure Pokemon data is loaded for filtered recommendations
+    if (filteredRecommendations && filteredRecommendations.length > 0) {
+      const missingPokemon = filteredRecommendations.filter(r => !Pokemon[r.name])
+      if (missingPokemon.length > 0) {
+        console.log('⚠️ [AdvancedRecommendations] Missing Pokemon data after filter change:', missingPokemon.map(p => p.name))
+        loadPokemonData(missingPokemon.map(p => p.name))
+      }
+    }
   }
 
   // Handle rival selection change
   function handleRivalChange(rivalName) {
+    console.log('🔄 [AdvancedRecommendations] handleRivalChange called', {
+      rivalName,
+      selectedRivalForFilter
+    })
+    
     selectedRivalForFilter = rivalName
     applyFilter()
+    
+    // Ensure Pokemon data is loaded for filtered recommendations
+    if (filteredRecommendations && filteredRecommendations.length > 0) {
+      const missingPokemon = filteredRecommendations.filter(r => !Pokemon[r.name])
+      if (missingPokemon.length > 0) {
+        console.log('⚠️ [AdvancedRecommendations] Missing Pokemon data after rival change:', missingPokemon.map(p => p.name))
+        loadPokemonData(missingPokemon.map(p => p.name))
+      }
+    }
   }
 
   // Initialize filter when recommendations change
   $: if (recommendations && recommendations.length > 0) {
+    console.log('🔄 [AdvancedRecommendations] Recommendations changed, applying filter')
     applyFilter()
   }
 
@@ -134,26 +174,54 @@
   $: if (open && recommendations && recommendations.length > 0) {
     loadPokemonData()
   }
+  
+  // Ensure Pokemon data is available for filtered recommendations
+  $: if (filteredRecommendations && filteredRecommendations.length > 0) {
+    console.log('🔄 [AdvancedRecommendations] Filtered recommendations changed', {
+      filteredLength: filteredRecommendations.length,
+      pokemonNames: filteredRecommendations.map(r => r.name),
+      pokemonDataAvailable: filteredRecommendations.map(r => !!Pokemon[r.name])
+    })
+  }
 
-  async function loadPokemonData() {
+  async function loadPokemonData(pokemonNames = null) {
     if (loadingPokemonData) return
+    
+    const namesToLoad = pokemonNames || recommendations.map(r => r.name)
+    
+    console.log('🔄 [AdvancedRecommendations] loadPokemonData called', {
+      recommendationsLength: recommendations.length,
+      pokemonNames: namesToLoad,
+      existingPokemon: Object.keys(Pokemon)
+    })
     
     loadingPokemonData = true
     try {
-      const pokemonNames = recommendations.map(r => r.name)
       const pokemonData = await Promise.all(
-        pokemonNames.map(name => getPkmn(name))
+        namesToLoad.map(name => getPkmn(name))
       )
       
-      // Create Pokemon object similar to /box
-      Pokemon = {}
+      // Update Pokemon object and force Svelte reactivity by creating a new object
+      const updatedPokemon = { ...Pokemon }
       pokemonData.forEach((data, index) => {
         if (data) {
-          Pokemon[pokemonNames[index]] = data
+          updatedPokemon[namesToLoad[index]] = data
+          console.log(`✅ [AdvancedRecommendations] Loaded Pokemon data for ${namesToLoad[index]}:`, {
+            name: data.name,
+            baseStats: data.baseStats,
+            types: data.types
+          })
+        } else {
+          console.warn(`⚠️ [AdvancedRecommendations] No data found for ${namesToLoad[index]}`)
         }
       })
+      
+      // Force Svelte reactivity by reassigning the entire object
+      Pokemon = updatedPokemon
+      
+      console.log('📊 [AdvancedRecommendations] Updated Pokemon object:', Object.keys(Pokemon))
     } catch (error) {
-      console.error('Error loading Pokemon data:', error)
+      console.error('❌ [AdvancedRecommendations] Error loading Pokemon data:', error)
     } finally {
       loadingPokemonData = false
     }
@@ -551,9 +619,11 @@
           </h3>
           
           
-          {#each filteredRecommendations as pokemon, index}
+          
+          {#each filteredRecommendations as pokemon, index (pokemon.name + '-' + currentFilter + '-' + (selectedRivalForFilter || ''))}
             {@const userPokemonData = userTeam.find(p => p.original?.pokemon === pokemon.name)}
             {@const pokemonData = Pokemon[pokemon.name]}
+            
             
             <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
               <!-- Pokemon Card with editable capabilities -->

@@ -1,6 +1,19 @@
 import { capitalise } from './string.js'
 
 /**
+ * Converts text to Title Case (capitalizes each word)
+ * @param {string} text - Text to convert
+ * @returns {string} Text in Title Case
+ */
+function toTitleCase(text) {
+  if (!text) return '';
+  return text
+    .split(/[\s-]+/) // Split by spaces or hyphens
+    .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+    .join(' ');
+}
+
+/**
  * Generate Showdown format for a Pokémon team
  * @param {Array} team - Array of Pokémon objects with original data
  * @param {number} [customLevel] - Optional custom level for all Pokémon (default: use individual levels or 50)
@@ -20,8 +33,8 @@ export function generateShowdownFormat(team, customLevel = null) {
     }
 
     const name = capitalise(pokemonData.pokemon || pokemon.name || 'Unknown');
-    const item = pokemonData.item ? ` @ ${capitalise(pokemonData.item.replace(/-/g, ' '))}` : '';
-    const ability = pokemonData.ability ? `\nAbility: ${capitalise(pokemonData.ability.replace(/-/g, ' '))}` : '';
+    const item = pokemonData.item ? ` @ ${toTitleCase(pokemonData.item)}` : '';
+    const ability = pokemonData.ability ? `\nAbility: ${toTitleCase(pokemonData.ability)}` : '';
     
     // Use custom level if provided, otherwise use pokemon's level or default to 50
     const level = customLevel !== null 
@@ -34,7 +47,7 @@ export function generateShowdownFormat(team, customLevel = null) {
       ? pokemonData.moves.map(move => {
           // Handle if move is a string or an object
           const moveName = typeof move === 'string' ? move : (move?.name || move?.id || 'Unknown Move');
-          return `- ${capitalise(moveName.replace(/-/g, ' '))}`;
+          return `- ${toTitleCase(moveName)}`;
         }).join('\n')
       : '- (No moves)';
 

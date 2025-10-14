@@ -5,6 +5,7 @@
   import { Icon } from '$c/core'
   import { X, Sword, Shield, BarChart, Info, Settings, Sort, Caret, Filter } from '$icons'
   import PokemonCardWithMoves from '../PokemonCardWithMoves.svelte'
+  import ShowdownExportButton from '../ShowdownExportButton.svelte'
   import { NaturesMap } from '$lib/data/natures'
   import { getContext } from 'svelte'
   import { createImgUrl, UNOWN } from '$utils/rewrites'
@@ -494,6 +495,7 @@
     
     return detailedMoves.join(' → ');
   }
+
 </script>
 
 {#if open}
@@ -513,12 +515,23 @@
             </div>
           {/if}
         </div>
-        <button 
-          on:click={closeModal}
-          class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
-        >
-          <Icon icon={X} class="w-5 h-5" />
-        </button>
+        <div class="flex items-center gap-2">
+          <!-- Export to Showdown button -->
+          <ShowdownExportButton 
+            team={userTeam}
+            variant="default"
+            size="sm"
+            showCopyButton={true}
+            on:export={(e) => console.log('Team exported:', e.detail)}
+            on:copy={(e) => console.log('Team copied:', e.detail)}
+          />
+          <button 
+            on:click={closeModal}
+            class="p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+          >
+            <Icon icon={X} class="w-5 h-5" />
+          </button>
+        </div>
       </div>
 
       <!-- Filter Controls -->

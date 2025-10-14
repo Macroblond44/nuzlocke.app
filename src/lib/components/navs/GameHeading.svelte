@@ -5,7 +5,9 @@
     updateGame,
     parse,
     readdata,
-    getGameStore
+    getGameStore,
+    getTeams,
+    getBox
   } from '$lib/store'
   import { fade, fly } from 'svelte/transition'
 
@@ -15,12 +17,54 @@
   import { MiniTeamController } from '$c/TeamBuilder'
 
   let game = {},
-    games
+    games,
+    currentTeam = [],
+    unsubscribeTeams = null,
+    unsubscribeBox = null
+    
   activeGame.subscribe((id) => {
     savedGames.subscribe(
       parse((g) => {
         game = g[id]
         games = Object.values(g).filter((i) => i.id !== id)
+        
+        // Unsubscribe from previous subscriptions if they exist
+        if (unsubscribeTeams) {
+          unsubscribeTeams()
+        }
+        if (unsubscribeBox) {
+          unsubscribeBox()
+        }
+        
+        // Subscribe to team and box updates only after game is loaded
+        if (game?.id) {
+          let teamIds = []
+          let boxData = {}
+          
+          // Get team IDs
+          unsubscribeTeams = getTeams((data) => {
+            teamIds = data.team || []
+            
+            // Update currentTeam with full pokemon data
+            currentTeam = teamIds.map(id => boxData[id]).filter(p => p)
+          })
+          
+          // Get box data
+          unsubscribeBox = getBox((box) => {
+            // Convert box array to object keyed by location
+            boxData = Array.isArray(box) 
+              ? box.reduce((acc, pokemon) => {
+                  if (pokemon?.location) {
+                    acc[pokemon.location] = pokemon
+                  }
+                  return acc
+                }, {})
+              : box
+            
+            // Update currentTeam with full pokemon data
+            currentTeam = teamIds.map(id => boxData[id]).filter(p => p)
+          })
+        }
       })
     )
   })
@@ -52,6 +96,7 @@
   }
 
   import ThemeToggle from '$lib/components/theme-toggle.svelte'
+  import ShowdownExportButton from '$lib/components/ShowdownExportButton.svelte'
   import { Icon, Logo, Button, Popover } from '$lib/components/core'
   import { Box, Save, Game, Grave, Caret, CaretRight, Dots } from '$icons'
 
@@ -157,7 +202,20 @@
       {/if}
     </div>
 
-    {#if $page.url.pathname !== '/graveyard'}<MiniTeamController />{/if}
+    {#if $page.url.pathname !== '/graveyard'}
+      <div class="flex items-center gap-3">
+        <MiniTeamController />
+        {#if currentTeam && currentTeam.length > 0}
+          <ShowdownExportButton 
+            team={currentTeam}
+            variant="compact"
+            size="sm"
+            showCopyButton={true}
+            showDownloadButton={false}
+          />
+        {/if}
+      </div>
+    {/if}
 
     <span class="relative inline-flex">
       <ThemeToggle />

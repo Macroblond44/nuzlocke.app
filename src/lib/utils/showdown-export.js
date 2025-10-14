@@ -3,9 +3,10 @@ import { capitalise } from './string.js'
 /**
  * Generate Showdown format for a Pokémon team
  * @param {Array} team - Array of Pokémon objects with original data
+ * @param {number} [customLevel] - Optional custom level for all Pokémon (default: use individual levels or 50)
  * @returns {string} Team in Showdown format
  */
-export function generateShowdownFormat(team) {
+export function generateShowdownFormat(team, customLevel = null) {
   if (!team || team.length === 0) {
     return 'No team data available';
   }
@@ -21,7 +22,12 @@ export function generateShowdownFormat(team) {
     const name = capitalise(pokemonData.pokemon || pokemon.name || 'Unknown');
     const item = pokemonData.item ? ` @ ${capitalise(pokemonData.item.replace(/-/g, ' '))}` : '';
     const ability = pokemonData.ability ? `\nAbility: ${capitalise(pokemonData.ability.replace(/-/g, ' '))}` : '';
-    const level = pokemonData.level ? `\nLevel: ${pokemonData.level}` : '\nLevel: 50';
+    
+    // Use custom level if provided, otherwise use pokemon's level or default to 50
+    const level = customLevel !== null 
+      ? `\nLevel: ${customLevel}` 
+      : (pokemonData.level ? `\nLevel: ${pokemonData.level}` : '\nLevel: 50');
+    
     const nature = pokemonData.nature ? `\n${capitalise(pokemonData.nature)} Nature` : '';
     
     const moves = pokemonData.moves && pokemonData.moves.length > 0 
@@ -42,9 +48,10 @@ export function generateShowdownFormat(team) {
  * Export team to Showdown format as downloadable file
  * @param {Array} team - Array of Pokémon objects
  * @param {string} filename - Optional custom filename (default: nuzlocke-team-YYYY-MM-DD.txt)
+ * @param {number} [customLevel] - Optional custom level for all Pokémon
  */
-export function exportToShowdown(team, filename = null) {
-  const showdownFormat = generateShowdownFormat(team);
+export function exportToShowdown(team, filename = null, customLevel = null) {
+  const showdownFormat = generateShowdownFormat(team, customLevel);
   
   // Create a blob and download it
   const blob = new Blob([showdownFormat], { type: 'text/plain' });
@@ -61,11 +68,12 @@ export function exportToShowdown(team, filename = null) {
 /**
  * Copy team to clipboard in Showdown format
  * @param {Array} team - Array of Pokémon objects
+ * @param {number} [customLevel] - Optional custom level for all Pokémon
  * @returns {Promise<boolean>} Success status
  */
-export async function copyShowdownToClipboard(team) {
+export async function copyShowdownToClipboard(team, customLevel = null) {
   try {
-    const showdownFormat = generateShowdownFormat(team);
+    const showdownFormat = generateShowdownFormat(team, customLevel);
     await navigator.clipboard.writeText(showdownFormat);
     return true;
   } catch (error) {

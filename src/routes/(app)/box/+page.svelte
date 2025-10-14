@@ -186,11 +186,33 @@
     getPkmn(id).then((p) => {
       getPkmns(box.map((i) => i.pokemon).concat(p.alias)).then((data) => {
         Pokemon = data
+        
+        // Update the Pokemon with evolved form and new stats
         ogbox = ogbox.map((i) => {
-          return toid(i) == toid(o) ? { ...i, pokemon: p.alias } : i
+          if (toid(i) == toid(o)) {
+            return { 
+              ...i, 
+              pokemon: p.alias,
+              // Update stats to match the evolved form
+              original: {
+                ...i.original,
+                pokemon: p.alias,
+                // Keep other original data but update pokemon reference
+              }
+            }
+          }
+          return i
         })
 
-        updatePokemon({ ...o, pokemon: p.alias })
+        // Update in store with evolved form and stats
+        updatePokemon({ 
+          ...o, 
+          pokemon: p.alias,
+          original: {
+            ...o.original,
+            pokemon: p.alias
+          }
+        })
         evoComplete = toid(o)
       })
     })

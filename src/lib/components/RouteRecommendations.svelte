@@ -647,7 +647,7 @@
     recommendations={recommendationManager.getAdvancedRecommendations()}
     bossTeam={bossTeam}
     userTeam={encounterPokemon}
-    gameMode="route"
+    gameMode={gameKey}
   />
 {/if}
 

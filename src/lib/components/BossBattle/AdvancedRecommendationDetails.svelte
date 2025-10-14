@@ -10,6 +10,7 @@
   import { getContext } from 'svelte'
   import { createImgUrl, UNOWN } from '$utils/rewrites'
   import { updatePokemon } from '$lib/store'
+  import { getEvolvedFormAtLevel, hasSpecies } from '$lib/utils/radred-data.js'
 
   export let recommendations = []
   export let bossTeam = []
@@ -228,10 +229,117 @@
     }
   }
 
+  // Helper function to check if a Pokemon can evolve at current level
+  function canPokemonEvolve(pokemonName, currentLevel = 50) {
+    // Only check for Radical Red games
+    const isRadredGame = gameMode === 'radred' || gameMode === 'radred_hard'
+    if (!isRadredGame || !pokemonName) return false
+    
+    // Check if Pokemon exists in Radical Red data
+    if (!hasSpecies(pokemonName)) return false
+    
+    try {
+      const evolvedForm = getEvolvedFormAtLevel(pokemonName, currentLevel)
+      // Can evolve if evolved form exists and is different from current form
+      return evolvedForm && evolvedForm !== pokemonName
+    } catch (error) {
+      console.warn(`[Evolution] Error checking evolution for ${pokemonName}:`, error.message)
+      return false
+    }
+  }
+
+  // Helper function to get evolved form name
+  function getEvolvedFormName(pokemonName, currentLevel = 50) {
+    const isRadredGame = gameMode === 'radred' || gameMode === 'radred_hard'
+    if (!isRadredGame || !pokemonName) return null
+    
+    if (!hasSpecies(pokemonName)) return null
+    
+    try {
+      return getEvolvedFormAtLevel(pokemonName, currentLevel)
+    } catch (error) {
+      console.warn(`[Evolution] Error getting evolved form for ${pokemonName}:`, error.message)
+      return null
+    }
+  }
+
+  // Handle Pokemon evolution
+  async function handlePokemonEvolution(pokemonName) {
+    const evolvedForm = getEvolvedFormName(pokemonName, 50)
+    if (!evolvedForm || evolvedForm === pokemonName) {
+      return
+    }
+
+    try {
+      // Load the evolved Pokemon data first
+      const evolvedPokemonData = await getPkmn(evolvedForm)
+      if (!evolvedPokemonData) {
+        console.error('❌ [Evolution] Could not load evolved Pokemon data for:', evolvedForm)
+        return
+      }
+
+      // Update the Pokemon object with evolved form data
+      Pokemon = {
+        ...Pokemon,
+        [pokemonName]: evolvedPokemonData,
+        [evolvedForm]: evolvedPokemonData
+      }
+
+      // Find the Pokemon in userTeam and update it
+      const pokemonIndex = userTeam.findIndex(p => 
+        (p.original?.pokemon || p.pokemon || p.name) === pokemonName
+      )
+
+      if (pokemonIndex === -1) {
+        return
+      }
+
+      // Create the updated Pokemon object
+      const updatedPokemon = {
+        ...userTeam[pokemonIndex],
+        name: evolvedForm, // Update the name for display
+        original: {
+          ...userTeam[pokemonIndex].original,
+          pokemon: evolvedForm // Update the pokemon reference for stats
+        }
+      }
+
+      // Update userTeam
+      userTeam[pokemonIndex] = updatedPokemon
+      userTeam = [...userTeam] // Force reactivity
+
+      // Update recommendations array to reflect the evolution
+      recommendations = recommendations.map(pokemon => {
+        if (pokemon.name === pokemonName) {
+          return {
+            ...pokemon,
+            name: evolvedForm,
+            original: {
+              ...pokemon.original,
+              pokemon: evolvedForm
+            }
+          }
+        }
+        return pokemon
+      })
+      
+      // Persist the evolution globally to the store
+      // Important: We pass the ENTIRE original object to preserve all data
+      // (nickname, status, nature, ability, moves, gender, etc.)
+      if (updatedPokemon.original) {
+        updatePokemon(updatedPokemon.original)
+      }
+      
+      // Recalculate recommendations with the evolved Pokemon
+      recalculateRecommendations()
+      
+    } catch (error) {
+      console.error('❌ [Evolution] Error:', error)
+    }
+  }
 
   // Recalculate recommendations with updated Pokemon data
   function recalculateRecommendations() {
-    console.log('🔄 [AdvancedRecommendations] recalculateRecommendations called')
     isRecalculating = true
     
     // Dispatch event to parent to recalculate
@@ -239,12 +347,9 @@
       userTeam: [...userTeam]
     })
     
-    console.log('📡 [AdvancedRecommendations] Dispatched recalculate event with userTeam:', userTeam.length, 'pokemon')
-    
     // Reset recalculation flag after a delay
     setTimeout(() => {
       isRecalculating = false
-      console.log('✅ [AdvancedRecommendations] Recalculation completed')
     }, 2000)
   }
 
@@ -634,11 +739,31 @@
           
           
           {#each filteredRecommendations as pokemon, index (pokemon.name + '-' + currentFilter + '-' + (selectedRivalForFilter || ''))}
-            {@const userPokemonData = userTeam.find(p => p.original?.pokemon === pokemon.name)}
-            {@const pokemonData = Pokemon[pokemon.name]}
+            {@const userPokemonData = userTeam.find(p => p.original?.pokemon === pokemon.name || p.name === pokemon.name)}
+            {@const actualPokemonName = userPokemonData?.original?.pokemon || userPokemonData?.pokemon || pokemon.name}
+            {@const pokemonData = Pokemon[actualPokemonName]}
             
             
             <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
+              <!-- Evolution badge and button -->
+              {#if canPokemonEvolve(actualPokemonName, 50)}
+                {@const evolvedForm = getEvolvedFormName(actualPokemonName, 50)}
+                <div class="mb-2 flex items-center gap-2">
+                  <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-sm font-medium">
+                    <PIcon name="dawn-stone" className="w-4 h-4" />
+                    <span>Can evolve to {evolvedForm}</span>
+                  </div>
+                  <button
+                    on:click={() => handlePokemonEvolution(pokemon.name)}
+                    class="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-green-600 hover:bg-green-700 text-white text-sm font-medium transition-colors"
+                    title="Evolve {actualPokemonName} to {evolvedForm}"
+                  >
+                    <PIcon name="dawn-stone" className="w-4 h-4" />
+                    <span>Evolve</span>
+                  </button>
+                </div>
+              {/if}
+              
               <!-- Pokemon Card with editable capabilities -->
               <div class="mb-4">
                 {#if pokemonData}

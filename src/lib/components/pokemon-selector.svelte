@@ -49,6 +49,7 @@
   let prevstatus = 'loading'
   let showConfigModal = false
   let moves = []
+  let isLoadingFromStore = false // Flag to prevent reactive block from firing during store updates
 
   // Search text bindings for ACs
   let search, statusSearch, natureSearch, abilitySearch
@@ -152,7 +153,8 @@
         const pkmn = data[location]
         if (!pkmn) return
 
-        resetd = pkmn
+        // Set flag to prevent reactive block from firing during store update
+        isLoadingFromStore = true
 
         status = pkmn.status ? NuzlockeStates[pkmn.status] : null
         nature = pkmn.nature ? NaturesMap[pkmn.nature] : null
@@ -163,10 +165,15 @@
         death = pkmn.death
         gender = pkmn.gender || null
         console.log('🔍 [pokemon-selector] Loaded from store:', { gender: pkmn.gender })
+        
         if (pkmn.pokemon)
           getPkmn(pkmn.pokemon).then((p) => {
             selected = p
             loading = false
+            // Update resetd AFTER selected is updated to prevent the reactive block from reverting changes
+            resetd = pkmn
+            // Clear the flag after everything is updated
+            isLoadingFromStore = false
           })
       })
     )
@@ -186,7 +193,8 @@
       ...(gender ? { gender } : {})
     })
 
-    if (selected && !oEqual(topatch, resetd)) {
+    // Only patch if NOT currently loading from store (to prevent reverting external changes like evolution)
+    if (selected && !oEqual(topatch, resetd) && !isLoadingFromStore) {
       console.log('🔄 [pokemon-selector] Patching', location, 'with gender:', gender)
       store.update(patch({ [location]: topatch }))
     }
@@ -328,6 +336,17 @@
       selected = p
       evoComplete = true
       _animateStatus(200)
+      
+      // Update the store with the evolved form
+      store.update(
+        patch({
+          [location]: {
+            ...read(store),
+            pokemon: p.alias,
+            // Keep all other data but update pokemon reference
+          }
+        })
+      )
     })
 
   const handleEvolution = (base, evos) => async () =>

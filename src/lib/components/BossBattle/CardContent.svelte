@@ -53,6 +53,7 @@
     name={boss.name}
     {box}
     {team}
+    {gym}
   >
     <svelte:fragment slot="tabs">
       <slot name="tabs" />

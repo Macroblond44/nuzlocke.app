@@ -21,6 +21,9 @@
 
   const dispatch = createEventDispatcher()
   const { getPkmn } = getContext('game')
+  
+  // Calculate level cap from boss team (same logic as in recommendation-manager.js)
+  $: levelCap = Math.max(...bossTeam.map(p => parseInt(p.level || p.original?.level) || 50))
 
   // State for showing detailed calculations
   let showDetailedCalculations = false
@@ -230,7 +233,7 @@
   }
 
   // Helper function to check if a Pokemon can evolve at current level
-  function canPokemonEvolve(pokemonName, currentLevel = 50) {
+  function canPokemonEvolve(pokemonName) {
     // Only check for Radical Red games
     const isRadredGame = gameMode === 'radred' || gameMode === 'radred_hard'
     if (!isRadredGame || !pokemonName) return false
@@ -239,9 +242,12 @@
     if (!hasSpecies(pokemonName)) return false
     
     try {
-      const evolvedForm = getEvolvedFormAtLevel(pokemonName, currentLevel)
+      console.log(`🔍 [Evolution] Checking evolution for ${pokemonName} at level ${levelCap}`)
+      const evolvedForm = getEvolvedFormAtLevel(pokemonName, levelCap)
+      const canEvolve = evolvedForm && evolvedForm !== pokemonName
+      console.log(`🔍 [Evolution] ${pokemonName} → ${evolvedForm} (canEvolve: ${canEvolve})`)
       // Can evolve if evolved form exists and is different from current form
-      return evolvedForm && evolvedForm !== pokemonName
+      return canEvolve
     } catch (error) {
       console.warn(`[Evolution] Error checking evolution for ${pokemonName}:`, error.message)
       return false
@@ -249,14 +255,14 @@
   }
 
   // Helper function to get evolved form name
-  function getEvolvedFormName(pokemonName, currentLevel = 50) {
+  function getEvolvedFormName(pokemonName) {
     const isRadredGame = gameMode === 'radred' || gameMode === 'radred_hard'
     if (!isRadredGame || !pokemonName) return null
     
     if (!hasSpecies(pokemonName)) return null
     
     try {
-      return getEvolvedFormAtLevel(pokemonName, currentLevel)
+      return getEvolvedFormAtLevel(pokemonName, levelCap)
     } catch (error) {
       console.warn(`[Evolution] Error getting evolved form for ${pokemonName}:`, error.message)
       return null
@@ -265,7 +271,7 @@
 
   // Handle Pokemon evolution
   async function handlePokemonEvolution(pokemonName) {
-    const evolvedForm = getEvolvedFormName(pokemonName, 50)
+    const evolvedForm = getEvolvedFormName(pokemonName)
     if (!evolvedForm || evolvedForm === pokemonName) {
       return
     }
@@ -363,8 +369,6 @@
     
     // Find the Pokemon in userTeam (using the correct structure)
     const pokemonIndex = userTeam.findIndex(p => p.original?.pokemon === pokemonName)
-    
-    console.log('🔍 [AdvancedRecommendations] Found Pokemon index:', pokemonIndex)
     
     if (pokemonIndex !== -1) {
       console.log('✅ [AdvancedRecommendations] Before update:', userTeam[pokemonIndex])
@@ -746,8 +750,8 @@
             
             <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4">
               <!-- Evolution badge and button -->
-              {#if canPokemonEvolve(actualPokemonName, 50)}
-                {@const evolvedForm = getEvolvedFormName(actualPokemonName, 50)}
+              {#if canPokemonEvolve(actualPokemonName)}
+                {@const evolvedForm = getEvolvedFormName(actualPokemonName)}
                 <div class="mb-2 flex items-center gap-2">
                   <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 text-sm font-medium">
                     <PIcon name="dawn-stone" className="w-4 h-4" />

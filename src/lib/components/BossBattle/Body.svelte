@@ -14,6 +14,7 @@
 
   export let name,
     team = [],
+    gym = [], // Boss team
     box = [],
     recommendations = [],
     advice = {}
@@ -282,7 +283,7 @@
 <AdvancedRecommendationDetails
   bind:open={showAdvancedDebugModal}
   {recommendations}
-  bossTeam={team}
+  bossTeam={gym}
   userTeam={box}
   gameMode={currentGameKey}
   recommendationMethod={recommendationMethod}

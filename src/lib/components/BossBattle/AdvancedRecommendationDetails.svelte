@@ -345,16 +345,21 @@
       console.log('🔎 [MoveSuggestions] Inspecting matchup:', {
         rivalName: matchup.rivalName,
         userWins: matchup.userWins,
-        bestMove: matchup.bestMove
+        bestMove: matchup.bestMove,
+        hasAllMovesCalculation: !!matchup._allMovesCalculation
       })
       
-      if (matchup.userWins && matchup.bestMove) {
+      // Use all moves calculation for suggestions (if available)
+      const calculationToUse = matchup._allMovesCalculation || matchup
+      
+      if (calculationToUse.userWins && calculationToUse.bestMove) {
         console.log('✅ [MoveSuggestions] Found winning matchup:', {
           rival: matchup.rivalName,
-          bestMove: matchup.bestMove
+          bestMove: calculationToUse.bestMove,
+          usingAllMoves: !!matchup._allMovesCalculation
         })
         // Normalize: lowercase and replace spaces with hyphens
-        const normalizedMove = matchup.bestMove.toLowerCase().replace(/\s+/g, '-')
+        const normalizedMove = calculationToUse.bestMove.toLowerCase().replace(/\s+/g, '-')
         optimalMoves.add(normalizedMove)
       }
     })

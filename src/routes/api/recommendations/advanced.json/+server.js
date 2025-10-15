@@ -408,7 +408,13 @@ export async function POST({ request }) {
       
       for (const rivalMon of rivalPokemon) {
         console.log(`[Matchup] Processing rival: ${rivalMon.name} (level ${rivalMon.level})`);
-        const matchup = calculateMatchup(gen, userMonWithAllMoves, rivalMon);
+        
+        // Calculate with ALL learnable moves (for suggestions)
+        const matchupWithAllMoves = calculateMatchup(gen, userMonWithAllMoves, rivalMon);
+        
+        // Calculate with EQUIPPED moves only (for UI display)
+        const matchupWithEquippedMoves = calculateMatchup(gen, userMonCapped, rivalMon);
+        
         matchups.push({
           // Rival Pokémon info
           rivalPokemon: rivalMon.name,  // Changed from rivalName to rivalPokemon
@@ -423,20 +429,22 @@ export async function POST({ request }) {
           userNature: userMonWithAllMoves.nature,
           userItem: userMonWithAllMoves.item,
           userMoves: userMon.moves || [], // Show only equipped moves in UI
-          // Calculation results
-          ...matchup,
+          // Calculation results (use equipped moves for UI display)
+          ...matchupWithEquippedMoves,
+          // Store all moves calculation for suggestions
+          _allMovesCalculation: matchupWithAllMoves,
           // Ensure damagePercentage exists (alias for damagePercent)
-          damagePercentage: matchup.damagePercent ? `${matchup.damagePercent}%` : 'N/A',
-          damageRange: matchup.damageRange ? `${matchup.damageRange[0]},${matchup.damageRange[1]}` : 'N/A',
+          damagePercentage: matchupWithEquippedMoves.damagePercent ? `${matchupWithEquippedMoves.damagePercent}%` : 'N/A',
+          damageRange: matchupWithEquippedMoves.damageRange ? `${matchupWithEquippedMoves.damageRange[0]},${matchupWithEquippedMoves.damageRange[1]}` : 'N/A',
           // Add damage percentage range from description parsing
-          damagePercentageRange: matchup.damagePercentageRange ? `${matchup.damagePercentageRange[0]},${matchup.damagePercentageRange[1]}` : null,
+          damagePercentageRange: matchupWithEquippedMoves.damagePercentageRange ? `${matchupWithEquippedMoves.damagePercentageRange[0]},${matchupWithEquippedMoves.damagePercentageRange[1]}` : null,
           // Add OHKO/2HKO chances as percentages (use parsed values from description)
-          ohkoChance: matchup.ohkoChance || (matchup.canOHKO ? 100 : 0),
-          twoHkoChance: matchup.twoHkoChance || (matchup.canTwoHKO ? 100 : 0),
+          ohkoChance: matchupWithEquippedMoves.ohkoChance || (matchupWithEquippedMoves.canOHKO ? 100 : 0),
+          twoHkoChance: matchupWithEquippedMoves.twoHkoChance || (matchupWithEquippedMoves.canTwoHKO ? 100 : 0),
           // Add guaranteed KO and general KO chance information
-          isGuaranteedKO: matchup.isGuaranteedKO || false,
-          koChance: matchup.koChance || 0,
-          score: matchup.winProbability || 0
+          isGuaranteedKO: matchupWithEquippedMoves.isGuaranteedKO || false,
+          koChance: matchupWithEquippedMoves.koChance || 0,
+          score: matchupWithEquippedMoves.winProbability || 0
         });
       }
       

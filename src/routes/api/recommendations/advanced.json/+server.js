@@ -376,13 +376,11 @@ export async function POST({ request }) {
       // Fetch ALL learnable attacking moves for user Pokémon (similar to route mode)
       let userMonWithAllMoves = userMonCapped;
       try {
-        const baseUrl = request.url.split('/api')[0];
-        const gameParam = gameKey ? `?gameKey=${gameKey}` : '';
-        const movesUrl = `${baseUrl}/api/pokemon/${userMon.name}/moves.json${gameParam}`;
-        const movesResponse = await fetch(movesUrl);
+        // Use Radical Red data directly instead of HTTP fetch
+        const { getPokemonMoves, hasSpecies } = await import('$lib/utils/radred-data.js');
         
-        if (movesResponse.ok) {
-          const movesData = await movesResponse.json();
+        if (gameKey === 'radred' && hasSpecies(userMon.name)) {
+          const movesData = getPokemonMoves(userMon.name);
           
           // Filter moves learnable up to level cap and only attacking moves
           const learnableMoves = (movesData.levelUp || [])
@@ -397,7 +395,7 @@ export async function POST({ request }) {
             moves: learnableMoves
           };
         } else {
-          console.log(`[User Pokemon] Failed to fetch moves for ${userMon.name}, using equipped moves only`);
+          console.log(`[User Pokemon] No Radical Red data available for ${userMon.name}, using equipped moves only`);
         }
       } catch (error) {
         console.log(`[User Pokemon] Error fetching moves for ${userMon.name}:`, error.message);

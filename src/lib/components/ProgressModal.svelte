@@ -260,6 +260,7 @@
           userPokemon,
           rivalPokemon,
           game: gameId, // Pass the current game to select the right calculator
+          gameKey: gameId, // Pass gameKey for Radical Red data
           gameMode: 'normal'
         })
       })

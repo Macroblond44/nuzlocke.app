@@ -254,7 +254,7 @@ function normalizeAbilityName(abilityName) {
 export async function POST({ request }) {
   try {
     const body = await request.json();
-    let { userPokemon, rivalPokemon, game, gameMode } = body;
+    let { userPokemon, rivalPokemon, game, gameMode, gameKey } = body;
     
     console.log('[Request] Received body keys:', Object.keys(body));
     console.log('[Request] Game parameter:', game, 'Type:', typeof game);
@@ -271,13 +271,14 @@ export async function POST({ request }) {
     }
     
     console.log(`[Advanced Recommendations] Calculating matchups for ${userPokemon.length} user Pokémon vs ${rivalPokemon.length} rival Pokémon`);
-    console.log(`[Game] Detected game: ${game || 'unknown'}`);
+    console.log(`[Game] Detected game: ${gameKey || game || 'unknown'}`);
     
     // Get game configuration
-    const gameConfig = gamesData[game] || {};
+    const detectedGame = gameKey || game;
+    const gameConfig = gamesData[detectedGame] || {};
     const genNumber = gameConfig.calcGen || DEFAULT_CALC_GEN;
     
-    console.log(`[Calculator] Using @smogon/calc with Generation ${genNumber} for game: ${game}`);
+    console.log(`[Calculator] Using @smogon/calc with Generation ${genNumber} for game: ${detectedGame}`);
     
     // Calculate level cap (max level of rival Pokémon) for Nuzlocke rules
     const levelCap = Math.max(...rivalPokemon.map(p => parseInt(p.level) || 50));
@@ -371,11 +372,43 @@ export async function POST({ request }) {
       if (userMon.level !== cappedLevel) {
         console.log(`[Level Cap] ${userMon.name}: ${userMon.level} → ${cappedLevel}`);
       }
+      
+      // Fetch ALL learnable attacking moves for user Pokémon (similar to route mode)
+      let userMonWithAllMoves = userMonCapped;
+      try {
+        const baseUrl = request.url.split('/api')[0];
+        const gameParam = gameKey ? `?gameKey=${gameKey}` : '';
+        const movesUrl = `${baseUrl}/api/pokemon/${userMon.name}/moves.json${gameParam}`;
+        const movesResponse = await fetch(movesUrl);
+        
+        if (movesResponse.ok) {
+          const movesData = await movesResponse.json();
+          
+          // Filter moves learnable up to level cap and only attacking moves
+          const learnableMoves = (movesData.levelUp || [])
+            .filter(m => m.level <= levelCap && m.damage_class !== 'status')
+            .map(m => m.id || m.name);
+          
+          console.log(`[User Pokemon] ${userMon.name}: ${learnableMoves.length} learnable attacking moves available`);
+          
+          // Use ALL available attacking moves for calculations
+          userMonWithAllMoves = {
+            ...userMonCapped,
+            moves: learnableMoves
+          };
+        } else {
+          console.log(`[User Pokemon] Failed to fetch moves for ${userMon.name}, using equipped moves only`);
+        }
+      } catch (error) {
+        console.log(`[User Pokemon] Error fetching moves for ${userMon.name}:`, error.message);
+        // Continue with equipped moves only
+      }
+      
       const matchups = [];
       
       for (const rivalMon of rivalPokemon) {
         console.log(`[Matchup] Processing rival: ${rivalMon.name} (level ${rivalMon.level})`);
-        const matchup = calculateMatchup(gen, userMonCapped, rivalMon);
+        const matchup = calculateMatchup(gen, userMonWithAllMoves, rivalMon);
         matchups.push({
           // Rival Pokémon info
           rivalPokemon: rivalMon.name,  // Changed from rivalName to rivalPokemon
@@ -385,11 +418,11 @@ export async function POST({ request }) {
           rivalItem: rivalMon.item,
           rivalMoves: rivalMon.moves?.map(m => typeof m === 'string' ? m : (m.name || m)) || [],
           // User Pokémon info
-          userLevel: userMonCapped.level,
-          userAbility: userMonCapped.ability,
-          userNature: userMonCapped.nature,
-          userItem: userMonCapped.item,
-          userMoves: userMonCapped.moves || [],
+          userLevel: userMonWithAllMoves.level,
+          userAbility: userMonWithAllMoves.ability,
+          userNature: userMonWithAllMoves.nature,
+          userItem: userMonWithAllMoves.item,
+          userMoves: userMon.moves || [], // Show only equipped moves in UI
           // Calculation results
           ...matchup,
           // Ensure damagePercentage exists (alias for damagePercent)

@@ -25,6 +25,10 @@
   // Calculate level cap from boss team (same logic as in recommendation-manager.js)
   $: levelCap = Math.max(...bossTeam.map(p => parseInt(p.level || p.original?.level) || 50))
 
+  // State for move suggestions
+  let moveSuggestions = {} // { pokemonName: { suggestedMoves: [], currentMoves: [], optimalMoves: [] } }
+  let loadingMoveSuggestions = false
+
   // State for showing detailed calculations
   let showDetailedCalculations = false
   let selectedPokemon = null
@@ -180,13 +184,10 @@
     loadPokemonData()
   }
   
-  // Ensure Pokemon data is available for filtered recommendations
+  // Ensure Pokemon data is available for filtered recommendations and load move suggestions
   $: if (filteredRecommendations && filteredRecommendations.length > 0) {
-    console.log('🔄 [AdvancedRecommendations] Filtered recommendations changed', {
-      filteredLength: filteredRecommendations.length,
-      pokemonNames: filteredRecommendations.map(r => r.name),
-      pokemonDataAvailable: filteredRecommendations.map(r => !!Pokemon[r.name])
-    })
+    // Load move suggestions for filtered recommendations
+    loadMoveSuggestions()
   }
 
   async function loadPokemonData(pokemonNames = null) {
@@ -267,6 +268,217 @@
       console.warn(`[Evolution] Error getting evolved form for ${pokemonName}:`, error.message)
       return null
     }
+  }
+
+  /**
+   * Fetch all learnable moves for a Pokémon up to the level cap
+   * Similar to route recommendations logic
+   */
+  async function fetchLearnableMovesUpToLevelCap(pokemonName, level) {
+    try {
+      const gameParam = gameMode ? `?gameKey=${gameMode}` : ''
+      const movesUrl = `/api/pokemon/${pokemonName}/moves.json${gameParam}&_t=${Date.now()}`
+      
+      const response = await fetch(movesUrl)
+      if (!response.ok) {
+        console.warn(`Failed to fetch moves for ${pokemonName}`)
+        return []
+      }
+      
+      const movesData = await response.json()
+      
+      // Filter moves learnable up to level cap and only attacking moves
+      const learnableMoves = (movesData.levelUp || [])
+        .filter(m => m.level <= level && m.damage_class !== 'status')
+        .map(m => m.id || m.name)
+      
+      return learnableMoves
+    } catch (error) {
+      console.error(`Error fetching moves for ${pokemonName}:`, error)
+      return []
+    }
+  }
+
+  /**
+   * Analyze move suggestions for a Pokémon
+   * Compares current moves with optimal moves from calculations to suggest improvements
+   * Only works with advanced recommendations (requires matchup data with bestMove)
+   */
+  async function analyzeMoveSuggestions(pokemonName, currentMoves, matchups) {
+    try {
+      loadingMoveSuggestions = true
+      
+      console.log('🔍 [MoveSuggestions] analyzeMoveSuggestions START:', {
+        pokemonName,
+        currentMovesCount: currentMoves?.length,
+        matchupsCount: matchups?.length,
+        levelCap
+      })
+      
+      // Only work with matchups (from advanced recommendations)
+      if (!matchups || matchups.length === 0) {
+        console.log('⚠️ [MoveSuggestions] No matchups provided for', pokemonName)
+        return null
+      }
+      
+      // Get all attacking moves the Pokémon can learn up to level cap
+      const learnableMoves = await fetchLearnableMovesUpToLevelCap(pokemonName, levelCap)
+      
+    console.log('📚 [MoveSuggestions] Learnable moves:', {
+      pokemonName,
+      learnableMovesCount: learnableMoves.length,
+      learnableMoves: learnableMoves // Show all moves to debug
+    })
+    
+    // DETAILED: Show exact values in learnableMoves
+    console.log(`📚 [MoveSuggestions] learnableMoves EXACT values for ${pokemonName}:`, learnableMoves.join(', '))
+      
+      if (learnableMoves.length === 0) {
+        console.log('⚠️ [MoveSuggestions] No learnable moves found for', pokemonName)
+        return null
+      }
+      
+    // Extract optimal moves from matchups (moves that were actually used in winning matchups)
+    // IMPORTANT: Normalize to hyphenated format (e.g. "aqua-jet") to match API format
+    const optimalMoves = new Set()
+    matchups.forEach(matchup => {
+      console.log('🔎 [MoveSuggestions] Inspecting matchup:', {
+        rivalName: matchup.rivalName,
+        userWins: matchup.userWins,
+        bestMove: matchup.bestMove
+      })
+      
+      if (matchup.userWins && matchup.bestMove) {
+        console.log('✅ [MoveSuggestions] Found winning matchup:', {
+          rival: matchup.rivalName,
+          bestMove: matchup.bestMove
+        })
+        // Normalize: lowercase and replace spaces with hyphens
+        const normalizedMove = matchup.bestMove.toLowerCase().replace(/\s+/g, '-')
+        optimalMoves.add(normalizedMove)
+      }
+    })
+      
+      console.log('🎯 [MoveSuggestions] Optimal moves from matchups:', {
+        pokemonName,
+        optimalMovesCount: optimalMoves.size,
+        optimalMoves: Array.from(optimalMoves)
+      })
+      
+      // If no optimal moves found, return null
+      if (optimalMoves.size === 0) {
+        console.log('⚠️ [MoveSuggestions] No optimal moves found in matchups')
+        return null
+      }
+      
+    // Normalize current moves for comparison (to hyphenated format like API)
+    const normalizedCurrentMoves = (currentMoves || []).map(m => {
+      const moveName = typeof m === 'string' ? m : (m.name || m)
+      return moveName.toLowerCase().replace(/\s+/g, '-')
+    })
+      
+      console.log('📋 [MoveSuggestions] Current moves normalized:', {
+        pokemonName,
+        currentMoves: normalizedCurrentMoves,
+        currentMovesRaw: currentMoves // Show raw for debugging
+      })
+      
+      // Find suggested moves: optimal moves that are learnable but not currently equipped
+      const suggestedMoves = Array.from(optimalMoves).filter(move => 
+        learnableMoves.some(lm => lm.toLowerCase() === move) && 
+        !normalizedCurrentMoves.includes(move)
+      )
+      
+      console.log('💡 [MoveSuggestions] Suggested moves:', {
+        pokemonName,
+        suggestedMovesCount: suggestedMoves.length,
+        suggestedMoves
+      })
+      
+    // Detailed debugging for move comparison - SHOW ACTUAL VALUES
+    const optimalMovesArray = Array.from(optimalMoves)
+    console.log('🔬 [MoveSuggestions] DETAILED COMPARISON:', {
+      'optimalMoves': optimalMovesArray,
+      'learnableMoves': learnableMoves,
+      'normalizedCurrentMoves': normalizedCurrentMoves,
+      'suggestedMoves': suggestedMoves
+    })
+    
+    // SUPER DETAILED: Show each comparison step
+    console.log('🔎 [MoveSuggestions] STEP-BY-STEP COMPARISON:')
+    for (const optimalMove of optimalMovesArray) {
+      const isLearnable = learnableMoves.some(lm => lm.toLowerCase() === optimalMove)
+      const isEquipped = normalizedCurrentMoves.includes(optimalMove)
+      console.log(`  - "${optimalMove}": learnable=${isLearnable}, equipped=${isEquipped}`)
+      if (isLearnable) {
+        console.log(`    ✓ Found in learnableMoves: ${learnableMoves.filter(lm => lm.toLowerCase() === optimalMove).join(', ')}`)
+      }
+      if (isEquipped) {
+        console.log(`    ✓ Found in currentMoves`)
+      }
+    }
+    
+    if (suggestedMoves.length === 0) {
+      console.log('⏭️ [MoveSuggestions] No suggestions (all optimal moves are equipped or not learnable)')
+      return null
+    }
+      
+      return {
+        suggestedMoves,
+        currentMoves: normalizedCurrentMoves,
+        optimalMoves: Array.from(optimalMoves),
+        learnableMoves
+      }
+    } catch (error) {
+      console.error(`❌ [MoveSuggestions] Error analyzing move suggestions for ${pokemonName}:`, error)
+      return null
+    } finally {
+      loadingMoveSuggestions = false
+    }
+  }
+
+  /**
+   * Load move suggestions for all filtered recommendations
+   */
+  async function loadMoveSuggestions() {
+    console.log('🔄 [MoveSuggestions] loadMoveSuggestions called', {
+      hasRecommendations: !!recommendations,
+      recommendationsLength: recommendations?.length,
+      filteredRecommendationsLength: filteredRecommendations?.length,
+      levelCap
+    })
+    
+    if (!recommendations || recommendations.length === 0) {
+      console.log('⏭️ [MoveSuggestions] Skipping - no recommendations')
+      return
+    }
+    
+    const suggestions = {}
+    
+    for (const rec of filteredRecommendations) {
+      const userPokemonData = userTeam.find(p => p.original?.pokemon === rec.name || p.name === rec.name)
+      const actualPokemonName = userPokemonData?.original?.pokemon || userPokemonData?.pokemon || rec.name
+      const currentMoves = userPokemonData?.original?.moves || []
+      
+      console.log('🔍 [MoveSuggestions] Analyzing:', {
+        pokemonName: rec.name,
+        actualPokemonName,
+        currentMovesCount: currentMoves.length,
+        matchupsCount: rec.matchups?.length || 0
+      })
+      
+      const suggestion = await analyzeMoveSuggestions(actualPokemonName, currentMoves, rec.matchups || [])
+      
+      if (suggestion) {
+        console.log('✅ [MoveSuggestions] Found suggestions for', actualPokemonName, suggestion)
+        suggestions[actualPokemonName] = suggestion
+      } else {
+        console.log('⏭️ [MoveSuggestions] No suggestions for', actualPokemonName)
+      }
+    }
+    
+    console.log('📊 [MoveSuggestions] Final suggestions object:', suggestions)
+    moveSuggestions = suggestions
   }
 
   // Handle Pokemon evolution
@@ -794,6 +1006,35 @@
                   </div>
                 {/if}
               </div>
+
+              <!-- Move Suggestions -->
+              {#if moveSuggestions[actualPokemonName]}
+                {@const suggestions = moveSuggestions[actualPokemonName]}
+                <div class="mb-4 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                  <div class="flex items-start gap-2 mb-3">
+                    <Icon src={Info} className="w-5 h-5 text-blue-600 dark:text-blue-400 flex-shrink-0 mt-0.5" />
+                    <div class="flex-1">
+                      <h5 class="text-sm font-semibold text-blue-900 dark:text-blue-100 mb-1">
+                        Recommended Moves
+                      </h5>
+                      <p class="text-xs text-blue-700 dark:text-blue-300 mb-2">
+                        These moves performed optimally in battle calculations and can be learned at level {levelCap} or below:
+                      </p>
+                      <div class="flex flex-wrap gap-2">
+                        {#each suggestions.suggestedMoves as move}
+                          <span class="inline-flex items-center gap-1 px-2 py-1 bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 rounded text-xs font-medium">
+                            <Icon src={Sword} className="w-3 h-3" />
+                            {capitalise(move.replace(/-/g, ' '))}
+                          </span>
+                        {/each}
+                      </div>
+                      <p class="text-xs text-blue-600 dark:text-blue-400 mt-2 italic">
+                        💡 Tip: Click on the moves section of the Pokémon card to change moves
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              {/if}
 
               <!-- Pokemon Info and Controls -->
               <div class="flex items-center justify-between mb-4">

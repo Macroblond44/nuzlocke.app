@@ -8,15 +8,21 @@ export default (box, boss) => {
   console.log('Boss team:', JSON.stringify(boss.map(p => ({ name: p.name, alias: p.alias, types: p.types })), null, 2))
   
   const bossMoves = boss
-    .map((poke) => poke.original.moves)
+    .map((poke) => poke.original?.moves || [])
     .flat()
-    .filter((move) => move.damage_class !== 'status')
+    .filter((move) => move && move.damage_class !== 'status')
 
   const bossMoveTypes = bossMoves.map((move) => move.type)
   const bossMoveClass = bossMoves.map((move) => move.damage_class)
 
   const bossTeamDmgMods = boss
-    .map((poke) => weaknesses(...poke.types))
+    .map((poke) => {
+      if (!poke.types || !Array.isArray(poke.types)) {
+        console.warn('⚠️ [advisor-team] Invalid types for', poke.name || poke.alias, ':', poke.types)
+        return {}
+      }
+      return weaknesses(...poke.types)
+    })
     .map((weakMap) => Object.entries(weakMap))
     .flat()
 
@@ -56,9 +62,9 @@ export default (box, boss) => {
      */
       // Generate offensive breakdown
       const offensiveBreakdown: any[] = []
-      const offAdvantageScore = defTypes.reduce((acc, myType) => {
+      const offAdvantageScore = (defTypes || []).reduce((acc, myType) => {
         boss.forEach((bossMon) => {
-          const bossTypes = bossMon.types
+          const bossTypes = bossMon.types || []
           const effectiveness = moveResistance(myType, bossTypes)
           let score = 0
           let label = ''

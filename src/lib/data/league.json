@@ -61847,47 +61847,55 @@
       "pokemon": [
         {
           "name": "kirlia",
-          "level": "19",
+          "level": "24",
           "moves": [
             "magical-leaf",
-            "disarming-voice",
-            "confusion"
+            "draining-kiss",
+            "psybeam"
           ],
-          "ability": "synchronize",
+          "ability": "trace",
           "abilities": [
             "synchronize",
             "trace"
-          ]
+          ],
+          "held": "sitrus-berry",
+          "nature": "Modest"
         },
         {
           "name": "staravia",
-          "level": "19",
+          "level": "23",
           "moves": [
             "quick-attack",
-            "wing-attack"
+            "pluck",
+            "u-turn",
+            "sleep-talk"
           ],
           "ability": "intimidate",
           "abilities": [
             "intimidate"
-          ]
+          ],
+          "held": "muscle-band",
+          "nature": "Adamant"
         },
         {
-          "name": "rockruff",
-          "level": "20",
+          "name": "pawniard",
+          "level": "25",
           "moves": [
-            "howl",
-            "bite",
-            "rock-tomb"
+            "knock-off",
+            "sucker-punch",
+            "cut",
+            "low-sweep"
           ],
-          "ability": "frisk",
+          "ability": "defiant",
           "abilities": [
-            "frisk",
-            "vital-spirit"
-          ]
+            "defiant"
+          ],
+          "held": "chople-berry",
+          "nature": "Adamant"
         },
         {
           "name": "wartortle",
-          "level": "21",
+          "level": "24",
           "moves": [
             "bite",
             "water-pulse"
@@ -61896,28 +61904,30 @@
           "abilities": [
             "torrent"
           ],
-          "held": "sitrus-berry",
+          "held": "eviolite",
+          "nature": "Modest",
           "starter": "fire"
         },
         {
           "name": "ivysaur",
-          "level": "21",
+          "level": "24",
           "moves": [
-            "sleep-powder",
+            "mega-drain",
             "leech-seed",
-            "take-down",
-            "bullet-seed"
+            "protect",
+            "sludge"
           ],
           "ability": "overgrow",
           "abilities": [
             "overgrow"
           ],
-          "held": "sitrus-berry",
+          "held": "eviolite",
+          "nature": "Modest",
           "starter": "water"
         },
         {
           "name": "charmeleon",
-          "level": "21",
+          "level": "24",
           "moves": [
             "ember",
             "scratch"
@@ -61926,7 +61936,8 @@
           "abilities": [
             "blaze"
           ],
-          "held": "sitrus-berry",
+          "held": "eviolite",
+          "nature": "Rash",
           "starter": "grass"
         }
       ]
@@ -62925,29 +62936,31 @@
       "img": "/leaders/gs-bugsy",
       "pokemon": [
         {
-          "name": "ariados",
-          "level": "-2",
+          "name": "lokix",
+          "level": "25",
           "moves": [
-            "shadow-sneak",
-            "fell-stinger",
-            "bug-bite",
-            "poison-fang"
+            "first-impression",
+            "knock-off",
+            "u-turn",
+            "leech-life"
           ],
-          "ability": "swarm",
+          "nature": "Jolly",
+          "ability": "tinted-lens",
           "abilities": [
-            "swarm"
+            "tinted-lens"
           ],
-          "held": "poison-barb"
+          "held": "silver-powder"
         },
         {
           "name": "scyther",
-          "level": "-2",
+          "level": "25",
           "moves": [
             "bug-bite",
             "aerial-ace",
-            "brick-break",
+            "rock-smash",
             "swords-dance"
           ],
+          "nature": "Jolly",
           "ability": "technician",
           "abilities": [
             "technician"
@@ -62956,13 +62969,14 @@
         },
         {
           "name": "ledian",
-          "level": "-2",
+          "level": "25",
           "moves": [
             "drain-punch",
             "ice-punch",
             "mach-punch",
-            "u-turn"
+            "thund-punch"
           ],
+          "nature": "Jolly",
           "ability": "iron-fist",
           "abilities": [
             "iron-fist"
@@ -62971,13 +62985,14 @@
         },
         {
           "name": "scizor",
-          "level": "-2",
+          "level": "25",
           "moves": [
             "bullet-punch",
             "u-turn",
             "aerial-ace",
-            "roost"
+            "rock-smash"
           ],
+          "nature": "Careful",
           "ability": "technician",
           "abilities": [
             "technician"
@@ -62993,7 +63008,7 @@
       "pokemon": [
         {
           "name": "kleavor",
-          "level": "-2",
+          "level": "25",
           "moves": [
             "stealth-rock",
             "rock-blast",
@@ -63008,7 +63023,7 @@
         },
         {
           "name": "araquanid",
-          "level": "-2",
+          "level": "25",
           "moves": [
             "x-scissor",
             "liquidation",
@@ -63023,7 +63038,7 @@
         },
         {
           "name": "scizor",
-          "level": "-2",
+          "level": "25",
           "moves": [
             "bullet-punch",
             "dual-wingbeat",
@@ -63038,7 +63053,7 @@
         },
         {
           "name": "scyther",
-          "level": "-2",
+          "level": "25",
           "moves": [
             "swords-dance",
             "dual-wingbeat",
@@ -63053,7 +63068,7 @@
         },
         {
           "name": "heracross",
-          "level": "-2",
+          "level": "25",
           "moves": [
             "megahorn",
             "close-combat",
@@ -63068,7 +63083,7 @@
         },
         {
           "name": "vikavolt",
-          "level": "-2",
+          "level": "25",
           "moves": [
             "thunder",
             "bug-buzz",

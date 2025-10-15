@@ -57,10 +57,16 @@ export default function ProcessAdvice(box: IPokemon[], team: IPokemon[]) {
     ]
   })
 
-  const weaknessAdvice = team.map(({ alias, types }) => [
-    alias,
-    pivotWeaknesses(...types)
-  ])
+  const weaknessAdvice = team.map(({ alias, types }) => {
+    if (!types || !Array.isArray(types)) {
+      console.warn('⚠️ [ProcessAdvice] Invalid types for', alias, ':', types)
+      return [alias, {}]
+    }
+    return [
+      alias,
+      pivotWeaknesses(...types)
+    ]
+  })
 
   return {
     weakness: Object.fromEntries(weaknessAdvice),

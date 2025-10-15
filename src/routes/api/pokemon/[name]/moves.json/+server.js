@@ -22,7 +22,7 @@ export async function GET({ params, url }) {
   const pokemonName = name.toLowerCase();
   
   // Only use Radical Red data if explicitly requested via query parameter
-  const game = url.searchParams.get('game');
+  const game = url.searchParams.get('game') || url.searchParams.get('gameKey');
   const useRadredData = game === 'radred' || game === 'radred_hard';
   
   // Strategy 1: Try Radical Red data first (only for Radical Red games)

@@ -178,6 +178,7 @@
       })
     )
 
+
   $: {
     const topatch = nonnull({
       id,
@@ -419,6 +420,7 @@
             <AutoCompleteV2
               inset={selected ? true : '2.4em'}
               itemF={(_) => (fetchSearch ? getAllPkmn() : encounterF())}
+              labelF={(item) => item?.alias || item?.name || item?.key || item}
               max={fetchSearch ? 16 : (encounters || []).length}
               on:change={(_) => (search = null)}
               bind:search

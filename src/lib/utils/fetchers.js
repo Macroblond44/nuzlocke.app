@@ -3,12 +3,134 @@ import { getGen } from '$store'
 
 import { DATA } from '$utils/rewrites'
 import { normalise } from '$utils/string'
+import pokemonData from '$lib/data/pokemon-data.json'
+
+// Type ID to name mapping for Radical Red
+const typeMap = {
+  0: 'normal', 1: 'fighting', 2: 'flying', 3: 'poison', 4: 'ground',
+  5: 'rock', 6: 'bug', 7: 'ghost', 8: 'steel', 9: 'fire',
+  10: 'water', 11: 'grass', 12: 'electric', 13: 'psychic', 14: 'ice',
+  15: 'dragon', 16: 'dark', 17: 'fairy'
+}
+
+const getTypeName = (typeId) => typeMap[typeId] || 'normal'
+
+// Cache for evolution data
+const evolutionCache = {}
+
+/**
+ * Fetch evolutions for a Pokemon using the new API
+ */
+export const fetchEvolutions = async (pokemonName, gameKey = 'radred') => {
+  const cacheKey = `${pokemonName}-${gameKey}`
+  
+  if (evolutionCache[cacheKey]) {
+    return evolutionCache[cacheKey]
+  }
+  
+  try {
+    const response = await fetch(`/api/pokemon/${pokemonName}/evolutions.json?game=${gameKey}`)
+    if (response.ok) {
+      const data = await response.json()
+      evolutionCache[cacheKey] = data.evolutions || []
+      return data.evolutions || []
+    }
+  } catch (error) {
+    console.warn(`Failed to fetch evolutions for ${pokemonName}:`, error)
+  }
+  
+  return []
+}
 
 const data = {}
 export const fetchData = async () => {
   if (!browser) return
 
   const gen = await getGen()
+  
+  // For Radical Red, use pokemon-data.json directly
+  if (gen === 'radred' || gen === 'radred_hard') {
+    if (data[gen]) return data[gen] // Return cached data if exists
+    
+    console.time(`data:${gen}`)
+    console.log(`[fetchData] Loading Radical Red data from pokemon-data.json`)
+    
+    // Load from pokemon-data.json
+    const gameData = pokemonData.radred
+    if (!gameData) {
+      console.error(`[fetchData] No Radical Red data found in pokemon-data.json`)
+      return { idMap: {}, aliasMap: {}, nameMap: {} }
+    }
+    
+    let result = { idMap: {}, aliasMap: {}, nameMap: {}, keyMap: {} }
+    
+    // First pass: collect all species data
+    const speciesMap = {}
+    for (const [id, species] of Object.entries(gameData.species)) {
+      if (!species.name) continue
+      speciesMap[id] = species
+    }
+    
+    // Second pass: process species with evolution lookups
+    for (const [id, species] of Object.entries(gameData.species)) {
+      if (!species.name) continue
+      
+      // Process evolutions - get target names by ID
+      const evos = []
+      if (species.evolutions) {
+        for (const evo of species.evolutions) {
+          const targetId = evo[2] // Third element is the target ID
+          if (targetId && speciesMap[targetId]) {
+            const targetSpecies = speciesMap[targetId]
+            // Use key if available, otherwise use name
+            const targetKey = targetSpecies.key || targetSpecies.name
+            if (targetKey) {
+              evos.push(targetKey.toLowerCase().replace(/\s+/g, '-'))
+            }
+          }
+        }
+      }
+      
+      const pokemon = {
+        num: parseInt(id),
+        name: species.name || species.key,
+        key: species.key || species.name?.toLowerCase().replace(/\s+/g, '-'),
+        alias: (species.key || species.name).toLowerCase().replace(/\s+/g, '-'),
+        sprite: species.key ? species.key.toLowerCase() : (species.name || species.key).toLowerCase().replace(/\s+/g, '-'),
+        types: species.type ? species.type.map(t => getTypeName(t)) : [],
+        baseStats: {
+          hp: species.stats[0] || 0,
+          atk: species.stats[1] || 0,
+          def: species.stats[2] || 0,
+          spa: species.stats[3] || 0,
+          spd: species.stats[4] || 0,
+          spe: species.stats[5] || 0
+        },
+        total: species.stats ? species.stats.reduce((a, b) => a + b, 0) : 0,
+        evos: evos,
+        evoline: species.evoline || (species.name || species.key).toLowerCase().replace(/\s+/g, '-')
+      }
+      
+      
+      result.idMap[pokemon.num] = pokemon
+      // Use alias directly since it now prioritizes key
+      result.aliasMap[normalise(pokemon.alias)] = pokemon
+      result.nameMap[normalise(pokemon.name.toLowerCase())] = pokemon
+      if (pokemon.key) {
+        result.keyMap[normalise(pokemon.key.toLowerCase())] = pokemon
+      }
+      
+      
+    }
+    
+    console.timeLog(`data:${gen}`)
+    console.timeEnd(`data:${gen}`)
+    
+    data[gen] = result
+    return data[gen]
+  }
+  
+  // For other games, use the legacy system
   const uri = `${DATA}/pokemon/${gen}.json`
 
   if (data[gen]) return data[gen] // Return the raw data if it exists
@@ -19,7 +141,7 @@ export const fetchData = async () => {
       .then((res) => res.json())
       .then((data) => {
         console.timeLog(`data:${gen}`)
-        let result = { idMap: {}, aliasMap: {}, nameMap: {} }
+        let result = { idMap: {}, aliasMap: {}, nameMap: {}, keyMap: {} }
         for (const d of data) {
           result.idMap[d.num] = d
           result.aliasMap[normalise(d.alias)] = d

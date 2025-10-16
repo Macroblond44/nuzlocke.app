@@ -300,15 +300,19 @@
           const assignedRoute = routeAssignments[pokemonId]
           
           if (assignedRoute) {
-            gameData[assignedRoute] = {
+            const pokemonData = {
               pokemon: pokemon.name.toLowerCase(),
               status: 1, // Captured
-              nature: pokemon.nature || 'bashful',
+              nature: (pokemon.nature || 'bashful').toLowerCase(),
               ability: pokemon.ability_name || 'overgrow',
               location: assignedRoute,
               nickname: pokemon.nickname || '',
               moves: await getMoveDetails(pokemon.move_names || [])
             }
+            
+            console.log(`✅ [SavImporter] Processed ${pokemon.name}: nature=${pokemonData.nature}, ability=${pokemonData.ability}`)
+            
+            gameData[assignedRoute] = pokemonData
             console.log(`✅ [SavImporter] Added ${pokemon.name} to ${assignedRoute}`)
           }
         }
@@ -321,6 +325,9 @@
     
     console.log('✅ [SavImporter] Data saved to localStorage:', gameData)
     console.log('✅ [SavImporter] Total Pokemon imported:', Object.keys(gameData).length)
+    
+    // Log final summary
+    console.log(`✅ [SavImporter] Import completed: ${Object.keys(gameData).length} Pokemon imported`)
     
     // Dispatch success event
     dispatch('import', {

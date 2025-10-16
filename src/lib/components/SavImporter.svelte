@@ -24,6 +24,7 @@
   let showRouteAssignment = false
   let availableRoutes = []
   let routeAssignments = {} // pokemonId -> routeName
+  let pokemonValidRoutes = {} // pokemonId -> validRoutes[]
   
   // Only show for Radical Red games
   $: showImporter = isOpen && gameKey && gameKey.includes('radred')
@@ -241,8 +242,9 @@
         availableRoutes = routes.filter(route => route.type === 'route')
         console.log('🔍 [SavImporter] Loaded routes:', availableRoutes.length)
         
-        // Initialize route assignments
+        // Initialize route assignments and valid routes
         routeAssignments = {}
+        pokemonValidRoutes = {}
         console.log('🔍 [SavImporter] importResults:', importResults)
         console.log('🔍 [SavImporter] importResults.pokemon:', importResults.pokemon)
         
@@ -252,8 +254,22 @@
             console.log(`🔍 [SavImporter] Pokémon ${index}:`, pokemon)
             if (pokemon && pokemon.name) {
               const pokemonId = `pokemon_${index}`
-              routeAssignments[pokemonId] = index === 0 ? 'Starter' : ''
-              console.log(`✅ [SavImporter] Assigned route for ${pokemon.name}: ${routeAssignments[pokemonId]}`)
+              
+              // Get valid routes for this Pokemon
+              const validRoutes = getValidRoutesForPokemon(pokemon.name, availableRoutes)
+              pokemonValidRoutes[pokemonId] = validRoutes
+              
+              // Auto-assign route based on valid options
+              if (validRoutes.length === 1) {
+                routeAssignments[pokemonId] = validRoutes[0].name
+                console.log(`🎯 [SavImporter] Auto-assigned ${pokemon.name} to ${validRoutes[0].name} (only option)`)
+              } else if (index === 0 && validRoutes.some(r => r.name === 'Starter')) {
+                routeAssignments[pokemonId] = 'Starter'
+                console.log(`🎯 [SavImporter] Auto-assigned ${pokemon.name} to Starter (first Pokemon)`)
+              } else {
+                routeAssignments[pokemonId] = ''
+                console.log(`🔍 [SavImporter] ${pokemon.name} has ${validRoutes.length} valid routes:`, validRoutes.map(r => r.name))
+              }
             }
           })
         }
@@ -321,6 +337,33 @@
   function cancelRouteAssignment() {
     showRouteAssignment = false
     routeAssignments = {}
+  }
+  
+  // Function to get valid routes for a Pokemon based on encounters
+  function getValidRoutesForPokemon(pokemonName, allRoutes) {
+    const pokemonLower = pokemonName.toLowerCase()
+    const validRoutes = []
+    
+    // Special case for starters
+    if (pokemonLower === 'piplup' || pokemonLower === 'chimchar' || pokemonLower === 'turtwig') {
+      validRoutes.push({ name: 'Starter', type: 'route' })
+      return validRoutes
+    }
+    
+    // Check each route for encounters
+    allRoutes.forEach(route => {
+      if (route.encounters && route.encounters.includes(pokemonLower)) {
+        validRoutes.push(route)
+      }
+    })
+    
+    // If no specific encounters found, allow all routes (fallback)
+    if (validRoutes.length === 0) {
+      console.warn(`No specific encounters found for ${pokemonName}, allowing all routes`)
+      return allRoutes
+    }
+    
+    return validRoutes
   }
   
   // Function to get complete move details from API
@@ -806,6 +849,11 @@
                     <div class="flex-1">
                       <label for="route-{pokemonId}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Capture Route
+                        {#if pokemonValidRoutes[pokemonId]}
+                          <span class="text-xs text-blue-600 dark:text-blue-400 ml-1">
+                            ({pokemonValidRoutes[pokemonId].length} valid routes)
+                          </span>
+                        {/if}
                       </label>
                       <select
                         id="route-{pokemonId}"
@@ -813,7 +861,7 @@
                         class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       >
                         <option value="">Select a route...</option>
-                        {#each availableRoutes as route}
+                        {#each (pokemonValidRoutes[pokemonId] || availableRoutes) as route}
                           <option value={route.name}>{route.name}</option>
                         {/each}
                       </select>

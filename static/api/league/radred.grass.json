@@ -10036,10 +10036,12 @@
             "effect": "Inflicts regular damage with no additional effect."
           },
           {
-            "name": "Thund Punch",
-            "type": null,
-            "power": null,
-            "damage_class": null
+            "name": "Thunder Punch",
+            "type": "electric",
+            "power": 75,
+            "damage_class": "physical",
+            "priority": 0,
+            "effect": "Has a 10% chance to paralyze the target."
           }
         ],
         "ability": {

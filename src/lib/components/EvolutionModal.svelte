@@ -38,9 +38,9 @@
       />
     </span>
     <span>
-      <Picon name={base} className="absolute inset-0 transform scale-250" />
+      <Picon name={base?.alias || base?.name || base} className="absolute inset-0 transform scale-250" />
       <Picon
-        name={base}
+        name={base?.alias || base?.name || base}
         className="filter brightness-200 saturate-0 transform scale-250 animate-full-pulse"
       />
     </span>

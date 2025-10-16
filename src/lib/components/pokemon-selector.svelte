@@ -390,7 +390,7 @@
               >
                 <PIcon
                   className="-my-2 sm:-my-3 -mx-2"
-                  name={selected.sprite}
+                  name={selected.alias || selected.name}
                 />
                 <span>{selected.name}</span>
               </div>
@@ -442,7 +442,7 @@
                 let:label
               >
                 <PIcon
-                  name={option?.sprite}
+                  name={option?.alias || option?.name}
                   className="transform -mb-4 -ml-6 -mt-5 -mr-2"
                 />
                 {@html label}
@@ -466,7 +466,7 @@
                   </div>
 
                   <PIcon
-                    name={selected.sprite}
+                    name={selected.alias || selected.name}
                     className="{gray ? 'grayscale' : ''} {iconClass}"
                   />
                 {:else}

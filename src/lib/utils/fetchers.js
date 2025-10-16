@@ -8,12 +8,18 @@ import pokemonData from '$lib/data/pokemon-data.json'
 // Type ID to name mapping for Radical Red
 const typeMap = {
   0: 'normal', 1: 'fighting', 2: 'flying', 3: 'poison', 4: 'ground',
-  5: 'rock', 6: 'bug', 7: 'ghost', 8: 'steel', 9: 'fire',
-  10: 'water', 11: 'water', 12: 'grass', 13: 'psychic', 14: 'ice',
-  15: 'dragon', 16: 'dark', 17: 'fairy'
+  5: 'rock', 6: 'bug', 7: 'ghost', 8: 'steel', 10: 'fire',
+  11: 'water', 12: 'grass', 13: 'electric', 14: 'psychic', 15: 'ice',
+  16: 'dragon', 17: 'dark', 23: 'fairy'
 }
 
-const getTypeName = (typeId) => typeMap[typeId] || 'normal'
+const getTypeName = (typeId) => {
+  const result = typeMap[typeId] || 'normal'
+  if (typeId === 11 || typeId === 3) {
+    console.log('🔍 [fetchers] Type ID', typeId, 'mapped to:', result)
+  }
+  return result
+}
 
 // Cache for evolution data
 const evolutionCache = {}

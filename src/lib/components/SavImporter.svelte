@@ -268,7 +268,7 @@
     }
   }
   
-  function confirmRouteAssignments() {
+  async function confirmRouteAssignments() {
     console.log('🔄 [SavImporter] Confirming route assignments...')
     
     // Get current active game ID
@@ -278,7 +278,7 @@
     const gameData = {}
     
     if (importResults.pokemon) {
-      importResults.pokemon.forEach((pokemon, index) => {
+      for (const [index, pokemon] of importResults.pokemon.entries()) {
         if (pokemon && pokemon.name) {
           const pokemonId = `pokemon_${index}`
           const assignedRoute = routeAssignments[pokemonId]
@@ -291,16 +291,12 @@
               ability: pokemon.ability_name || 'overgrow',
               location: assignedRoute,
               nickname: pokemon.nickname || '',
-              moves: pokemon.move_names ? pokemon.move_names.map((move, i) => ({
-                id: move.toLowerCase().replace(/\s+/g, '-'),
-                name: move,
-                level: pokemon.level || 5
-              })) : []
+              moves: await getMoveDetails(pokemon.move_names || [])
             }
             console.log(`✅ [SavImporter] Added ${pokemon.name} to ${assignedRoute}`)
           }
         }
-      })
+      }
     }
     
     // Save to localStorage
@@ -325,6 +321,57 @@
   function cancelRouteAssignment() {
     showRouteAssignment = false
     routeAssignments = {}
+  }
+  
+  // Function to get complete move details from API
+  async function getMoveDetails(moveNames) {
+    if (!moveNames || moveNames.length === 0) return []
+    
+    try {
+      const movePromises = moveNames.map(async (moveName) => {
+        try {
+          const response = await fetch(`/api/move/${moveName.toLowerCase().replace(/\s+/g, '-')}.json`)
+          if (response.ok) {
+            const moveData = await response.json()
+            return {
+              id: moveName.toLowerCase().replace(/\s+/g, '-'),
+              name: moveData.name,
+              type: moveData.type,
+              power: moveData.power,
+              accuracy: moveData.accuracy,
+              pp: moveData.pp,
+              damage_class: moveData.damage_class,
+              priority: moveData.priority,
+              effect: moveData.effect,
+              level: 1 // Default level, could be enhanced later
+            }
+          }
+        } catch (error) {
+          console.warn(`Failed to fetch move details for ${moveName}:`, error)
+        }
+        
+        // Fallback to basic move data
+        return {
+          id: moveName.toLowerCase().replace(/\s+/g, '-'),
+          name: moveName,
+          type: 'normal',
+          power: null,
+          accuracy: null,
+          pp: null,
+          damage_class: 'status',
+          priority: 0,
+          effect: '',
+          level: 1
+        }
+      })
+      
+      const moves = await Promise.all(movePromises)
+      console.log(`✅ [SavImporter] Fetched details for ${moves.length} moves`)
+      return moves
+    } catch (error) {
+      console.error('❌ [SavImporter] Error fetching move details:', error)
+      return []
+    }
   }
   
   function closeImporter() {
@@ -757,10 +804,11 @@
                     
                     <!-- Route Selector -->
                     <div class="flex-1">
-                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                      <label for="route-{pokemonId}" class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
                         Capture Route
                       </label>
                       <select
+                        id="route-{pokemonId}"
                         bind:value={routeAssignments[pokemonId]}
                         class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                       >

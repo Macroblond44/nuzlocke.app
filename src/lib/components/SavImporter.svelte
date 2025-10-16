@@ -20,6 +20,11 @@
   let importResults = null
   let error = null
   
+  // Route assignment modal state
+  let showRouteAssignment = false
+  let availableRoutes = []
+  let routeAssignments = {} // pokemonId -> routeName
+  
   // Only show for Radical Red games
   $: showImporter = isOpen && gameKey && gameKey.includes('radred')
   $: console.log('🔍 [SavImporter] showImporter calculation:', { isOpen, gameKey, showImporter })
@@ -216,15 +221,110 @@
     }
   }
   
-  function importToApp() {
+  async function importToApp() {
     if (importResults) {
-      dispatch('import', {
-        player: importResults.player,
-        pokemon: importResults.pokemon,
-        gameProgress: importResults.gameProgress
-      })
-      closeImporter()
+      console.log('🔄 [SavImporter] Starting route assignment...')
+      
+      // Get current active game ID
+      const activeGameId = localStorage.getItem('nuzlocke')
+      console.log('🔍 [SavImporter] Active game ID:', activeGameId)
+      
+      if (!activeGameId) {
+        error = 'No active game found. Please create a game first.'
+        return
+      }
+      
+      // Load available routes for Radical Red
+      try {
+        const response = await fetch('/api/route/radred.json')
+        const routes = await response.json()
+        availableRoutes = routes.filter(route => route.type === 'route')
+        console.log('🔍 [SavImporter] Loaded routes:', availableRoutes.length)
+        
+        // Initialize route assignments
+        routeAssignments = {}
+        console.log('🔍 [SavImporter] importResults:', importResults)
+        console.log('🔍 [SavImporter] importResults.pokemon:', importResults.pokemon)
+        
+        if (importResults.pokemon) {
+          console.log('🔍 [SavImporter] Processing', importResults.pokemon.length, 'Pokémon')
+          importResults.pokemon.forEach((pokemon, index) => {
+            console.log(`🔍 [SavImporter] Pokémon ${index}:`, pokemon)
+            if (pokemon && pokemon.name) {
+              const pokemonId = `pokemon_${index}`
+              routeAssignments[pokemonId] = index === 0 ? 'Starter' : ''
+              console.log(`✅ [SavImporter] Assigned route for ${pokemon.name}: ${routeAssignments[pokemonId]}`)
+            }
+          })
+        }
+        
+        // Show route assignment modal
+        showRouteAssignment = true
+        
+      } catch (err) {
+        console.error('❌ [SavImporter] Failed to load routes:', err)
+        error = 'Failed to load available routes. Please try again.'
+      }
     }
+  }
+  
+  function confirmRouteAssignments() {
+    console.log('🔄 [SavImporter] Confirming route assignments...')
+    
+    // Get current active game ID
+    const activeGameId = localStorage.getItem('nuzlocke')
+    
+    // Convert Pokemon data to localStorage format with assigned routes
+    const gameData = {}
+    
+    if (importResults.pokemon) {
+      importResults.pokemon.forEach((pokemon, index) => {
+        if (pokemon && pokemon.name) {
+          const pokemonId = `pokemon_${index}`
+          const assignedRoute = routeAssignments[pokemonId]
+          
+          if (assignedRoute) {
+            gameData[assignedRoute] = {
+              pokemon: pokemon.name.toLowerCase(),
+              status: 1, // Captured
+              nature: pokemon.nature || 'bashful',
+              ability: pokemon.ability_name || 'overgrow',
+              location: assignedRoute,
+              nickname: pokemon.nickname || '',
+              moves: pokemon.move_names ? pokemon.move_names.map((move, i) => ({
+                id: move.toLowerCase().replace(/\s+/g, '-'),
+                name: move,
+                level: pokemon.level || 5
+              })) : []
+            }
+            console.log(`✅ [SavImporter] Added ${pokemon.name} to ${assignedRoute}`)
+          }
+        }
+      })
+    }
+    
+    // Save to localStorage
+    const gameKey = `nuzlocke.${activeGameId}`
+    localStorage.setItem(gameKey, JSON.stringify(gameData))
+    
+    console.log('✅ [SavImporter] Data saved to localStorage:', gameData)
+    console.log('✅ [SavImporter] Total Pokemon imported:', Object.keys(gameData).length)
+    
+    // Dispatch success event
+    dispatch('import', {
+      success: true,
+      pokemonCount: Object.keys(gameData).length,
+      gameData
+    })
+    
+    // Close both modals
+    showRouteAssignment = false
+    closeImporter()
+  }
+  
+  function cancelRouteAssignment() {
+    showRouteAssignment = false
+    routeAssignments = {}
   }
   
   function closeImporter() {
@@ -604,6 +704,95 @@
             </button>
           </div>
         {/if}
+      </div>
+    </div>
+  </div>
+{/if}
+
+<!-- Route Assignment Modal -->
+{#if showRouteAssignment}
+  <div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[9999]">
+    <div class="bg-white dark:bg-gray-800 rounded-lg shadow-xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-hidden">
+      <div class="p-6">
+        <div class="flex items-center justify-between mb-6">
+          <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+            Assign Routes to Pokémon
+          </h3>
+          <button
+            on:click={cancelRouteAssignment}
+            class="text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
+          >
+            <Icon icon={X} class="w-6 h-6" />
+          </button>
+        </div>
+        
+        <div class="space-y-4 max-h-96 overflow-y-auto">
+          {#if importResults && importResults.pokemon}
+            {#each importResults.pokemon as pokemon, index}
+              {@const pokemonId = `pokemon_${index}`}
+              {#if pokemon && pokemon.name}
+                <div class="border border-gray-200 dark:border-gray-700 rounded-lg p-4">
+                  <div class="flex items-center space-x-4">
+                    <!-- Pokemon Info -->
+                    <div class="flex-1">
+                      <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 bg-gray-100 dark:bg-gray-700 rounded-full flex items-center justify-center">
+                          <span class="text-lg">🎮</span>
+                        </div>
+                        <div>
+                          <h4 class="font-medium text-gray-900 dark:text-white">
+                            {pokemon.name}
+                          </h4>
+                          <p class="text-sm text-gray-500 dark:text-gray-400">
+                            Level {pokemon.level || 'Unknown'} • {pokemon.nature || 'Unknown'} Nature
+                          </p>
+                          {#if pokemon.nickname}
+                            <p class="text-sm text-blue-600 dark:text-blue-400">
+                              "{pokemon.nickname}"
+                            </p>
+                          {/if}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <!-- Route Selector -->
+                    <div class="flex-1">
+                      <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                        Capture Route
+                      </label>
+                      <select
+                        bind:value={routeAssignments[pokemonId]}
+                        class="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                      >
+                        <option value="">Select a route...</option>
+                        {#each availableRoutes as route}
+                          <option value={route.name}>{route.name}</option>
+                        {/each}
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              {/if}
+            {/each}
+          {/if}
+        </div>
+        
+        <!-- Action Buttons -->
+        <div class="flex justify-end space-x-3 mt-6 pt-4 border-t border-gray-200 dark:border-gray-700">
+          <button
+            on:click={cancelRouteAssignment}
+            class="px-4 py-2 text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-700 rounded-md hover:bg-gray-200 dark:hover:bg-gray-600"
+          >
+            Cancel
+          </button>
+          <button
+            on:click={confirmRouteAssignments}
+            class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 flex items-center"
+          >
+            <Icon icon={Check} class="w-4 h-4 mr-2" />
+            Import Pokémon
+          </button>
+        </div>
       </div>
     </div>
   </div>

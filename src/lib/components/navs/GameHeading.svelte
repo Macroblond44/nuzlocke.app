@@ -24,16 +24,19 @@
     showSavImporter = false
     
   function handleSavImport(event) {
-    const { player, pokemon, gameProgress } = event.detail
-    console.log('Importing .sav data:', { player, pokemon: pokemon.length, gameProgress })
+    const { success, pokemonCount, gameData } = event.detail
+    console.log('🔄 [GameHeading] Sav import event:', { success, pokemonCount, gameData })
     
-    // TODO: Implement the actual import logic
-    // This would involve:
-    // 1. Adding Pokemon to the box/team
-    // 2. Setting their abilities, natures, moves
-    // 3. Marking them as captured in the appropriate routes
-    
-    alert(`Importing ${pokemon.length} Pokemon from ${player.name}'s save file!`)
+    if (success) {
+      console.log(`✅ [GameHeading] Successfully imported ${pokemonCount} Pokemon`)
+      
+      // Reload the page to reflect the new data
+      if (browser) {
+        window.location.reload()
+      }
+    } else {
+      console.error('❌ [GameHeading] Import failed')
+    }
   }
     
   activeGame.subscribe((id) => {

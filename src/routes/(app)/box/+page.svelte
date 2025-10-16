@@ -450,7 +450,7 @@
                 fallback={UNOWN}
                 maxStat={Math.max(
                   150,
-                  ...Object.values(Pokemon[p.pokemon].baseStats)
+                  ...Object.values(Pokemon[p.pokemon]?.baseStats || {})
                 )}
                 moves={p.moves || []}
                 ability={p.ability
@@ -461,11 +461,11 @@
                         .join(' ')
                     }
                   : null}
-                name={Pokemon[p.pokemon].name}
-                stats={Pokemon[p.pokemon].baseStats}
+                name={Pokemon[p.pokemon]?.name || p.pokemon}
+                stats={Pokemon[p.pokemon]?.baseStats || {}}
                 nature={p.nature ? NaturesMap[p.nature] || { id: p.nature, label: capitalise(p.nature), value: [] } : undefined}
                 gender={p.gender || null}
-                types={(Pokemon[p.pokemon].types || []).map((t) =>
+                types={(Pokemon[p.pokemon]?.types || []).map((t) =>
                   t.toLowerCase()
                 )}
                 editable={true}

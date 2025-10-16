@@ -96,7 +96,7 @@ export const fetchData = async () => {
         name: species.name || species.key,
         key: species.key || species.name?.toLowerCase().replace(/\s+/g, '-'),
         alias: (species.key || species.name).toLowerCase().replace(/\s+/g, '-'),
-        sprite: species.key ? species.key.toLowerCase() : (species.name || species.key).toLowerCase().replace(/\s+/g, '-'),
+        sprite: species.dexID || parseInt(id),
         types: species.type ? species.type.map(t => getTypeName(t)) : [],
         baseStats: {
           hp: species.stats[0] || 0,

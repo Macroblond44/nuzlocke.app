@@ -13,13 +13,7 @@ const typeMap = {
   16: 'dragon', 17: 'dark', 23: 'fairy'
 }
 
-const getTypeName = (typeId) => {
-  const result = typeMap[typeId] || 'normal'
-  if (typeId === 11 || typeId === 3) {
-    console.log('🔍 [fetchers] Type ID', typeId, 'mapped to:', result)
-  }
-  return result
-}
+const getTypeName = (typeId) => typeMap[typeId] || 'normal'
 
 // Cache for evolution data
 const evolutionCache = {}

@@ -142,7 +142,7 @@
       <!-- Header -->
       <div class="mb-6 text-center">
         <div class="mb-4 flex justify-center">
-          <PIcon name={pokemon.sprite} className="transform scale-150" />
+          <PIcon name={pokemon.alias || pokemon.name} className="transform scale-150" />
         </div>
         <h2 class="text-2xl font-bold text-gray-900 dark:text-gray-100">
           {capitalise(pokemon.label || pokemon.alias)}

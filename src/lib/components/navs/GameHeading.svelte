@@ -20,7 +20,21 @@
     games,
     currentTeam = [],
     unsubscribeTeams = null,
-    unsubscribeBox = null
+    unsubscribeBox = null,
+    showSavImporter = false
+    
+  function handleSavImport(event) {
+    const { player, pokemon, gameProgress } = event.detail
+    console.log('Importing .sav data:', { player, pokemon: pokemon.length, gameProgress })
+    
+    // TODO: Implement the actual import logic
+    // This would involve:
+    // 1. Adding Pokemon to the box/team
+    // 2. Setting their abilities, natures, moves
+    // 3. Marking them as captured in the appropriate routes
+    
+    alert(`Importing ${pokemon.length} Pokemon from ${player.name}'s save file!`)
+  }
     
   activeGame.subscribe((id) => {
     savedGames.subscribe(
@@ -97,8 +111,9 @@
 
   import ThemeToggle from '$lib/components/theme-toggle.svelte'
   import ShowdownExportButton from '$lib/components/ShowdownExportButton.svelte'
+  import SavImporter from '$lib/components/SavImporter.svelte'
   import { Icon, Logo, Button, Popover } from '$lib/components/core'
-  import { Box, Save, Game, Grave, Caret, CaretRight, Dots } from '$icons'
+  import { Box, Save, Game, Grave, Caret, CaretRight, Dots, File } from '$icons'
 
   const pages = [
     { name: 'Game', link: '/game', icon: Game },
@@ -213,6 +228,22 @@
             showCopyButton={true}
             showDownloadButton={false}
           />
+        {/if}
+        
+        {#if game && game.game && game.game.includes('radred')}
+          <Button
+            variant="compact"
+            size="sm"
+            on:click={() => {
+              console.log('🔍 [SavImporter] Button clicked!');
+              console.log('🔍 [SavImporter] showSavImporter before:', showSavImporter);
+              showSavImporter = true;
+              console.log('🔍 [SavImporter] showSavImporter after:', showSavImporter);
+            }}
+            title="Import .sav file"
+          >
+            <Icon icon={File} class="w-4 h-4" />
+          </Button>
         {/if}
       </div>
     {/if}
@@ -330,3 +361,10 @@
     }
   }
 </style>
+
+    <!-- Sav Importer Modal -->
+    <SavImporter 
+      bind:isOpen={showSavImporter}
+      gameKey={game?.game || ''}
+      on:import={handleSavImport}
+    />

@@ -43,6 +43,7 @@
 import { calculate, Pokemon, Move, Generations } from '@smogon/calc';
 import gamesData from '$lib/data/games.json';
 import { applyAbilityModifiers, wouldSturdyPreventKO } from '$lib/utils/ability-modifiers.js';
+import { isFirstTurnOnlyMove, canUseMoveInTurn } from '$lib/data/first-turn-only-moves.js';
 
 // ========== CONSTANTS ==========
 const MAX_BATTLE_TURNS = 6; // Limit to prevent exponential calculation complexity (16^7 = 2.1M combinations)
@@ -814,7 +815,7 @@ function calculateCombinationProbability(damageArrays, targetDamage, moveIndex =
  * Helper: Calculate all moves with their damage and priority
  * Returns array of all valid moves with their calculation results
  */
-function calculateAllMoves(gen, attacker, defender, movesList, isUserPokemon = false) {
+function calculateAllMoves(gen, attacker, defender, movesList, isUserPokemon = false, turnNumber = 1) {
   const moveResults = [];
   
   if (!movesList || movesList.length === 0) {
@@ -822,12 +823,18 @@ function calculateAllMoves(gen, attacker, defender, movesList, isUserPokemon = f
     return moveResults;
   }
   
-  console.log(`  📋 Analyzing ${movesList.length} moves for ${attacker.name}:`);
+  console.log(`  📋 Analyzing ${movesList.length} moves for ${attacker.name} (Turn ${turnNumber}):`);
   
   for (const moveName of movesList) {
     const actualMoveName = typeof moveName === 'object' ? (moveName.name || moveName) : moveName;
     
     if (!actualMoveName || actualMoveName === '(No Move)') continue;
+    
+    // Skip first-turn-only moves if not on first turn
+    if (!canUseMoveInTurn(actualMoveName, turnNumber)) {
+      console.log(`     🚫 Skipping ${actualMoveName} (only works on first turn)`);
+      continue;
+    }
     
     try {
       const move = new Move(gen, actualMoveName);
@@ -1297,9 +1304,8 @@ function calculateMatchup(gen, userMon, rivalMon) {
       }
     });
     
-    // ========== STEP 1: Calculate all possible moves for both Pokémon ==========
-    console.log(`\n[1v1 SIMULATION] Calculating all move options...`);
-    const userMoveOptions = calculateAllMoves(gen, userPokemon, rivalPokemon, userMon.moves, true);
+    // ========== STEP 1: Prepare move lists (will be recalculated each turn) ==========
+    console.log(`\n[1v1 SIMULATION] Preparing move lists...`);
     
     // Process rival moves, handling special cases like Hidden Power with type
     const rivalMoves = rivalMon.moves?.map(m => {
@@ -1313,25 +1319,7 @@ function calculateMatchup(gen, userMon, rivalMon) {
       return m.name || m;
     }) || [];
     
-    const rivalMoveOptions = calculateAllMoves(gen, rivalPokemon, userPokemon, rivalMoves, false);
-    
-    if (userMoveOptions.length === 0) {
-      console.log(`  ❌ User has no valid attacking moves`);
-      return {
-        userWins: false,
-        bestMove: 'No valid moves',
-        rivalBestMove: null,
-        damageRange: [0, 0],
-        rivalDamageRange: [0, 0],
-        hitsToKO: Infinity,
-        rivalHitsToKO: 0,
-        userSpeed: userPokemon.rawStats.spe,
-        rivalSpeed: rivalPokemon.rawStats.spe,
-        userAttacksFirst: false,
-        winProbability: 0,
-        score: 0
-      };
-    }
+    // Move validation will be done inside the battle loop
     
     // ========== STEP 2: Simulate turn-by-turn battle with KO probability checks ==========
     const userMaxHP = userPokemon.maxHP();
@@ -1362,6 +1350,10 @@ function calculateMatchup(gen, userMon, rivalMon) {
       console.log(`${'─'.repeat(60)}`);
       console.log(`Turn ${turn}`);
       console.log(`${'─'.repeat(60)}`);
+      
+      // Recalculate move options for this turn (filters first-turn-only moves)
+      const userMoveOptions = calculateAllMoves(gen, userPokemon, rivalPokemon, userMon.moves, true, turn);
+      const rivalMoveOptions = calculateAllMoves(gen, rivalPokemon, userPokemon, rivalMoves, false, turn);
       
       // Select optimal moves for this turn considering previous moves
       const userSelectedMove = selectOptimalMove(gen, userPokemon, rivalPokemon, userMoveOptions, rivalMaxHP, userMovesUsed);
@@ -1496,8 +1488,12 @@ function calculateMatchup(gen, userMon, rivalMon) {
     console.log(`${'═'.repeat(60)}\n`);
     
     // ========== STEP 4: Build and return comprehensive battle data ==========
-    const firstUserMove = userMoveOptions.find(m => m.name === userMovesUsed[0]?.move);
-    const firstRivalMove = rivalMoveOptions.find(m => m.name === rivalMovesUsed[0]?.move);
+    // Recalculate move options for first turn to get move details
+    const firstTurnUserMoves = calculateAllMoves(gen, userPokemon, rivalPokemon, userMon.moves, true, 1);
+    const firstTurnRivalMoves = calculateAllMoves(gen, rivalPokemon, userPokemon, rivalMoves, false, 1);
+    
+    const firstUserMove = firstTurnUserMoves.find(m => m.name === userMovesUsed[0]?.move);
+    const firstRivalMove = firstTurnRivalMoves.find(m => m.name === rivalMovesUsed[0]?.move);
     
     return {
       // ===== Battle Outcome =====

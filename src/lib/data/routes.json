@@ -44535,7 +44535,12 @@
         "stunky",
         "phantump",
         "pumpkaboo-large",
-        "magikarp"
+        "magikarp",
+        "pawmi",
+        "tatsugiri",
+        "pansear",
+        "pansage",
+        "panpour"
       ]
     },
     {
@@ -44560,16 +44565,18 @@
         "dunsparce",
         "sawk",
         "paras",
+        "nacli",
+        "rolycoly",
         "slugma",
         "torkoal",
         "teddiursa",
-        "dwebble",
+        "tinkatink",
         "baltoy",
         "shuppet",
         "riolu",
         "sandile",
         "misdreavus",
-        "mawile",
+        "varoom",
         "pawniard",
         "numel",
         "cranidos",
@@ -44578,10 +44585,13 @@
         "smoochum",
         "solrock",
         "onix",
-        "rolycoly",
+        "mawile",
         "shieldon",
         "munna",
-        "lunatone"
+        "lunatone",
+        "cetoddle",
+        "cufant",
+        "magnemite"
       ]
     },
     {

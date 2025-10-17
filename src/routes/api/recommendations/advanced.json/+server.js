@@ -1580,18 +1580,28 @@ function calculateMatchup(gen, userMon, rivalMon) {
 /**
  * Calculate overall score for a Pokémon based on 1v1 battle results
  * 
- * Simple scoring system:
- * - 1 point for each rival Pokémon defeated in 1v1
- * - Total score = number of victories
+ * HP-based scoring system:
+ * - If user wins: score = 1 * (remainingHP / maxHP)
+ * - If user loses: score = 0
+ * - Total score = sum of all individual matchup scores
  * 
- * This allows easy comparison: a Pokémon that wins 3/4 matchups scores 3 points
+ * This provides more nuanced scoring: a Pokémon that wins with 50% HP remaining
+ * scores 0.5 points, while one that wins with full HP scores 1.0 points.
  */
 function calculateOverallScore(matchups) {
   if (!matchups || matchups.length === 0) return 0;
   
-  // Count number of victories (userWins = true)
-  const victories = matchups.filter(m => m.userWins).length;
+  let totalScore = 0;
   
-  return victories;
+  for (const matchup of matchups) {
+    if (matchup.userWins && matchup.winnerRemainingHP !== null && matchup.userMaxHP) {
+      // Calculate HP percentage remaining (0.0 to 1.0)
+      const hpPercentage = Math.max(0, Math.min(1, matchup.winnerRemainingHP / matchup.userMaxHP));
+      totalScore += hpPercentage;
+    }
+    // If user loses (userWins = false), score remains 0
+  }
+  
+  return Math.round(totalScore * 100) / 100; // Round to 2 decimal places
 }
 

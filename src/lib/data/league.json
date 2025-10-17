@@ -63107,10 +63107,10 @@
           "name": "tinkaton",
           "level": "34",
           "moves": [
+            "play-rough",
             "gigaton-hammer",
             "knock-off",
-            "encore",
-            "play-rough"
+            "encore"
           ],
           "nature": "Jolly",
           "ability": "mold-breaker",
@@ -63120,9 +63120,33 @@
           "held": "sitrus-berry",
           "evs": {
             "atk": 252,
-            "hp": 4,
+            "hp": 0,
             "spe": 252,
-            "def": 0,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
+        },
+        {
+          "name": "farigiraf",
+          "level": "34",
+          "moves": [
+            "shadow-ball",
+            "hyper-voice",
+            "psychic",
+            "dazzling-gleam"
+          ],
+          "nature": "Modest",
+          "ability": "parental-bond",
+          "abilities": [
+            "parental-bond"
+          ],
+          "held": "twisted-spoon",
+          "evs": {
+            "hp": 252,
+            "atk": 0,
+            "spe": 4,
+            "def": 4,
             "spa": 0,
             "spd": 0
           }
@@ -63132,45 +63156,24 @@
           "level": "34",
           "moves": [
             "body-slam",
-            "body-press",
-            "stomping-tantrum",
-            "milk-drink"
+            "slack-off",
+            "zen-headbutt",
+            "high-horsepower"
           ],
+          "nature": "Adamant",
           "ability": "thick-fat",
           "abilities": [
             "thick-fat"
           ],
-          "held": "leftovers"
-        },
-        {
-          "name": "vigoroth",
-          "level": "34",
-          "moves": [
-            "bulk-up",
-            "slack-off",
-            "body-slam",
-            "knock-off"
-          ],
-          "ability": "vital-spirit",
-          "abilities": [
-            "vital-spirit"
-          ],
-          "held": "eviolite"
-        },
-        {
-          "name": "indeedee-female",
-          "level": "34",
-          "moves": [
-            "psyshock",
-            "hyper-voice",
-            "mystical-fire",
-            "draining-kiss"
-          ],
-          "ability": "psychic-surge",
-          "abilities": [
-            "psychic-surge"
-          ],
-          "held": "twisted-spoon"
+          "held": "chople-berry",
+          "evs": {
+            "hp": 252,
+            "atk": 252,
+            "spe": 4,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "drampa",
@@ -63179,14 +63182,46 @@
             "dragon-breath",
             "roost",
             "flamethrower",
-            "thunderbolt"
+            "hyper-voice"
           ],
-          "ability": "berserk",
+          "nature": "Modest",
+          "ability": "sap-sipper",
           "abilities": [
-            "berserk",
             "sap-sipper"
           ],
-          "held": "leftovers"
+          "held": "normal-gem",
+          "evs": {
+            "hp": 252,
+            "atk": 0,
+            "spe": 4,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
+        },
+        {
+          "name": "dudunsparce",
+          "level": "34",
+          "moves": [
+            "body-slam",
+            "roost",
+            "bite",
+            "coil"
+          ],
+          "nature": "Careful",
+          "ability": "serene-grace",
+          "abilities": [
+            "serene-grace"
+          ],
+          "held": "leftovers",
+          "evs": {
+            "hp": 252,
+            "atk": 0,
+            "spe": 4,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         }
       ]
     },
@@ -63196,7 +63231,7 @@
       "img": "/leaders/gs-morty",
       "pokemon": [
         {
-          "name": "mimikyu-disguised",
+          "name": "mimikyu",
           "level": "44",
           "moves": [
             "play-rough",
@@ -63204,27 +63239,20 @@
             "shadow-sneak",
             "swords-dance"
           ],
+          "nature": "Jolly",
           "ability": "disguise",
           "abilities": [
             "disguise"
           ],
-          "held": "lum-berry"
-        },
-        {
-          "name": "zoroark-hisui",
-          "level": "44",
-          "moves": [
-            "hyper-voice",
-            "shadow-ball",
-            "flamethrower",
-            "nasty-plot"
-          ],
-          "ability": "illusion",
-          "abilities": [
-            "illusion"
-          ],
-          "held": "colbur-berry",
-          "sprite": "zoroark-hisui"
+          "held": "lum-berry",
+          "evs": {
+            "atk": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "dusknoir",
@@ -63235,57 +63263,117 @@
             "dynamic-punch",
             "will-o-wisp"
           ],
+          "nature": "Adamant",
           "ability": "hustle",
           "abilities": [
             "hustle"
           ],
-          "held": "reaper-cloth"
+          "held": "reaper-cloth",
+          "evs": {
+            "atk": 252,
+            "hp": 252,
+            "spe": 0,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
+        },
+        {
+          "name": "zoroark-hisui",
+          "level": "44",
+          "moves": [
+            "hyper-voice",
+            "shadow-ball",
+            "flamethrower",
+            "nasty-plot"
+          ],
+          "nature": "Timid",
+          "ability": "illusion",
+          "abilities": [
+            "illusion"
+          ],
+          "held": "colbur-berry",
+          "evs": {
+            "spa": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "atk": 0,
+            "spd": 0
+          }
+        },
+        {
+          "name": "skeledirge",
+          "level": "44",
+          "moves": [
+            "torch-song",
+            "will-o-wisp",
+            "hex",
+            "slack-off"
+          ],
+          "nature": "Timid",
+          "ability": "unaware",
+          "abilities": [
+            "unaware"
+          ],
+          "held": "leftovers",
+          "evs": {
+            "hp": 248,
+            "atk": 0,
+            "spe": 8,
+            "def": 0,
+            "spa": 0,
+            "spd": 252
+          }
         },
         {
           "name": "gengar",
           "level": "44",
           "moves": [
-            "shadow-ball",
             "sludge-wave",
-            "nasty-plot",
-            "focus-blast"
+            "shadow-ball",
+            "focus-blast",
+            "nasty-plot"
           ],
-          "ability": "shadow-tag",
+          "nature": "Timid",
+          "ability": "levitate",
           "abilities": [
+            "levitate",
             "shadow-tag"
           ],
-          "held": "gengarite"
+          "held": "gengarite",
+          "evs": {
+            "spa": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "atk": 0,
+            "spd": 0
+          }
         },
         {
-          "name": "weavile",
+          "name": "ceruledge",
           "level": "44",
           "moves": [
-            "triple-axel",
-            "knock-off",
-            "ice-shard",
+            "bitter-blade",
+            "shadow-sneak",
+            "close-combat",
             "swords-dance"
           ],
-          "ability": "infiltrator",
+          "nature": "Jolly",
+          "ability": "sharpness",
           "abilities": [
-            "infiltrator"
+            "sharpness"
           ],
-          "held": "focus-sash"
-        },
-        {
-          "name": "typhlosion-hisui",
-          "level": "44",
-          "moves": [
-            "flamethrower",
-            "infernal-parade",
-            "focus-blast",
-            "hidden-power-grass"
-          ],
-          "ability": "flash-fire",
-          "abilities": [
-            "flash-fire"
-          ],
-          "held": "charcoal",
-          "sprite": "typhlosion-hisui"
+          "held": "focus-sash",
+          "evs": {
+            "atk": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         }
       ]
     },
@@ -63296,387 +63384,300 @@
       "pokemon": [
         {
           "name": "hitmontop",
-          "level": "-2",
+          "level": "59",
           "moves": [
             "triple-kick",
             "triple-axel",
-            "brutal-swing",
-            "fake-out"
+            "fake-out",
+            "brutal-swing"
           ],
+          "nature": "Jolly",
           "ability": "technician",
           "abilities": [
             "technician"
           ],
-          "held": "focus-sash"
-        },
-        {
-          "name": "poliwrath",
-          "level": "-2",
-          "moves": [
-            "surging-strikes",
-            "drain-punch",
-            "ice-punch",
-            "earthquake"
-          ],
-          "ability": "water-absorb",
-          "abilities": [
-            "water-absorb"
-          ],
-          "held": "mystic-water"
-        },
-        {
-          "name": "breloom",
-          "level": "-2",
-          "moves": [
-            "spore",
-            "substitute",
-            "rock-slide",
-            "focus-punch"
-          ],
-          "ability": "poison-heal",
-          "abilities": [
-            "poison-heal"
-          ],
-          "held": "toxic-orb"
-        },
-        {
-          "name": "lucario",
-          "level": "-2",
-          "moves": [
-            "bulk-up",
-            "extreme-speed",
-            "close-combat",
-            "meteor-mash"
-          ],
-          "ability": "inner-focus",
-          "abilities": [
-            "inner-focus"
-          ],
-          "held": "shuca-berry"
-        },
-        {
-          "name": "gallade",
-          "level": "-2",
-          "moves": [
-            "drain-punch",
-            "psycho-cut",
-            "bulk-up",
-            "night-slash"
-          ],
-          "ability": "inner-focus",
-          "abilities": [
-            "inner-focus"
-          ],
-          "held": "galladite"
+          "held": "focus-sash",
+          "evs": {
+            "atk": 0,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "sneasler",
-          "level": "-2",
+          "level": "59",
           "moves": [
             "close-combat",
             "poison-jab",
             "knock-off",
             "stone-edge"
           ],
+          "nature": "Jolly",
           "ability": "poison-touch",
           "abilities": [
             "poison-touch"
           ],
-          "held": "focus-sash"
+          "held": "focus-sash",
+          "evs": {
+            "atk": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
+        },
+        {
+          "name": "breloom",
+          "level": "59",
+          "moves": [
+            "spore",
+            "substitute",
+            "focus-punch",
+            "rock-slide"
+          ],
+          "nature": "Jolly",
+          "ability": "poison-heal",
+          "abilities": [
+            "poison-heal"
+          ],
+          "held": "toxic-orb",
+          "evs": {
+            "atk": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
+        },
+        {
+          "name": "quaquaval",
+          "level": "59",
+          "moves": [
+            "aqua-step",
+            "close-combat",
+            "bulk-up",
+            "ice-spinner"
+          ],
+          "nature": "Jolly",
+          "ability": "moxie",
+          "abilities": [
+            "moxie"
+          ],
+          "held": "mystic-water",
+          "evs": {
+            "atk": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
+        },
+        {
+          "name": "lucario",
+          "level": "59",
+          "moves": [
+            "nasty-plot",
+            "aura-sphere",
+            "vacuum-wave",
+            "flash-cannon"
+          ],
+          "nature": "Jolly",
+          "ability": "inner-focus",
+          "abilities": [
+            "inner-focus"
+          ],
+          "held": "air-balloon",
+          "evs": {
+            "atk": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
+        },
+        {
+          "name": "gallade",
+          "level": "59",
+          "moves": [
+            "bulk-up",
+            "sacred-sword",
+            "psycho-cut",
+            "night-slash"
+          ],
+          "nature": "Jolly",
+          "ability": "steadfast",
+          "abilities": [
+            "steadfast",
+            "sharpness"
+          ],
+          "held": "galladite",
+          "evs": {
+            "atk": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         }
       ]
     },
-    "mb6a": {
+    "mb6": {
       "name": "Pryce (Team A)",
       "speciality": "ice",
       "img": "/leaders/gs-pryce",
       "pokemon": [
         {
-          "name": "vanilluxe",
-          "level": "-2",
-          "moves": [
-            "blizzard",
-            "freeze-dry",
-            "ice-shard",
-            "flash-cannon"
-          ],
-          "ability": "snow-warning",
-          "abilities": [
-            "snow-warning"
-          ],
-          "held": "light-clay"
-        },
-        {
-          "name": "weavile",
-          "level": "-2",
-          "moves": [
-            "triple-axel",
-            "knock-off",
-            "low-kick",
-            "ice-shard"
-          ],
-          "ability": "pressure",
-          "abilities": [
-            "pressure"
-          ],
-          "held": "choice-band"
-        },
-        {
-          "name": "crabominable",
-          "level": "-2",
-          "moves": [
-            "mach-punch",
-            "ice-shard",
-            "drain-punch",
-            "ice-hammer"
-          ],
-          "ability": "iron-fist",
-          "abilities": [
-            "iron-fist"
-          ],
-          "held": "assault-vest"
-        },
-        {
-          "name": "dewgong",
-          "level": "-2",
-          "moves": [
-            "rest",
-            "sleep-talk",
-            "surf",
-            "toxic"
-          ],
-          "ability": "ice-scales",
-          "abilities": [
-            "ice-scales"
-          ],
-          "held": "leftovers"
-        },
-        {
-          "name": "arctovish",
-          "level": "-2",
-          "moves": [
-            "fishious-rend",
-            "icicle-crash",
-            "psychic-fangs",
-            "icicle-spear"
-          ],
-          "ability": "slush-rush",
-          "abilities": [
-            "slush-rush"
-          ],
-          "held": "choice-band"
-        },
-        {
-          "name": "glalie",
-          "level": "-2",
-          "moves": [
-            "double-edge",
-            "earthquake",
-            "ice-shard",
-            "crunch"
-          ],
-          "ability": "refrigerate",
-          "abilities": [
-            "refrigerate"
-          ],
-          "held": "glalitite"
-        }
-      ]
-    },
-    "mb6b": {
-      "name": "Pryce (Team B)",
-      "speciality": "ice",
-      "img": "/leaders/gs-pryce",
-      "pokemon": [
-        {
           "name": "jynx",
-          "level": "-2",
+          "level": "73",
           "moves": [
             "lovely-kiss",
-            "freeze-dry",
             "psystrike",
-            "substitute"
-          ],
-          "ability": "dry-skin",
-          "abilities": [
-            "dry-skin",
-            "forewarn"
-          ],
-          "held": "focus-sash"
-        },
-        {
-          "name": "mr-rime",
-          "level": "-2",
-          "moves": [
             "freeze-dry",
-            "psychic",
-            "ice-beam",
             "focus-blast"
           ],
-          "ability": "screen-cleaner",
+          "nature": "Timid",
+          "ability": "dry-skin",
           "abilities": [
-            "screen-cleaner"
+            "dry-skin"
           ],
-          "held": "choice-specs"
+          "held": "focus-sash",
+          "evs": {
+            "spa": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "atk": 0,
+            "spd": 0
+          }
         },
         {
-          "name": "mamoswine",
-          "level": "-2",
+          "name": "cloyster",
+          "level": "73",
           "moves": [
-            "earthquake",
-            "ice-shard",
-            "icicle-crash",
-            "knock-off"
+            "shell-smash",
+            "icicle-spear",
+            "waterfall",
+            "rock-blast"
           ],
-          "ability": "thick-fat",
+          "nature": "Jolly",
+          "ability": "skill-link",
           "abilities": [
-            "thick-fat"
+            "skill-link"
           ],
-          "held": "life-orb"
+          "held": "white-herb",
+          "evs": {
+            "atk": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "walrein",
-          "level": "-2",
+          "level": "73",
           "moves": [
+            "toxic",
             "rest",
             "sleep-talk",
-            "surf",
-            "toxic"
+            "ice-beam"
           ],
+          "nature": "Calm",
           "ability": "fur-coat",
           "abilities": [
             "fur-coat"
           ],
-          "held": "leftovers"
+          "held": "leftovers",
+          "evs": {
+            "hp": 252,
+            "atk": 0,
+            "spe": 0,
+            "def": 4,
+            "spa": 0,
+            "spd": 252
+          }
         },
         {
-          "name": "arctovish",
-          "level": "-2",
+          "name": "baxcalibur",
+          "level": "73",
           "moves": [
-            "fishious-rend",
-            "psychic-fangs",
+            "dragon-dance",
             "icicle-crash",
-            "icicle-spear"
+            "glaive-rush",
+            "earthquake"
           ],
-          "ability": "water-absorb",
+          "nature": "Jolly",
+          "ability": "thermal-exchange",
           "abilities": [
-            "water-absorb"
+            "thermal-exchange"
           ],
-          "held": "choice-scarf"
-        },
-        {
-          "name": "glalie",
-          "level": "-2",
-          "moves": [
-            "double-edge",
-            "earthquake",
-            "ice-shard",
-            "crunch"
-          ],
-          "ability": "refrigerate",
-          "abilities": [
-            "refrigerate"
-          ],
-          "held": "glalitite"
-        }
-      ]
-    },
-    "mb6c": {
-      "name": "Prye (Team C)",
-      "speciality": "ice",
-      "img": "/leaders/gs-pryce",
-      "pokemon": [
-        {
-          "name": "ninetales-alola",
-          "level": "-2",
-          "moves": [
-            "aurora-veil",
-            "freeze-dry",
-            "blizzard",
-            "moonblast"
-          ],
-          "ability": "snow-warning",
-          "abilities": [
-            "snow-warning"
-          ],
-          "held": "icy-rock",
-          "sprite": "ninetales-alola"
-        },
-        {
-          "name": "sandslash-alola",
-          "level": "-2",
-          "moves": [
-            "earthquake",
-            "icicle-crash",
-            "iron-head",
-            "ice-shard"
-          ],
-          "ability": "ice-scales",
-          "abilities": [
-            "ice-scales"
-          ],
-          "held": "assault-vest",
-          "sprite": "sandslash-alola"
-        },
-        {
-          "name": "beartic",
-          "level": "-2",
-          "moves": [
-            "play-rough",
-            "triple-axel",
-            "superpower",
-            "swords-dance"
-          ],
-          "ability": "slush-rush",
-          "abilities": [
-            "slush-rush"
-          ],
-          "held": "focus-sash"
+          "held": "dragon-fang",
+          "evs": {
+            "atk": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "arctozolt",
-          "level": "-2",
+          "level": "73",
           "moves": [
             "bolt-beak",
             "icicle-crash",
-            "stomping-tantrum",
-            "rock-slide"
+            "freeze-dry",
+            "low-kick"
           ],
+          "nature": "Lonely",
           "ability": "slush-rush",
           "abilities": [
             "slush-rush"
           ],
-          "held": "choice-band"
-        },
-        {
-          "name": "frosmoth",
-          "level": "-2",
-          "moves": [
-            "quiver-dance",
-            "ice-beam",
-            "bug-buzz",
-            "giga-drain"
-          ],
-          "ability": "ice-scales",
-          "abilities": [
-            "ice-scales"
-          ],
-          "held": "leftovers"
+          "held": "life-orb",
+          "evs": {
+            "atk": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "glalie",
-          "level": "-2",
+          "level": "73",
           "moves": [
-            "double-edge",
+            "fake-out",
+            "quick-attack",
             "earthquake",
-            "crunch",
-            "ice-shard"
+            "double-edge"
           ],
+          "nature": "Jolly",
           "ability": "refrigerate",
           "abilities": [
+            "ice-body",
             "refrigerate"
           ],
-          "held": "glalitite"
+          "held": "glalitite",
+          "evs": {
+            "atk": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         }
       ]
     },
@@ -63687,93 +63688,148 @@
       "pokemon": [
         {
           "name": "steelix",
-          "level": "-2",
+          "level": "73",
           "moves": [
             "stealth-rock",
             "iron-head",
             "earthquake",
             "roar"
           ],
+          "nature": "Adamant",
           "ability": "sturdy",
           "abilities": [
             "sturdy"
           ],
-          "held": "chople-berry"
+          "held": "chople-berry",
+          "evs": {
+            "hp": 252,
+            "atk": 252,
+            "spe": 0,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "melmetal",
-          "level": "-2",
+          "level": "73",
           "moves": [
             "double-iron-bash",
             "earthquake",
-            "superpower",
+            "ice-punch",
             "thunder-punch"
           ],
-          "ability": "clear-body",
+          "nature": "Adamant",
+          "ability": "iron-fist",
           "abilities": [
-            "clear-body"
+            "iron-fist"
           ],
-          "held": "choice-band"
-        },
-        {
-          "name": "aegislash-blade",
-          "level": "-2",
-          "moves": [
-            "shadow-ball",
-            "shadow-sneak",
-            "close-combat",
-            "kings-shield"
-          ],
-          "ability": "stance-change",
-          "abilities": [
-            "stance-change"
-          ],
-          "held": "leftovers"
-        },
-        {
-          "name": "durant",
-          "level": "-2",
-          "moves": [
-            "iron-head",
-            "superpower",
-            "x-scissor",
-            "hone-claws"
-          ],
-          "ability": "hustle",
-          "abilities": [
-            "hustle"
-          ],
-          "held": "life-orb"
+          "held": "leftovers",
+          "evs": {
+            "hp": 252,
+            "atk": 252,
+            "spe": 0,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "duraludon",
-          "level": "-2",
+          "level": "73",
           "moves": [
-            "draco-meteor",
+            "body-press",
             "flash-cannon",
             "thunderbolt",
             "dragon-pulse"
           ],
-          "ability": "light-metal",
+          "nature": "Modest",
+          "ability": "stalwart",
           "abilities": [
-            "light-metal"
+            "stalwart"
           ],
-          "held": "assault-vest"
+          "held": "assault-vest",
+          "evs": {
+            "hp": 252,
+            "atk": 0,
+            "spe": 0,
+            "def": 0,
+            "spa": 252,
+            "spd": 4
+          }
+        },
+        {
+          "name": "durant",
+          "level": "73",
+          "moves": [
+            "iron-head",
+            "close-combat",
+            "x-scissor",
+            "hone-claws"
+          ],
+          "nature": "Jolly",
+          "ability": "hustle",
+          "abilities": [
+            "hustle"
+          ],
+          "held": "life-orb",
+          "evs": {
+            "atk": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
+        },
+        {
+          "name": "samurott",
+          "level": "73",
+          "moves": [
+            "shell-smash",
+            "cut",
+            "razor-shell",
+            "sacred-sword"
+          ],
+          "nature": "Jolly",
+          "ability": "sharpness",
+          "abilities": [
+            "sharpness"
+          ],
+          "held": "white-herb",
+          "evs": {
+            "atk": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "aggron",
-          "level": "-2",
+          "level": "73",
           "moves": [
             "heavy-slam",
             "earthquake",
             "fire-punch",
-            "dragon-claw"
+            "body-press"
           ],
-          "ability": "filter",
+          "nature": "Adamant",
+          "ability": "rock-head",
           "abilities": [
+            "rock-head",
             "filter"
           ],
-          "held": "aggronite"
+          "held": "aggronite",
+          "evs": {
+            "hp": 252,
+            "atk": 252,
+            "spe": 0,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         }
       ]
     },
@@ -63784,93 +63840,148 @@
       "pokemon": [
         {
           "name": "bronzong",
-          "level": "-2",
+          "level": "73",
           "moves": [
-            "iron-head",
+            "gyro-ball",
             "earthquake",
             "stealth-rock",
             "explosion"
           ],
+          "nature": "Relaxed",
           "ability": "levitate",
           "abilities": [
             "levitate"
           ],
-          "held": "leftovers"
+          "held": "leftovers",
+          "evs": {
+            "hp": 252,
+            "atk": 0,
+            "spe": 0,
+            "def": 252,
+            "spa": 0,
+            "spd": 4
+          }
         },
         {
           "name": "melmetal",
-          "level": "-2",
+          "level": "73",
           "moves": [
             "double-iron-bash",
             "earthquake",
             "thunder-punch",
-            "superpower"
+            "body-press"
           ],
-          "ability": "clear-body",
+          "nature": "Adamant",
+          "ability": "iron-fist",
           "abilities": [
-            "clear-body"
+            "iron-fist"
           ],
-          "held": "choice-band"
+          "held": "leftovers",
+          "evs": {
+            "hp": 252,
+            "atk": 252,
+            "spe": 0,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
+        },
+        {
+          "name": "magnezone",
+          "level": "73",
+          "moves": [
+            "thunderbolt",
+            "volt-switch",
+            "flash-cannon",
+            "hp-fire"
+          ],
+          "nature": "Modest",
+          "ability": "magnet-pull",
+          "abilities": [
+            "magnet-pull"
+          ],
+          "held": "magnet",
+          "evs": {
+            "hp": 0,
+            "atk": 0,
+            "spe": 252,
+            "def": 0,
+            "spa": 252,
+            "spd": 4
+          }
         },
         {
           "name": "excadrill",
-          "level": "-2",
+          "level": "73",
           "moves": [
             "earthquake",
             "rock-slide",
             "iron-head",
             "swords-dance"
           ],
-          "ability": "sand-force",
+          "nature": "Jolly",
+          "ability": "mold-breaker",
           "abilities": [
-            "sand-force"
+            "mold-breaker"
           ],
-          "held": "air-balloon"
+          "held": "air-balloon",
+          "evs": {
+            "atk": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
-          "name": "magnezone",
-          "level": "-2",
+          "name": "samurott",
+          "level": "73",
           "moves": [
-            "thunderbolt",
-            "volt-switch",
-            "flash-cannon",
-            "body-press"
+            "shell-smash",
+            "cut",
+            "razor-shell",
+            "sacred-sword"
           ],
-          "ability": "magnet-pull",
+          "nature": "Jolly",
+          "ability": "sharpness",
           "abilities": [
-            "magnet-pull"
+            "sharpness"
           ],
-          "held": "magnet"
-        },
-        {
-          "name": "scizor",
-          "level": "-2",
-          "moves": [
-            "u-turn",
-            "dual-wingbeat",
-            "bullet-punch",
-            "superpower"
-          ],
-          "ability": "technician",
-          "abilities": [
-            "technician"
-          ],
-          "held": "choice-band"
+          "held": "white-herb",
+          "evs": {
+            "atk": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "aggron",
-          "level": "-2",
+          "level": "73",
           "moves": [
             "heavy-slam",
-            "fire-punch",
             "earthquake",
-            "dragon-claw"
+            "fire-punch",
+            "body-press"
           ],
-          "ability": "filter",
+          "nature": "Adamant",
+          "ability": "rock-head",
           "abilities": [
+            "rock-head",
             "filter"
           ],
-          "held": "aggronite"
+          "held": "aggronite",
+          "evs": {
+            "hp": 252,
+            "atk": 252,
+            "spe": 0,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         }
       ]
     },
@@ -63881,93 +63992,148 @@
       "pokemon": [
         {
           "name": "forretress",
-          "level": "-2",
+          "level": "73",
           "moves": [
             "stealth-rock",
-            "explosion",
-            "spikes",
-            "volt-switch"
+            "earthquake",
+            "gyro-ball",
+            "explosion"
           ],
+          "nature": "Relaxed",
           "ability": "sturdy",
           "abilities": [
             "sturdy"
           ],
-          "held": "leftovers"
+          "held": "custap-berry",
+          "evs": {
+            "hp": 252,
+            "atk": 0,
+            "spe": 0,
+            "def": 252,
+            "spa": 0,
+            "spd": 4
+          }
         },
         {
           "name": "melmetal",
-          "level": "-2",
+          "level": "73",
           "moves": [
-            "superpower",
+            "body-press",
             "earthquake",
             "double-iron-bash",
             "thunder-punch"
           ],
-          "ability": "clear-body",
+          "nature": "Adamant",
+          "ability": "iron-fist",
           "abilities": [
-            "clear-body"
+            "iron-fist"
           ],
-          "held": "choice-band"
+          "held": "leftovers",
+          "evs": {
+            "hp": 252,
+            "atk": 252,
+            "spe": 0,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "magnezone",
-          "level": "-2",
+          "level": "73",
           "moves": [
+            "body-press",
+            "earthquake",
             "volt-switch",
-            "thunderbolt",
-            "flash-cannon",
-            "body-press"
+            "flash-cannon"
           ],
+          "nature": "Modest",
           "ability": "magnet-pull",
           "abilities": [
             "magnet-pull"
           ],
-          "held": "magnet"
-        },
-        {
-          "name": "metagross",
-          "level": "-2",
-          "moves": [
-            "meteor-mash",
-            "earthquake",
-            "zen-headbutt",
-            "bullet-punch"
-          ],
-          "ability": "clear-body",
-          "abilities": [
-            "clear-body"
-          ],
-          "held": "air-balloon"
+          "held": "magnet",
+          "evs": {
+            "hp": 0,
+            "atk": 0,
+            "spe": 252,
+            "def": 0,
+            "spa": 252,
+            "spd": 4
+          }
         },
         {
           "name": "lucario",
-          "level": "-2",
+          "level": "73",
           "moves": [
             "swords-dance",
             "extreme-speed",
             "close-combat",
             "meteor-mash"
           ],
+          "nature": "Jolly",
           "ability": "inner-focus",
           "abilities": [
             "inner-focus"
           ],
-          "held": "life-orb"
+          "held": "air-balloon",
+          "evs": {
+            "atk": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
+        },
+        {
+          "name": "samurott",
+          "level": "73",
+          "moves": [
+            "shell-smash",
+            "cut",
+            "razor-shell",
+            "sacred-sword"
+          ],
+          "nature": "Jolly",
+          "ability": "sharpness",
+          "abilities": [
+            "sharpness"
+          ],
+          "held": "white-herb",
+          "evs": {
+            "atk": 252,
+            "hp": 0,
+            "spe": 252,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "aggron",
-          "level": "-2",
+          "level": "73",
           "moves": [
-            "dragon-claw",
             "heavy-slam",
             "earthquake",
-            "fire-punch"
+            "fire-punch",
+            "body-press"
           ],
-          "ability": "filter",
+          "nature": "Adamant",
+          "ability": "rock-head",
           "abilities": [
+            "rock-head",
             "filter"
           ],
-          "held": "aggronite"
+          "held": "aggronite",
+          "evs": {
+            "hp": 252,
+            "atk": 252,
+            "spe": 0,
+            "def": 4,
+            "spa": 0,
+            "spd": 0
+          }
         }
       ]
     },
@@ -64837,7 +65003,7 @@
           "held": "leftovers"
         },
         {
-          "name": "gengar",
+          "name": "gengar-mega",
           "level": "85",
           "moves": [
             "shadow-ball",

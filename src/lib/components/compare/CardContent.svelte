@@ -19,7 +19,7 @@
     Box: 2
   }
 
-  const select = (p) => p?.original?.icon || p?.sprite
+  const select = (p) => p?.original?.icon || p?.sprite || p?.alias || p?.name
   const set = (id) => () => {
     id == Active.Box ? (teamId = -1) : (boxId = -1)
     active = id
@@ -57,6 +57,7 @@
             { ...boxList?.[nBid], id: nBid },
             { ...gym?.[gymId], id: gymId }
           ]
+    
   }
 
   const hasTeam = team.length > 0

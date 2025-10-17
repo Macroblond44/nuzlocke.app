@@ -58,7 +58,7 @@
         class:selected={ids.includes(mon.id)}
         on:click={select(mon.id)}
         >
-        <PIcon class='pointer-events-none transform scale-150' name={mon.pokemon} />
+        <PIcon class='pointer-events-none transform scale-150' name={mon.pokemon?.sprite || mon.pokemon?.alias || mon.pokemon?.name || mon.pokemon} />
       </button>
     {/each}
   </div>

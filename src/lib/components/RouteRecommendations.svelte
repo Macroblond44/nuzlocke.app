@@ -463,7 +463,7 @@
                       <div class="border border-gray-200 dark:border-gray-600 rounded-lg p-4 hover:shadow-md transition-shadow">
                         <div class="flex items-center justify-between mb-3">
                           <div class="flex items-center gap-3">
-                            <PIcon name={pokemon.name} class="w-12 h-12" />
+                            <PIcon name={pokemon.sprite || pokemon.alias || pokemon.name} class="w-12 h-12" />
                             <div>
                               <h5 class="font-semibold text-gray-900 dark:text-white">
                                 {regionise(capitalise(pokemon.name))}

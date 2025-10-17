@@ -34,7 +34,7 @@
 >
   <span slot="option" let:option={item} let:label class="item">
     <span>{@html label}</span>
-    <PIcon className="float-right -mr-4" name={item.alias} />
+    <PIcon className="float-right -mr-4" name={item.sprite || item.alias} />
   </span>
 </AutoComplete>
 

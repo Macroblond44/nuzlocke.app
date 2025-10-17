@@ -51,7 +51,7 @@
           in:receive={{ key: locid(og) }}
           out:send={{ key: locid(og) }}
         >
-          <PIcon class="picon" name={og.pokemon} />
+          <PIcon class="picon" name={og.sprite || og.alias || og.name || og.pokemon} />
         </button>
       {/each}
       {#each Array(6 - team.length) as _}
@@ -103,7 +103,7 @@
             in:receive={{ key: locid(og) }}
             out:send={{ key: locid(og) }}
           >
-            <PIcon class="picon -scale-x-100" name={og.pokemon} />
+            <PIcon class="picon -scale-x-100" name={og.sprite || og.alias || og.name || og.pokemon} />
           </button>
         {/each}
       {/key}

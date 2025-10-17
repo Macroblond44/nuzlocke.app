@@ -308,33 +308,16 @@
     try {
       loadingMoveSuggestions = true
       
-      console.log('🔍 [MoveSuggestions] analyzeMoveSuggestions START:', {
-        pokemonName,
-        currentMovesCount: currentMoves?.length,
-        matchupsCount: matchups?.length,
-        levelCap
-      })
       
       // Only work with matchups (from advanced recommendations)
       if (!matchups || matchups.length === 0) {
-        console.log('⚠️ [MoveSuggestions] No matchups provided for', pokemonName)
         return null
       }
       
       // Get all attacking moves the Pokémon can learn up to level cap
       const learnableMoves = await fetchLearnableMovesUpToLevelCap(pokemonName, levelCap)
       
-    console.log('📚 [MoveSuggestions] Learnable moves:', {
-      pokemonName,
-      learnableMovesCount: learnableMoves.length,
-      learnableMoves: learnableMoves // Show all moves to debug
-    })
-    
-    // DETAILED: Show exact values in learnableMoves
-    console.log(`📚 [MoveSuggestions] learnableMoves EXACT values for ${pokemonName}:`, learnableMoves.join(', '))
-      
       if (learnableMoves.length === 0) {
-        console.log('⚠️ [MoveSuggestions] No learnable moves found for', pokemonName)
         return null
       }
       
@@ -342,37 +325,18 @@
     // IMPORTANT: Normalize to hyphenated format (e.g. "aqua-jet") to match API format
     const optimalMoves = new Set()
     matchups.forEach(matchup => {
-      console.log('🔎 [MoveSuggestions] Inspecting matchup:', {
-        rivalName: matchup.rivalName,
-        userWins: matchup.userWins,
-        bestMove: matchup.bestMove,
-        hasAllMovesCalculation: !!matchup._allMovesCalculation
-      })
-      
       // Use all moves calculation for suggestions (if available)
       const calculationToUse = matchup._allMovesCalculation || matchup
       
       if (calculationToUse.userWins && calculationToUse.bestMove) {
-        console.log('✅ [MoveSuggestions] Found winning matchup:', {
-          rival: matchup.rivalName,
-          bestMove: calculationToUse.bestMove,
-          usingAllMoves: !!matchup._allMovesCalculation
-        })
         // Normalize: lowercase and replace spaces with hyphens
         const normalizedMove = calculationToUse.bestMove.toLowerCase().replace(/\s+/g, '-')
         optimalMoves.add(normalizedMove)
       }
     })
       
-      console.log('🎯 [MoveSuggestions] Optimal moves from matchups:', {
-        pokemonName,
-        optimalMovesCount: optimalMoves.size,
-        optimalMoves: Array.from(optimalMoves)
-      })
-      
       // If no optimal moves found, return null
       if (optimalMoves.size === 0) {
-        console.log('⚠️ [MoveSuggestions] No optimal moves found in matchups')
         return null
       }
       
@@ -382,49 +346,20 @@
       return moveName.toLowerCase().replace(/\s+/g, '-')
     })
       
-      console.log('📋 [MoveSuggestions] Current moves normalized:', {
-        pokemonName,
-        currentMoves: normalizedCurrentMoves,
-        currentMovesRaw: currentMoves // Show raw for debugging
-      })
-      
       // Find suggested moves: optimal moves that are learnable but not currently equipped
       const suggestedMoves = Array.from(optimalMoves).filter(move => 
         learnableMoves.some(lm => lm.toLowerCase() === move) && 
         !normalizedCurrentMoves.includes(move)
       )
-      
-      console.log('💡 [MoveSuggestions] Suggested moves:', {
-        pokemonName,
-        suggestedMovesCount: suggestedMoves.length,
-        suggestedMoves
-      })
-      
+
     // Detailed debugging for move comparison - SHOW ACTUAL VALUES
     const optimalMovesArray = Array.from(optimalMoves)
-    console.log('🔬 [MoveSuggestions] DETAILED COMPARISON:', {
-      'optimalMoves': optimalMovesArray,
-      'learnableMoves': learnableMoves,
-      'normalizedCurrentMoves': normalizedCurrentMoves,
-      'suggestedMoves': suggestedMoves
-    })
-    
-    // SUPER DETAILED: Show each comparison step
-    console.log('🔎 [MoveSuggestions] STEP-BY-STEP COMPARISON:')
     for (const optimalMove of optimalMovesArray) {
       const isLearnable = learnableMoves.some(lm => lm.toLowerCase() === optimalMove)
       const isEquipped = normalizedCurrentMoves.includes(optimalMove)
-      console.log(`  - "${optimalMove}": learnable=${isLearnable}, equipped=${isEquipped}`)
-      if (isLearnable) {
-        console.log(`    ✓ Found in learnableMoves: ${learnableMoves.filter(lm => lm.toLowerCase() === optimalMove).join(', ')}`)
-      }
-      if (isEquipped) {
-        console.log(`    ✓ Found in currentMoves`)
-      }
     }
     
     if (suggestedMoves.length === 0) {
-      console.log('⏭️ [MoveSuggestions] No suggestions (all optimal moves are equipped or not learnable)')
       return null
     }
       
@@ -446,15 +381,7 @@
    * Load move suggestions for all filtered recommendations
    */
   async function loadMoveSuggestions() {
-    console.log('🔄 [MoveSuggestions] loadMoveSuggestions called', {
-      hasRecommendations: !!recommendations,
-      recommendationsLength: recommendations?.length,
-      filteredRecommendationsLength: filteredRecommendations?.length,
-      levelCap
-    })
-    
     if (!recommendations || recommendations.length === 0) {
-      console.log('⏭️ [MoveSuggestions] Skipping - no recommendations')
       return
     }
     
@@ -465,24 +392,14 @@
       const actualPokemonName = userPokemonData?.original?.pokemon || userPokemonData?.pokemon || rec.name
       const currentMoves = userPokemonData?.original?.moves || []
       
-      console.log('🔍 [MoveSuggestions] Analyzing:', {
-        pokemonName: rec.name,
-        actualPokemonName,
-        currentMovesCount: currentMoves.length,
-        matchupsCount: rec.matchups?.length || 0
-      })
-      
       const suggestion = await analyzeMoveSuggestions(actualPokemonName, currentMoves, rec.matchups || [])
       
       if (suggestion) {
-        console.log('✅ [MoveSuggestions] Found suggestions for', actualPokemonName, suggestion)
         suggestions[actualPokemonName] = suggestion
       } else {
-        console.log('⏭️ [MoveSuggestions] No suggestions for', actualPokemonName)
       }
     }
     
-    console.log('📊 [MoveSuggestions] Final suggestions object:', suggestions)
     moveSuggestions = suggestions
   }
 
@@ -578,17 +495,11 @@
 
   // Handle Pokemon updates from editable PokemonCards
   function handlePokemonUpdate(pokemonName, updateData) {
-    console.log('🔄 [AdvancedRecommendations] handlePokemonUpdate called:', {
-      pokemonName,
-      updateData,
-      userTeamLength: userTeam.length
-    })
     
     // Find the Pokemon in userTeam (using the correct structure)
     const pokemonIndex = userTeam.findIndex(p => p.original?.pokemon === pokemonName)
     
     if (pokemonIndex !== -1) {
-      console.log('✅ [AdvancedRecommendations] Before update:', userTeam[pokemonIndex])
       
       // Update the Pokemon data in the original structure
       const updatedPokemon = {
@@ -601,12 +512,10 @@
       
       userTeam[pokemonIndex] = updatedPokemon
       
-      console.log('✅ [AdvancedRecommendations] After update:', userTeam[pokemonIndex])
       
       // Persist the change globally using updatePokemon
       try {
         updatePokemon(updatedPokemon.original)
-        console.log('💾 [AdvancedRecommendations] Persisted change globally')
       } catch (error) {
         console.error('❌ [AdvancedRecommendations] Failed to persist change:', error)
       }
@@ -1081,7 +990,7 @@
                         ? 'border-blue-400 dark:border-blue-500 bg-blue-50 dark:bg-blue-900/20' 
                         : (matchup.userWins ? 'border-green-400 dark:border-green-600' : 'border-red-400 dark:border-red-600')}">
                         <div class="flex items-center gap-2 mb-2">
-                          <PIcon name={matchup.rivalPokemon} class="w-6 h-6" />
+                          <PIcon name={matchup.rivalPokemon?.sprite || matchup.rivalPokemon?.alias || matchup.rivalPokemon?.name || matchup.rivalPokemon} class="w-6 h-6" />
                           <div class="flex-1">
                             <div class="flex items-center justify-between">
                               <div class="text-xs font-bold {matchup.userWins ? 'text-green-600 dark:text-green-400' : 'text-red-600 dark:text-red-400'}">
@@ -1157,7 +1066,7 @@
                         <div class="bg-gray-50 dark:bg-gray-700 p-4 rounded-lg">
                           <div class="flex items-center justify-between mb-3">
                             <div class="flex items-center gap-3">
-                              <PIcon name={matchup.rivalPokemon} class="w-8 h-8" />
+                              <PIcon name={matchup.rivalPokemon?.sprite || matchup.rivalPokemon?.alias || matchup.rivalPokemon?.name || matchup.rivalPokemon} class="w-8 h-8" />
                               <div>
                                 <h6 class="font-medium text-gray-900 dark:text-white">
                                   vs {regionise(capitalise(matchup.rivalPokemon))}

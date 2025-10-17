@@ -76,7 +76,7 @@
           dispatch('select')
         }}
       >
-        <PIcon name={select(p)} />
+        <PIcon name={select(p)?.sprite || select(p)?.alias || select(p)?.name || select(p)} />
       </button>
     {/each}
 

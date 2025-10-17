@@ -49,6 +49,18 @@
             continue
           }
 
+          // Debug logging
+          if (id === 'espurr') {
+            console.log('🔍 [getPkmn] Found Pokemon for espurr:', { 
+              id, 
+              nid, 
+              res, 
+              sprite: res.sprite, 
+              alias: res.alias, 
+              name: res.name 
+            })
+          }
+
           result[res.alias] = res
         }
         return result

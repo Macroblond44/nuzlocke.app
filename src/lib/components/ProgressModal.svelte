@@ -120,10 +120,23 @@
     return await Promise.all(
       mons.map((m) => getPkmn(m[key]).then((res) => {
         // Debug: Log what we got back
-        if (m[key] && m[key].includes('alola')) {
-          console.log('Got back for', m[key], ':', { alias: res?.alias, types: res?.types })
-        }
-        return { original: m, ...res }
+        console.log('🔍 [fetchPkmnSet] Got back for', m[key], ':', { 
+          sprite: res?.sprite, 
+          alias: res?.alias, 
+          name: res?.name,
+          types: res?.types 
+        })
+        const result = { original: m, ...res }
+        console.log('🔍 [fetchPkmnSet] Final result for', m[key], ':', { 
+          original: result.original, 
+          sprite: result.sprite, 
+          alias: result.alias, 
+          name: result.name,
+          hasSprite: !!result.sprite,
+          hasAlias: !!result.alias,
+          hasName: !!result.name
+        })
+        return result
       }))
     )
   }
@@ -169,6 +182,14 @@
           throw error // Re-throw other errors
         }
       }
+      
+      console.log('🔍 [ProgressModal] Creating analysisResult:', {
+        boxMonsLength: boxMons.length,
+        boxMonsSample: boxMons[0],
+        hasSprite: !!boxMons[0]?.sprite,
+        hasAlias: !!boxMons[0]?.alias,
+        hasName: !!boxMons[0]?.name
+      })
       
       analysisResult = {
         ...advice,

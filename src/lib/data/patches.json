@@ -9848,6 +9848,10 @@
       "charge-beam": {
         "effect": "Boosts the user's Special Attack by one stage"
       },
+      "covet": {
+        "power": "60",
+        "type": "fairy"
+      },
       "self-destruct": {
         "power": "100",
         "effect": "Target's Defense is halved during damage. User faints."

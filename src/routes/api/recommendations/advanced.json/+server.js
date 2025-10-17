@@ -42,6 +42,7 @@
 
 import { calculate, Pokemon, Move, Generations } from '@smogon/calc';
 import gamesData from '$lib/data/games.json';
+import patches from '$lib/data/patches.json';
 import { applyAbilityModifiers, wouldSturdyPreventKO } from '$lib/utils/ability-modifiers.js';
 import { isFirstTurnOnlyMove, canUseMoveInTurn } from '$lib/data/first-turn-only-moves.js';
 
@@ -223,6 +224,26 @@ const SCORE_LOSS = 0;
 function roundPercentage(probability) {
   const multiplier = Math.pow(10, PERCENTAGE_DECIMAL_PLACES);
   return Math.round(probability * GUARANTEED_KO_THRESHOLD * multiplier) / multiplier;
+}
+
+/**
+ * Apply move patches for a specific game
+ * @param {string} moveName - Name of the move
+ * @param {string} gameKey - Game key (e.g., 'radred')
+ * @returns {Object} Patched move data or null if no patch exists
+ */
+function applyMovePatches(moveName, gameKey) {
+  if (!gameKey || !patches[gameKey] || !patches[gameKey].move) {
+    return null;
+  }
+  
+  const movePatch = patches[gameKey].move[moveName.toLowerCase()];
+  if (!movePatch) {
+    return null;
+  }
+  
+  console.log(`[Move Patch] Applied patch for ${moveName} in ${gameKey}:`, movePatch);
+  return movePatch;
 }
 
 /**
@@ -409,10 +430,10 @@ export async function POST({ request }) {
         console.log(`[Matchup] Processing rival: ${rivalMon.name} (level ${rivalMon.level})`);
         
         // Calculate with ALL learnable moves (for suggestions)
-        const matchupWithAllMoves = calculateMatchup(gen, userMonWithAllMoves, rivalMon);
+        const matchupWithAllMoves = calculateMatchup(gen, userMonWithAllMoves, rivalMon, detectedGame);
         
         // Calculate with EQUIPPED moves only (for UI display)
-        const matchupWithEquippedMoves = calculateMatchup(gen, userMonCapped, rivalMon);
+        const matchupWithEquippedMoves = calculateMatchup(gen, userMonCapped, rivalMon, detectedGame);
         
         matchups.push({
           // Rival Pokémon info
@@ -635,7 +656,7 @@ function calculateWinnerRemainingHP(winner, winnerMovesUsed, winnerMoveOptions, 
  * @param {number} defenderHP - Defender's total HP
  * @returns {Object} KO probability analysis with probability, isGuaranteed, description
  */
-function calculateMoveSequenceKOProbability(gen, attacker, defender, movesUsed, defenderHP) {
+function calculateMoveSequenceKOProbability(gen, attacker, defender, movesUsed, defenderHP, gameKey = null) {
   if (!movesUsed || movesUsed.length === 0) {
     return createKOAnalysisResult(0, false, 'No moves used', 0);
   }
@@ -643,11 +664,11 @@ function calculateMoveSequenceKOProbability(gen, attacker, defender, movesUsed, 
   try {
     // Single move case - use @smogon/calc kochance directly for efficiency
     if (movesUsed.length === 1) {
-      return calculateSingleMoveKO(gen, attacker, defender, movesUsed[0], defenderHP);
+      return calculateSingleMoveKO(gen, attacker, defender, movesUsed[0], defenderHP, gameKey);
     }
 
     // Multi-move case - calculate exact probability using damage arrays
-    return calculateMultiMoveKO(gen, attacker, defender, movesUsed, defenderHP);
+    return calculateMultiMoveKO(gen, attacker, defender, movesUsed, defenderHP, gameKey);
     
   } catch (error) {
     console.log(`  ⚠️ Error calculating KO probability: ${error.message}`);
@@ -728,8 +749,27 @@ function handleParentalBondDamage(damageResult) {
  * Important: We need to manually check if the move can KO based on damage array,
  * because @smogon/calc's kochance() assumes full HP and doesn't accept custom HP values.
  */
-function calculateSingleMoveKO(gen, attacker, defender, moveUsed, defenderHP) {
-  const moveResult = calculate(gen, attacker, defender, new Move(gen, moveUsed.move));
+function calculateSingleMoveKO(gen, attacker, defender, moveUsed, defenderHP, gameKey = null) {
+  // Apply move patches if gameKey is provided
+  const movePatch = gameKey ? applyMovePatches(moveUsed.move, gameKey) : null;
+  
+  let move;
+  if (movePatch) {
+    const overrides = {
+      type: movePatch.type.charAt(0).toUpperCase() + movePatch.type.slice(1),
+      basePower: parseInt(movePatch.power),
+    };
+    
+    if (movePatch.category) {
+      overrides.category = movePatch.category.charAt(0).toUpperCase() + movePatch.category.slice(1);
+    }
+    
+    move = new Move(gen, moveUsed.move, { overrides });
+  } else {
+    move = new Move(gen, moveUsed.move);
+  }
+  
+  const moveResult = calculate(gen, attacker, defender, move);
   
   // Apply ability modifiers (e.g., Sturdy)
   const modifiedResult = applyAbilityModifiers(
@@ -774,12 +814,31 @@ function calculateSingleMoveKO(gen, attacker, defender, moveUsed, defenderHP) {
 /**
  * Calculate KO probability for multiple moves using exact damage arrays
  */
-function calculateMultiMoveKO(gen, attacker, defender, movesUsed, defenderHP) {
+function calculateMultiMoveKO(gen, attacker, defender, movesUsed, defenderHP, gameKey = null) {
   console.log(`  🧮 Calculating ${movesUsed.length}-move sequence probability:`);
   
   // Get exact damage arrays from @smogon/calc for each move
   const damageArrays = movesUsed.map((moveUsed, index) => {
-    const moveResult = calculate(gen, attacker, defender, new Move(gen, moveUsed.move));
+    // Apply move patches if gameKey is provided
+    const movePatch = gameKey ? applyMovePatches(moveUsed.move, gameKey) : null;
+    
+    let move;
+    if (movePatch) {
+      const overrides = {
+        type: movePatch.type.charAt(0).toUpperCase() + movePatch.type.slice(1),
+        basePower: parseInt(movePatch.power),
+      };
+      
+      if (movePatch.category) {
+        overrides.category = movePatch.category.charAt(0).toUpperCase() + movePatch.category.slice(1);
+      }
+      
+      move = new Move(gen, moveUsed.move, { overrides });
+    } else {
+      move = new Move(gen, moveUsed.move);
+    }
+    
+    const moveResult = calculate(gen, attacker, defender, move);
     
     // Apply ability modifiers (e.g., Sturdy) for each move
     const modifiedResult = applyAbilityModifiers(
@@ -887,7 +946,7 @@ function calculateCombinationProbability(damageArrays, targetDamage, moveIndex =
  * Helper: Calculate all moves with their damage and priority
  * Returns array of all valid moves with their calculation results
  */
-function calculateAllMoves(gen, attacker, defender, movesList, isUserPokemon = false, turnNumber = 1) {
+function calculateAllMoves(gen, attacker, defender, movesList, isUserPokemon = false, turnNumber = 1, gameKey = null) {
   const moveResults = [];
   
   if (!movesList || movesList.length === 0) {
@@ -909,7 +968,28 @@ function calculateAllMoves(gen, attacker, defender, movesList, isUserPokemon = f
     }
     
     try {
-      const move = new Move(gen, actualMoveName);
+      // Apply move patches if gameKey is provided
+      const movePatch = gameKey ? applyMovePatches(actualMoveName, gameKey) : null;
+      
+      // Create move with patches applied
+      let move;
+      if (movePatch) {
+        // Create custom move with patch data using @smogon/calc's official method
+        // The Move constructor accepts an 'overrides' object to modify move properties
+        const overrides = {
+          type: movePatch.type.charAt(0).toUpperCase() + movePatch.type.slice(1),
+          basePower: parseInt(movePatch.power),
+        };
+        
+        if (movePatch.category) {
+          overrides.category = movePatch.category.charAt(0).toUpperCase() + movePatch.category.slice(1);
+        }
+        
+        move = new Move(gen, actualMoveName, { overrides });
+        console.log(`     🔧 Custom Move created for ${actualMoveName} with overrides:`, overrides);
+      } else {
+        move = new Move(gen, actualMoveName);
+      }
       
       // Skip blacklisted moves for user Pokémon in Nuzlocke mode
       // These moves are too risky (self-destruct, high recoil, etc.)
@@ -1144,7 +1224,7 @@ function determineWinnerBySpeed(userSpeed, rivalSpeed, userPriority, rivalPriori
  * 3. Among moves that + previous moves can potentially KO → use the one with highest KO probability
  * 4. Otherwise → use move with highest average damage
  */
-function selectOptimalMove(gen, attacker, defender, moveResults, defenderMaxHP, movesUsedSoFar = []) {
+function selectOptimalMove(gen, attacker, defender, moveResults, defenderMaxHP, movesUsedSoFar = [], gameKey = null) {
   if (!moveResults || moveResults.length === 0) {
     return null;
   }
@@ -1155,7 +1235,7 @@ function selectOptimalMove(gen, attacker, defender, moveResults, defenderMaxHP, 
   if (priorityMoves.length > 0 && movesUsedSoFar.length > 0) {
     for (const priorityMove of priorityMoves) {
       const testSequence = [...movesUsedSoFar, { move: priorityMove.name, damage: priorityMove.avgDamage }];
-      const koData = calculateMoveSequenceKOProbability(gen, attacker, defender, testSequence, defenderMaxHP);
+      const koData = calculateMoveSequenceKOProbability(gen, attacker, defender, testSequence, defenderMaxHP, gameKey);
       if (koData.probability === 100) {
         console.log(`  ⚡ Priority move ${priorityMove.name} guarantees KO with previous moves!`);
         return priorityMove;
@@ -1249,7 +1329,7 @@ function selectOptimalMove(gen, attacker, defender, moveResults, defenderMaxHP, 
  * @param {Object} rivalMon - Rival's Pokémon data
  * @returns {Object} Battle result with winner, KO probabilities, and move sequences
  */
-function calculateMatchup(gen, userMon, rivalMon) {
+function calculateMatchup(gen, userMon, rivalMon, gameKey = null) {
   
   try {
     console.log(`\n========== CALCULATING MATCHUP ==========`);
@@ -1428,13 +1508,13 @@ function calculateMatchup(gen, userMon, rivalMon) {
       console.log(`${'─'.repeat(60)}`);
       
       // Recalculate move options for this turn (filters first-turn-only moves)
-      const userMoveOptions = calculateAllMoves(gen, userPokemon, rivalPokemon, userMon.moves, true, turn);
-      const rivalMoveOptions = calculateAllMoves(gen, rivalPokemon, userPokemon, rivalMoves, false, turn);
+      const userMoveOptions = calculateAllMoves(gen, userPokemon, rivalPokemon, userMon.moves, true, turn, gameKey);
+      const rivalMoveOptions = calculateAllMoves(gen, rivalPokemon, userPokemon, rivalMoves, false, turn, gameKey);
       
       // Select optimal moves for this turn considering previous moves
-      const userSelectedMove = selectOptimalMove(gen, userPokemon, rivalPokemon, userMoveOptions, rivalMaxHP, userMovesUsed);
+      const userSelectedMove = selectOptimalMove(gen, userPokemon, rivalPokemon, userMoveOptions, rivalMaxHP, userMovesUsed, gameKey);
       const rivalSelectedMove = rivalMoveOptions.length > 0 
-        ? selectOptimalMove(gen, rivalPokemon, userPokemon, rivalMoveOptions, userMaxHP, rivalMovesUsed)
+        ? selectOptimalMove(gen, rivalPokemon, userPokemon, rivalMoveOptions, userMaxHP, rivalMovesUsed, gameKey)
         : null;
       
       if (!userSelectedMove) {
@@ -1466,9 +1546,9 @@ function calculateMatchup(gen, userMon, rivalMon) {
       console.log(`  🎲 KO Probability Check:`);
       
       // Calculate KO probabilities after first attacker
-      const userKODataAfterFirst = calculateMoveSequenceKOProbability(gen, userPokemon, rivalPokemon, userMovesUsed, rivalMaxHP);
+      const userKODataAfterFirst = calculateMoveSequenceKOProbability(gen, userPokemon, rivalPokemon, userMovesUsed, rivalMaxHP, gameKey);
       const rivalKODataAfterFirst = rivalMovesUsed.length > 0 
-        ? calculateMoveSequenceKOProbability(gen, rivalPokemon, userPokemon, rivalMovesUsed, userMaxHP)
+        ? calculateMoveSequenceKOProbability(gen, rivalPokemon, userPokemon, rivalMovesUsed, userMaxHP, gameKey)
         : { probability: 0, isGuaranteed: false };
       
       // Determine if first attacker KO'd
@@ -1487,13 +1567,13 @@ function calculateMatchup(gen, userMon, rivalMon) {
       }
       
       // Calculate final KO probabilities for this turn (after both attackers)
-      const userKOData = calculateMoveSequenceKOProbability(gen, userPokemon, rivalPokemon, userMovesUsed, rivalMaxHP);
+      const userKOData = calculateMoveSequenceKOProbability(gen, userPokemon, rivalPokemon, userMovesUsed, rivalMaxHP, gameKey);
       const userMoveSeq = userMovesUsed.map(m => m.move).join(' → ');
       console.log(`     User:  ${userKOData.probability.toString().padStart(5)}% (${userMoveSeq})`);
       
       let rivalKOData = { probability: 0, isGuaranteed: false };
       if (rivalMovesUsed.length > 0) {
-        rivalKOData = calculateMoveSequenceKOProbability(gen, rivalPokemon, userPokemon, rivalMovesUsed, userMaxHP);
+        rivalKOData = calculateMoveSequenceKOProbability(gen, rivalPokemon, userPokemon, rivalMovesUsed, userMaxHP, gameKey);
         const rivalMoveSeq = rivalMovesUsed.map(m => m.move).join(' → ');
         console.log(`     Rival: ${rivalKOData.probability.toString().padStart(5)}% (${rivalMoveSeq})`);
       }
@@ -1543,9 +1623,9 @@ function calculateMatchup(gen, userMon, rivalMon) {
     console.log(`${'═'.repeat(60)}`);
     
     // Calculate final KO probabilities for both sides
-    const finalUserKOData = calculateMoveSequenceKOProbability(gen, userPokemon, rivalPokemon, userMovesUsed, rivalMaxHP);
+    const finalUserKOData = calculateMoveSequenceKOProbability(gen, userPokemon, rivalPokemon, userMovesUsed, rivalMaxHP, gameKey);
     const finalRivalKOData = rivalMovesUsed.length > 0 
-      ? calculateMoveSequenceKOProbability(gen, rivalPokemon, userPokemon, rivalMovesUsed, userMaxHP)
+      ? calculateMoveSequenceKOProbability(gen, rivalPokemon, userPokemon, rivalMovesUsed, userMaxHP, gameKey)
       : { probability: 0, isGuaranteed: false, description: 'No moves', hitsToKO: 0 };
     
     const userMoveSequence = userMovesUsed.map(m => m.move).join(' → ');
@@ -1565,8 +1645,8 @@ function calculateMatchup(gen, userMon, rivalMon) {
     
     // ========== STEP 4: Build and return comprehensive battle data ==========
     // Recalculate move options for first turn to get move details
-    const firstTurnUserMoves = calculateAllMoves(gen, userPokemon, rivalPokemon, userMon.moves, true, 1);
-    const firstTurnRivalMoves = calculateAllMoves(gen, rivalPokemon, userPokemon, rivalMoves, false, 1);
+    const firstTurnUserMoves = calculateAllMoves(gen, userPokemon, rivalPokemon, userMon.moves, true, 1, gameKey);
+    const firstTurnRivalMoves = calculateAllMoves(gen, rivalPokemon, userPokemon, rivalMoves, false, 1, gameKey);
     
     const firstUserMove = firstTurnUserMoves.find(m => m.name === userMovesUsed[0]?.move);
     const firstRivalMove = firstTurnRivalMoves.find(m => m.name === rivalMovesUsed[0]?.move);

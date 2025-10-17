@@ -42,6 +42,30 @@ export const fetchEvolutions = async (pokemonName, gameKey = 'radred') => {
   return []
 }
 
+/**
+ * Fetch Pokemon stats using the new API
+ */
+export const fetchPokemonStats = async (pokemonName, gameKey = 'radred') => {
+  const cacheKey = `stats-${pokemonName}-${gameKey}`
+  
+  if (evolutionCache[cacheKey]) {
+    return evolutionCache[cacheKey]
+  }
+  
+  try {
+    const response = await fetch(`/api/pokemon/${pokemonName}/stats.json?game=${gameKey}`)
+    if (response.ok) {
+      const data = await response.json()
+      evolutionCache[cacheKey] = data
+      return data
+    }
+  } catch (error) {
+    console.warn(`Failed to fetch stats for ${pokemonName}:`, error)
+  }
+  
+  return null
+}
+
 const data = {}
 export const fetchData = async () => {
   if (!browser) return
@@ -102,9 +126,9 @@ export const fetchData = async () => {
           hp: species.stats[0] || 0,
           atk: species.stats[1] || 0,
           def: species.stats[2] || 0,
-          spa: species.stats[3] || 0,
-          spd: species.stats[4] || 0,
-          spe: species.stats[5] || 0
+          spe: species.stats[3] || 0,
+          spa: species.stats[4] || 0,
+          spd: species.stats[5] || 0
         },
         total: species.stats ? species.stats.reduce((a, b) => a + b, 0) : 0,
         evos: evos,

@@ -63104,23 +63104,32 @@
       "img": "/leaders/gs-whitney",
       "pokemon": [
         {
-          "name": "wigglytuff",
-          "level": "-2",
+          "name": "tinkaton",
+          "level": "34",
           "moves": [
-            "drain-punch",
-            "fire-punch",
-            "lovely-kiss",
+            "gigaton-hammer",
+            "knock-off",
+            "encore",
             "play-rough"
           ],
-          "ability": "sheer-force",
+          "nature": "Jolly",
+          "ability": "mold-breaker",
           "abilities": [
-            "sheer-force"
+            "mold-breaker"
           ],
-          "held": "sitrus-berry"
+          "held": "sitrus-berry",
+          "evs": {
+            "atk": 252,
+            "hp": 4,
+            "spe": 252,
+            "def": 0,
+            "spa": 0,
+            "spd": 0
+          }
         },
         {
           "name": "miltank",
-          "level": "-2",
+          "level": "34",
           "moves": [
             "body-slam",
             "body-press",
@@ -63135,7 +63144,7 @@
         },
         {
           "name": "vigoroth",
-          "level": "-2",
+          "level": "34",
           "moves": [
             "bulk-up",
             "slack-off",
@@ -63150,7 +63159,7 @@
         },
         {
           "name": "indeedee-female",
-          "level": "-2",
+          "level": "34",
           "moves": [
             "psyshock",
             "hyper-voice",
@@ -63165,7 +63174,7 @@
         },
         {
           "name": "drampa",
-          "level": "-2",
+          "level": "34",
           "moves": [
             "dragon-breath",
             "roost",
@@ -63188,7 +63197,7 @@
       "pokemon": [
         {
           "name": "mimikyu-disguised",
-          "level": "-2",
+          "level": "44",
           "moves": [
             "play-rough",
             "shadow-claw",
@@ -63203,7 +63212,7 @@
         },
         {
           "name": "zoroark-hisui",
-          "level": "-2",
+          "level": "44",
           "moves": [
             "hyper-voice",
             "shadow-ball",
@@ -63219,7 +63228,7 @@
         },
         {
           "name": "dusknoir",
-          "level": "-2",
+          "level": "44",
           "moves": [
             "shadow-punch",
             "shadow-sneak",
@@ -63234,7 +63243,7 @@
         },
         {
           "name": "gengar",
-          "level": "-2",
+          "level": "44",
           "moves": [
             "shadow-ball",
             "sludge-wave",
@@ -63249,7 +63258,7 @@
         },
         {
           "name": "weavile",
-          "level": "-2",
+          "level": "44",
           "moves": [
             "triple-axel",
             "knock-off",
@@ -63264,7 +63273,7 @@
         },
         {
           "name": "typhlosion-hisui",
-          "level": "-2",
+          "level": "44",
           "moves": [
             "flamethrower",
             "infernal-parade",

@@ -18065,8 +18065,8 @@
         }
       },
       {
-        "name": "gengar",
-        "alias": null,
+        "name": "gengar-mega",
+        "alias": "gengar-mega",
         "level": "85",
         "moves": [
           {
@@ -18128,7 +18128,7 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "94",
+        "sprite": "10038",
         "types": [
           "ghost",
           "poison"
@@ -18136,10 +18136,10 @@
         "stats": {
           "hp": 60,
           "atk": 65,
-          "def": 60,
-          "spa": 130,
-          "spd": 75,
-          "spe": 110
+          "def": 80,
+          "spa": 170,
+          "spd": 95,
+          "spe": 130
         }
       }
     ]

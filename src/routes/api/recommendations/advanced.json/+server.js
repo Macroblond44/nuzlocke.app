@@ -46,7 +46,7 @@ import { applyAbilityModifiers, wouldSturdyPreventKO } from '$lib/utils/ability-
 import { isFirstTurnOnlyMove, canUseMoveInTurn } from '$lib/data/first-turn-only-moves.js';
 
 // ========== CONSTANTS ==========
-const MAX_BATTLE_TURNS = 6; // Limit to prevent exponential calculation complexity (16^7 = 2.1M combinations)
+const MAX_BATTLE_TURNS = 5; // Limit to prevent exponential calculation complexity (16^6 = 16.8M combinations)
 const DEFAULT_IVS = { hp: 31, atk: 31, def: 31, spa: 31, spd: 31, spe: 31 };
 const DEFAULT_EVS = { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 };
 

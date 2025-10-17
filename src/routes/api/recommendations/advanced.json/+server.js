@@ -589,7 +589,12 @@ function calculateWinnerRemainingHP(winner, winnerMovesUsed, winnerMoveOptions, 
   // Simply sum up the damage from loser moves (damage already calculated in battleSequence)
   for (let turn = 0; turn < loserMovesUsed.length; turn++) {
     const loserMove = loserMovesUsed[turn];
-    const damage = loserMove.damage || 0; // Use the pre-calculated damage from battleSequence
+    let damage = loserMove.damage || 0; // Use the pre-calculated damage from battleSequence
+    
+    // Handle case where damage might be an array (Parental Bond)
+    if (Array.isArray(damage)) {
+      damage = calculateMedianDamage(damage); // Use median damage for HP calculation
+    }
     
     totalDamageReceived += damage;
     
@@ -651,6 +656,73 @@ function calculateMoveSequenceKOProbability(gen, attacker, defender, movesUsed, 
 }
 
 /**
+ * Handle Parental Bond damage structure from @smogon/calc
+ * Parental Bond returns a different structure that needs to be flattened
+ */
+function handleParentalBondDamage(damageResult) {
+  // Check if this is a Parental Bond result (has multiple damage arrays)
+  if (damageResult.damage && Array.isArray(damageResult.damage)) {
+    // Check if it's a nested array structure (Parental Bond)
+    if (damageResult.damage.length > 0 && Array.isArray(damageResult.damage[0])) {
+      // Nested array structure - combine first and second hit damage
+      const firstHit = damageResult.damage[0] || [];
+      const secondHit = damageResult.damage[1] || [];
+      
+      const combinedDamage = [];
+      for (let i = 0; i < firstHit.length; i++) {
+        for (let j = 0; j < secondHit.length; j++) {
+          combinedDamage.push(firstHit[i] + secondHit[j]);
+        }
+      }
+      return combinedDamage;
+    } else {
+      // Normal case - single damage array
+      return damageResult.damage;
+    }
+  }
+  
+  // Handle single number case (some moves return just a number)
+  if (typeof damageResult.damage === 'number') {
+    return [damageResult.damage];
+  }
+  
+  // Handle Parental Bond case - combine first and second hit damage
+  if (damageResult.damage && typeof damageResult.damage === 'object' && !Array.isArray(damageResult.damage)) {
+    const firstHit = damageResult.damage.firstHit || damageResult.damage[0] || [];
+    const secondHit = damageResult.damage.secondHit || damageResult.damage[1] || [];
+    
+    // If we have arrays for both hits, combine them
+    if (Array.isArray(firstHit) && Array.isArray(secondHit)) {
+      const combinedDamage = [];
+      for (let i = 0; i < firstHit.length; i++) {
+        for (let j = 0; j < secondHit.length; j++) {
+          combinedDamage.push(firstHit[i] + secondHit[j]);
+        }
+      }
+      return combinedDamage;
+    }
+    
+    // If we have single numbers, add them
+    if (typeof firstHit === 'number' && typeof secondHit === 'number') {
+      const totalDamage = firstHit + secondHit;
+      return [totalDamage];
+    }
+    
+    // If we have one array and one number, combine them
+    if (Array.isArray(firstHit) && typeof secondHit === 'number') {
+      return firstHit.map(damage => damage + secondHit);
+    }
+    if (typeof firstHit === 'number' && Array.isArray(secondHit)) {
+      return secondHit.map(damage => firstHit + damage);
+    }
+  }
+  
+  // Fallback - return empty array if structure is unknown
+  console.warn('⚠️ Unknown damage structure from @smogon/calc:', typeof damageResult.damage, damageResult.damage);
+  return [];
+}
+
+/**
  * Calculate KO probability for a single move
  * 
  * Important: We need to manually check if the move can KO based on damage array,
@@ -669,7 +741,7 @@ function calculateSingleMoveKO(gen, attacker, defender, moveUsed, defenderHP) {
     defenderHP // Current HP = Max HP for single move calculation
   );
   
-  const damageArray = modifiedResult.damage;
+  const damageArray = handleParentalBondDamage(modifiedResult);
   
   if (!damageArray || damageArray.length === 0) {
     return createKOAnalysisResult(0, false, 'No damage', SINGLE_MOVE_THRESHOLD);
@@ -719,7 +791,7 @@ function calculateMultiMoveKO(gen, attacker, defender, movesUsed, defenderHP) {
       defenderHP // Current HP = Max HP for multi-move calculation
     );
     
-    const damageArray = modifiedResult.damage;
+    const damageArray = handleParentalBondDamage(modifiedResult);
     
     console.log(`     Turn ${index + 1}: ${moveUsed.move.padEnd(15)} | Damage range: ${Math.min(...damageArray)}-${Math.max(...damageArray)} HP (${damageArray.length} possible values)`);
     
@@ -867,12 +939,14 @@ function calculateAllMoves(gen, attacker, defender, movesList, isUserPokemon = f
         defender.calculatedStats?.hp || defender.rawStats?.hp || defender.stats?.hp || defender.hp || 0
       );
       
-      if (!modifiedResult.damage || (Array.isArray(modifiedResult.damage) && modifiedResult.damage.length === 0)) {
+      const damageArray = handleParentalBondDamage(modifiedResult);
+      
+      if (!damageArray || damageArray.length === 0) {
         continue; // Skip moves with no damage
       }
       
-      const damageRange = extractDamage(modifiedResult);
-      const medianDamage = calculateMedianDamage(modifiedResult.damage);
+      const damageRange = [Math.min(...damageArray), Math.max(...damageArray)];
+      const medianDamage = calculateMedianDamage(damageArray);
       const minDamage = damageRange[0];
       const maxDamage = damageRange[1];
       const priorityIndicator = move.priority > 0 ? ` [Priority +${move.priority}]` : '';

@@ -142222,7 +142222,7 @@
           101,
           112
         ],
-        "key": "Pumpkaboo",
+        "key": "Pumpkaboo-small",
         "dexID": 710,
         "order": 1,
         "ancestor": 818,
@@ -142417,7 +142417,7 @@
           113,
           126
         ],
-        "key": "Gourgeist",
+        "key": "Gourgeist-small",
         "dexID": 711,
         "order": 1,
         "ancestor": 818,
@@ -148046,7 +148046,7 @@
           101,
           112
         ],
-        "key": "Pumpkaboo",
+        "key": "Pumpkaboo-super",
         "dexID": 710,
         "order": 3,
         "ancestor": 853,
@@ -148223,7 +148223,7 @@
           101,
           112
         ],
-        "key": "Pumpkaboo",
+        "key": "Pumpkaboo-large",
         "dexID": 710,
         "order": 2,
         "ancestor": 854,
@@ -148608,7 +148608,7 @@
           113,
           126
         ],
-        "key": "Gourgeist",
+        "key": "Gourgeist-super",
         "dexID": 711,
         "order": 3,
         "ancestor": 853,
@@ -148816,7 +148816,7 @@
           113,
           126
         ],
-        "key": "Gourgeist",
+        "key": "Gourgeist-large",
         "dexID": 711,
         "order": 2,
         "ancestor": 854,

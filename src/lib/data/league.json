@@ -2957,7 +2957,7 @@
           "held": "life-orb"
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "61",
           "moves": [
             "head-smash",
@@ -3053,7 +3053,7 @@
           "held": "life-orb"
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "57",
           "moves": [
             "rock-slide",
@@ -17306,7 +17306,7 @@
       "speciality": "ice",
       "pokemon": [
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "55",
           "moves": [
             "freeze-dry",
@@ -17933,7 +17933,7 @@
           ]
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "74",
           "moves": [
             "stone-surge",
@@ -24891,7 +24891,7 @@
           ]
         },
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "50",
           "moves": [
             "light-screen",
@@ -24918,7 +24918,7 @@
           ]
         },
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "52",
           "moves": [
             "shadow-ball",
@@ -25152,7 +25152,7 @@
           ]
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "76",
           "moves": [
             "thunder",
@@ -26124,7 +26124,7 @@
           "held": "lum-berry"
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "38",
           "moves": [
             "head-smash",
@@ -26759,7 +26759,7 @@
       "img": "/leaders/rs-matt",
       "pokemon": [
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "66",
           "moves": [
             "explosion",
@@ -29098,7 +29098,7 @@
       "img": "/leaders/rs-glacia",
       "pokemon": [
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "100",
           "moves": [
             "weather-ball",
@@ -30119,7 +30119,7 @@
           "held": "focus-sash"
         },
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "93",
           "moves": [
             "blizzard",
@@ -32062,7 +32062,7 @@
           "held": "life-orb"
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "48",
           "moves": [
             "iron-head",
@@ -32097,7 +32097,7 @@
           "held": "focus-sash"
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "95",
           "moves": [
             "stone-edge",
@@ -35322,7 +35322,7 @@
           "held": "leftovers"
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "42",
           "moves": [
             "rock-slide",
@@ -35606,7 +35606,7 @@
       "speciality": "steel",
       "pokemon": [
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "59",
           "moves": [
             "substitute",
@@ -38149,7 +38149,7 @@
           ]
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "61",
           "moves": [
             "iron-defense",
@@ -38944,7 +38944,7 @@
           ]
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "51",
           "moves": [
             "brick-break",
@@ -39929,7 +39929,7 @@
           "held": "sugar-donut"
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "67",
           "moves": [
             "focus-punch",
@@ -40570,7 +40570,7 @@
           "held": "lum-berry"
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "68",
           "moves": [
             "focus-punch",
@@ -51065,7 +51065,7 @@
           "starter": "water"
         },
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "65",
           "moves": [
             "rock-blast",
@@ -51340,7 +51340,7 @@
           "starter": "water"
         },
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "85",
           "moves": [
             "rock-blast",
@@ -53142,7 +53142,7 @@
           "held": "spell-tag"
         },
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "70",
           "moves": [
             "explosion",
@@ -54227,7 +54227,7 @@
           "held": "lum-berry"
         },
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "95",
           "moves": [
             "blizzard",
@@ -54241,7 +54241,7 @@
           "held": "hard-stone"
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "95",
           "moves": [
             "metal-claw",
@@ -55194,7 +55194,7 @@
           "held": "lum-berry"
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "100",
           "moves": [
             "iron-tail",
@@ -57537,7 +57537,7 @@
       },
       "pokemon": [
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "52",
           "moves": [
             "light-screen",
@@ -57565,7 +57565,7 @@
           ]
         },
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "52",
           "moves": [
             "protect",
@@ -57727,7 +57727,7 @@
           ]
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "57",
           "moves": [
             "stone-edge",
@@ -60152,7 +60152,7 @@
           "nature": "Jolly"
         },
         {
-          "name": "manectric",
+          "name": "manectric-mega",
           "level": "34",
           "moves": [
             "charge-beam",
@@ -60222,7 +60222,7 @@
           }
         },
         {
-          "name": "venusaur",
+          "name": "venusaur-mega",
           "level": "44",
           "moves": [
             "giga-drain",
@@ -60436,7 +60436,7 @@
           }
         },
         {
-          "name": "gardevoir",
+          "name": "gardevoir-mega",
           "level": "59",
           "moves": [
             "hyper-voice",
@@ -60574,7 +60574,7 @@
           "held": "booster-energy"
         },
         {
-          "name": "toxtricity-low-key",
+          "name": "toxtricity-low-key-mega",
           "level": "68",
           "moves": [
             "boomburst",
@@ -61004,7 +61004,7 @@
           "sprite": "rotom-frost"
         },
         {
-          "name": "kangaskhan",
+          "name": "kangaskhan-mega",
           "level": "46",
           "moves": [
             "crunch",
@@ -61159,7 +61159,7 @@
           "held": "leftovers"
         },
         {
-          "name": "houndoom",
+          "name": "houndoom-mega",
           "level": "55",
           "moves": [
             "scorching-sands",
@@ -61222,7 +61222,7 @@
           }
         },
         {
-          "name": "mawile",
+          "name": "mawile-mega",
           "level": "55",
           "moves": [
             "iron-head",
@@ -61308,7 +61308,7 @@
           "held": "lum-berry"
         },
         {
-          "name": "houndoom",
+          "name": "houndoom-mega",
           "level": "79",
           "moves": [
             "sucker-punch",
@@ -61360,7 +61360,7 @@
           "held": "focus-sash"
         },
         {
-          "name": "kangaskhan",
+          "name": "kangaskhan-mega",
           "level": "56",
           "moves": [
             "crunch",
@@ -61484,7 +61484,7 @@
           }
         },
         {
-          "name": "mawile",
+          "name": "mawile-mega",
           "level": "79",
           "moves": [
             "play-rough",
@@ -62011,7 +62011,7 @@
           "starter": "fire"
         },
         {
-          "name": "blastoise",
+          "name": "blastoise-mega",
           "level": "55",
           "moves": [
             "aura-sphere",
@@ -62075,7 +62075,7 @@
           "starter": "water"
         },
         {
-          "name": "venusaur",
+          "name": "venusaur-mega",
           "level": "55",
           "moves": [
             "sludge-bomb",
@@ -62346,7 +62346,7 @@
           "starter": "grass"
         },
         {
-          "name": "blastoise",
+          "name": "blastoise-mega",
           "level": "81",
           "moves": [
             "ice-beam",
@@ -62362,7 +62362,7 @@
           "starter": "fire"
         },
         {
-          "name": "venusaur",
+          "name": "venusaur-mega",
           "level": "81",
           "moves": [
             "sleep-powder",
@@ -62509,7 +62509,7 @@
           }
         },
         {
-          "name": "blaziken",
+          "name": "blaziken-mega",
           "level": "73",
           "moves": [
             "flare-blitz",
@@ -62734,7 +62734,7 @@
           }
         },
         {
-          "name": "sceptile",
+          "name": "sceptile-mega",
           "level": "63",
           "moves": [
             "dual-chop",
@@ -62859,7 +62859,7 @@
           }
         },
         {
-          "name": "sceptile",
+          "name": "sceptile-mega",
           "level": "82",
           "moves": [
             "bullet-seed",
@@ -63037,7 +63037,7 @@
           "held": "leftovers"
         },
         {
-          "name": "scizor",
+          "name": "scizor-mega",
           "level": "25",
           "moves": [
             "bullet-punch",
@@ -63327,7 +63327,7 @@
           }
         },
         {
-          "name": "gengar",
+          "name": "gengar-mega",
           "level": "44",
           "moves": [
             "sludge-wave",
@@ -63503,7 +63503,7 @@
           }
         },
         {
-          "name": "gallade",
+          "name": "gallade-mega",
           "level": "59",
           "moves": [
             "bulk-up",
@@ -63655,7 +63655,7 @@
           }
         },
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "73",
           "moves": [
             "fake-out",
@@ -63807,7 +63807,7 @@
           }
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "73",
           "moves": [
             "heavy-slam",
@@ -63959,7 +63959,7 @@
           }
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "73",
           "moves": [
             "heavy-slam",
@@ -64111,7 +64111,7 @@
           }
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "73",
           "moves": [
             "heavy-slam",
@@ -64219,7 +64219,7 @@
           "held": "soft-sand"
         },
         {
-          "name": "aerodactyl",
+          "name": "aerodactyl-mega",
           "level": "-2",
           "moves": [
             "stone-edge",
@@ -64316,7 +64316,7 @@
           "held": "scope-lens"
         },
         {
-          "name": "gyarados",
+          "name": "gyarados-mega",
           "level": "-2",
           "moves": [
             "dragon-dance",
@@ -64415,7 +64415,7 @@
           "sprite": "rotom-mow"
         },
         {
-          "name": "manectric",
+          "name": "manectric-mega",
           "level": "-2",
           "moves": [
             "volt-switch",
@@ -64512,7 +64512,7 @@
           "held": "focus-sash"
         },
         {
-          "name": "venusaur",
+          "name": "venusaur-mega",
           "level": "-2",
           "moves": [
             "giga-drain",
@@ -64564,7 +64564,7 @@
           "held": "damp-rock"
         },
         {
-          "name": "swampert",
+          "name": "swampert-mega",
           "level": "85",
           "moves": [
             "power-up-punch",
@@ -64711,7 +64711,7 @@
           "held": "assault-vest"
         },
         {
-          "name": "abomasnow",
+          "name": "abomasnow-mega",
           "level": "85",
           "moves": [
             "blizzard",
@@ -64809,7 +64809,7 @@
           "held": "throat-spray"
         },
         {
-          "name": "lucario",
+          "name": "lucario-mega",
           "level": "85",
           "moves": [
             "bullet-punch",
@@ -64906,7 +64906,7 @@
           "held": "assault-vest"
         },
         {
-          "name": "lucario",
+          "name": "lucario-mega",
           "level": "85",
           "moves": [
             "nasty-plot",
@@ -65100,7 +65100,7 @@
           "held": "leftovers"
         },
         {
-          "name": "gengar",
+          "name": "gengar-mega",
           "level": "85",
           "moves": [
             "sludge-wave",
@@ -65198,7 +65198,7 @@
           "sprite": "dialga-origin"
         },
         {
-          "name": "salamence",
+          "name": "salamence-mega",
           "level": "85",
           "moves": [
             "dragon-dance",
@@ -65296,7 +65296,7 @@
           "sprite": "dialga-origin"
         },
         {
-          "name": "salamence",
+          "name": "salamence-mega",
           "level": "85",
           "moves": [
             "dragon-dance",
@@ -65342,7 +65342,7 @@
           }
         },
         {
-          "name": "metagross",
+          "name": "metagross-mega",
           "level": "85",
           "moves": [
             "fire-punch",
@@ -66255,7 +66255,7 @@
           "held": "power-herb"
         },
         {
-          "name": "duraludon",
+          "name": "duraludon-mega",
           "level": "81",
           "moves": [
             "draco-meteor",
@@ -66781,7 +66781,7 @@
           "held": "focus-sash"
         },
         {
-          "name": "scizor",
+          "name": "scizor-mega",
           "level": "+0",
           "moves": [
             "bullet-punch",
@@ -66939,7 +66939,7 @@
           "held": "leftovers"
         },
         {
-          "name": "altaria",
+          "name": "altaria-mega",
           "level": "+0",
           "moves": [
             "calm-mind",
@@ -67037,7 +67037,7 @@
           "held": "life-orb"
         },
         {
-          "name": "gengar",
+          "name": "gengar-mega",
           "level": "+0",
           "moves": [
             "sludge-wave",
@@ -67135,7 +67135,7 @@
           "held": "rusted-shield"
         },
         {
-          "name": "gallade",
+          "name": "gallade-mega",
           "level": "+0",
           "moves": [
             "bulk-up",
@@ -67234,7 +67234,7 @@
           "held": "life-orb"
         },
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "+0",
           "moves": [
             "fake-out",
@@ -67335,7 +67335,7 @@
           "held": "life-orb"
         },
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "+0",
           "moves": [
             "fake-out",
@@ -67435,7 +67435,7 @@
           "held": "life-orb"
         },
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "+0",
           "moves": [
             "fake-out",
@@ -67536,7 +67536,7 @@
           "held": "assault-vest"
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "+0",
           "moves": [
             "curse",
@@ -68391,7 +68391,7 @@
           "starter": "water"
         },
         {
-          "name": "swampert",
+          "name": "swampert-mega",
           "level": "+0",
           "moves": [
             "waterfall",
@@ -68741,7 +68741,7 @@
           "held": "flyinium-z--held"
         },
         {
-          "name": "kangaskhan",
+          "name": "kangaskhan-mega",
           "level": "47",
           "moves": [
             "power-up-punch",
@@ -68834,7 +68834,7 @@
           "held": "ghostium-z--held"
         },
         {
-          "name": "mawile",
+          "name": "mawile-mega",
           "level": "55",
           "moves": [
             "play-rough",
@@ -68850,7 +68850,7 @@
           "held": "mawilite"
         },
         {
-          "name": "houndoom",
+          "name": "houndoom-mega",
           "level": "55",
           "moves": [
             "pursuit",
@@ -68958,7 +68958,7 @@
           }
         },
         {
-          "name": "garchomp",
+          "name": "garchomp-mega",
           "level": "57",
           "moves": [
             "swords-dance",
@@ -69036,7 +69036,7 @@
           "sprite": "landorus-therian"
         },
         {
-          "name": "houndoom",
+          "name": "houndoom-mega",
           "level": "+0",
           "moves": [
             "dark-hole",
@@ -69119,7 +69119,7 @@
           "held": "coba-berry"
         },
         {
-          "name": "mawile",
+          "name": "mawile-mega",
           "level": "+0",
           "moves": [
             "sucker-punch",
@@ -70433,7 +70433,7 @@
       "img": "/leaders/rs-may",
       "pokemon": [
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "73",
           "moves": [
             "stone-edge",
@@ -73008,7 +73008,7 @@
           "held": "assault-vest"
         },
         {
-          "name": "toxtricity",
+          "name": "toxtricity-mega",
           "level": "60",
           "moves": [
             "thunder-raid",
@@ -73152,7 +73152,7 @@
           "held": "magical-seed"
         },
         {
-          "name": "medicham",
+          "name": "medicham-mega",
           "level": "69",
           "moves": [
             "signal-beam",
@@ -73266,7 +73266,7 @@
           "held": "oricorio-crest"
         },
         {
-          "name": "pidgeot",
+          "name": "pidgeot-mega",
           "level": "77",
           "moves": [
             "hurricane",
@@ -73485,7 +73485,7 @@
       "img": "/path/",
       "pokemon": [
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "85",
           "moves": [
             "blizzard",
@@ -74519,7 +74519,7 @@
           "held": "sitrus-berry"
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "52",
           "moves": [
             "head-smash",
@@ -83065,7 +83065,7 @@
           "held": "leftovers"
         },
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "74",
           "moves": [
             "double-edge",
@@ -83207,7 +83207,7 @@
           "held": "smooth-rock"
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "77",
           "moves": [
             "head-smash",
@@ -84953,7 +84953,7 @@
       "img": "/leaders/rs-glacia",
       "pokemon": [
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "50",
           "moves": [
             "hail",
@@ -84995,7 +84995,7 @@
           ]
         },
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "52",
           "moves": [
             "hail",
@@ -85137,7 +85137,7 @@
           ]
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "56",
           "moves": [
             "earthquake",
@@ -88227,7 +88227,7 @@
           ]
         },
         {
-          "name": "glalie",
+          "name": "glalie-mega",
           "level": "42",
           "moves": [
             "spikes",
@@ -95746,7 +95746,7 @@
           ]
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "70",
           "moves": [
             "body-press",
@@ -95814,7 +95814,7 @@
           ]
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "74",
           "moves": [
             "body-press",
@@ -97783,7 +97783,7 @@
           "starter": "grass"
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "46",
           "moves": [
             "iron-head",
@@ -97867,7 +97867,7 @@
           "starter": "fire"
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "63",
           "moves": [
             "iron-tail",
@@ -98227,7 +98227,7 @@
           "starter": "fire"
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "46",
           "moves": [
             "iron-head",
@@ -98413,7 +98413,7 @@
           "starter": "fire"
         },
         {
-          "name": "aggron",
+          "name": "aggron-mega",
           "level": "63",
           "moves": [
             "iron-head",

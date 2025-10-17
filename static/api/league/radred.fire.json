@@ -943,8 +943,8 @@
         }
       },
       {
-        "name": "manectric",
-        "alias": null,
+        "name": "manectric-mega",
+        "alias": "manectric-mega",
         "level": "34",
         "moves": [
           {
@@ -1006,17 +1006,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "310",
+        "sprite": "10055",
         "types": [
           "electric"
         ],
         "stats": {
           "hp": 70,
           "atk": 75,
-          "def": 60,
-          "spa": 105,
-          "spd": 60,
-          "spe": 105
+          "def": 80,
+          "spa": 135,
+          "spd": 80,
+          "spe": 135
         }
       }
     ]
@@ -1182,8 +1182,8 @@
         }
       },
       {
-        "name": "venusaur",
-        "alias": null,
+        "name": "venusaur-mega",
+        "alias": "venusaur-mega",
         "level": "44",
         "moves": [
           {
@@ -1245,17 +1245,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "3",
+        "sprite": "10033",
         "types": [
           "grass",
           "poison"
         ],
         "stats": {
           "hp": 80,
-          "atk": 82,
-          "def": 83,
-          "spa": 100,
-          "spd": 100,
+          "atk": 100,
+          "def": 123,
+          "spa": 122,
+          "spd": 120,
           "spe": 80
         }
       },
@@ -1811,8 +1811,8 @@
         }
       },
       {
-        "name": "gardevoir",
-        "alias": null,
+        "name": "gardevoir-mega",
+        "alias": "gardevoir-mega",
         "level": "59",
         "moves": [
           {
@@ -1874,18 +1874,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "282",
+        "sprite": "10051",
         "types": [
           "psychic",
           "fairy"
         ],
         "stats": {
           "hp": 68,
-          "atk": 65,
+          "atk": 85,
           "def": 65,
-          "spa": 125,
-          "spd": 115,
-          "spe": 80
+          "spa": 165,
+          "spd": 135,
+          "spe": 100
         }
       }
     ]
@@ -2253,8 +2253,8 @@
         }
       },
       {
-        "name": "toxtricity-low-key",
-        "alias": "toxtricity-low-key",
+        "name": "toxtricity-low-key-mega",
+        "alias": null,
         "level": "68",
         "moves": [
           {
@@ -2316,18 +2316,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "10184",
+        "sprite": "toxtricity-low-key-mega",
         "types": [
-          "electric",
-          "poison"
+          "normal"
         ],
         "stats": {
-          "hp": 75,
-          "atk": 98,
-          "def": 70,
-          "spa": 114,
-          "spd": 70,
-          "spe": 75
+          "hp": 100,
+          "atk": 100,
+          "def": 100,
+          "spa": 100,
+          "spd": 100,
+          "spe": 100
         }
       }
     ]
@@ -3839,8 +3838,8 @@
         }
       },
       {
-        "name": "kangaskhan",
-        "alias": null,
+        "name": "kangaskhan-mega",
+        "alias": "kangaskhan-mega",
         "level": "46",
         "moves": [
           {
@@ -3902,17 +3901,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "115",
+        "sprite": "10039",
         "types": [
           "normal"
         ],
         "stats": {
           "hp": 105,
-          "atk": 95,
-          "def": 80,
-          "spa": 40,
-          "spd": 80,
-          "spe": 90
+          "atk": 125,
+          "def": 100,
+          "spa": 60,
+          "spd": 100,
+          "spe": 100
         }
       }
     ]
@@ -4454,8 +4453,8 @@
         }
       },
       {
-        "name": "houndoom",
-        "alias": null,
+        "name": "houndoom-mega",
+        "alias": "houndoom-mega",
         "level": "55",
         "moves": [
           {
@@ -4517,18 +4516,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "229",
+        "sprite": "10048",
         "types": [
           "dark",
           "fire"
         ],
         "stats": {
           "hp": 75,
-          "atk": 90,
-          "def": 50,
-          "spa": 110,
-          "spd": 80,
-          "spe": 95
+          "atk": 110,
+          "def": 90,
+          "spa": 140,
+          "spd": 90,
+          "spe": 115
         }
       },
       {
@@ -4688,8 +4687,8 @@
         }
       },
       {
-        "name": "mawile",
-        "alias": null,
+        "name": "mawile-mega",
+        "alias": "mawile-mega",
         "level": "55",
         "moves": [
           {
@@ -4751,17 +4750,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "303",
+        "sprite": "10052",
         "types": [
           "steel",
           "fairy"
         ],
         "stats": {
           "hp": 50,
-          "atk": 85,
-          "def": 85,
+          "atk": 105,
+          "def": 125,
           "spa": 55,
-          "spd": 55,
+          "spd": 95,
           "spe": 50
         }
       }
@@ -5007,8 +5006,8 @@
         }
       },
       {
-        "name": "houndoom",
-        "alias": null,
+        "name": "houndoom-mega",
+        "alias": "houndoom-mega",
         "level": "79",
         "moves": [
           {
@@ -5070,18 +5069,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "229",
+        "sprite": "10048",
         "types": [
           "dark",
           "fire"
         ],
         "stats": {
           "hp": 75,
-          "atk": 90,
-          "def": 50,
-          "spa": 110,
-          "spd": 80,
-          "spe": 95
+          "atk": 110,
+          "def": 90,
+          "spa": 140,
+          "spd": 90,
+          "spe": 115
         }
       }
     ]
@@ -5247,8 +5246,8 @@
         }
       },
       {
-        "name": "kangaskhan",
-        "alias": null,
+        "name": "kangaskhan-mega",
+        "alias": "kangaskhan-mega",
         "level": "56",
         "moves": [
           {
@@ -5310,17 +5309,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "115",
+        "sprite": "10039",
         "types": [
           "normal"
         ],
         "stats": {
           "hp": 105,
-          "atk": 95,
-          "def": 80,
-          "spa": 40,
-          "spd": 80,
-          "spe": 90
+          "atk": 125,
+          "def": 100,
+          "spa": 60,
+          "spd": 100,
+          "spe": 100
         }
       },
       {
@@ -5720,8 +5719,8 @@
         }
       },
       {
-        "name": "mawile",
-        "alias": null,
+        "name": "mawile-mega",
+        "alias": "mawile-mega",
         "level": "79",
         "moves": [
           {
@@ -5783,17 +5782,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "303",
+        "sprite": "10052",
         "types": [
           "steel",
           "fairy"
         ],
         "stats": {
           "hp": 50,
-          "atk": 85,
-          "def": 85,
+          "atk": 105,
+          "def": 125,
           "spa": 55,
-          "spd": 55,
+          "spd": 95,
           "spe": 50
         }
       }
@@ -7158,8 +7157,8 @@
         }
       },
       {
-        "name": "blastoise",
-        "alias": null,
+        "name": "blastoise-mega",
+        "alias": "blastoise-mega",
         "level": "55",
         "moves": [
           {
@@ -7221,16 +7220,16 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "9",
+        "sprite": "10036",
         "types": [
           "water"
         ],
         "stats": {
           "hp": 79,
-          "atk": 83,
-          "def": 100,
-          "spa": 85,
-          "spd": 105,
+          "atk": 103,
+          "def": 120,
+          "spa": 135,
+          "spd": 115,
           "spe": 78
         }
       }
@@ -7630,8 +7629,8 @@
         }
       },
       {
-        "name": "blastoise",
-        "alias": null,
+        "name": "blastoise-mega",
+        "alias": "blastoise-mega",
         "level": "81",
         "moves": [
           {
@@ -7693,16 +7692,16 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "9",
+        "sprite": "10036",
         "types": [
           "water"
         ],
         "stats": {
           "hp": 79,
-          "atk": 83,
-          "def": 100,
-          "spa": 85,
-          "spd": 105,
+          "atk": 103,
+          "def": 120,
+          "spa": 135,
+          "spd": 115,
           "spe": 78
         }
       }
@@ -8107,8 +8106,8 @@
         }
       },
       {
-        "name": "blaziken",
-        "alias": null,
+        "name": "blaziken-mega",
+        "alias": "blaziken-mega",
         "level": "73",
         "moves": [
           {
@@ -8170,18 +8169,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "257",
+        "sprite": "10050",
         "types": [
           "fire",
           "fighting"
         ],
         "stats": {
           "hp": 80,
-          "atk": 120,
-          "def": 70,
-          "spa": 110,
-          "spd": 70,
-          "spe": 80
+          "atk": 160,
+          "def": 80,
+          "spa": 130,
+          "spd": 80,
+          "spe": 100
         }
       }
     ]
@@ -9043,8 +9042,8 @@
         }
       },
       {
-        "name": "sceptile",
-        "alias": null,
+        "name": "sceptile-mega",
+        "alias": "sceptile-mega",
         "level": "63",
         "moves": [
           {
@@ -9106,17 +9105,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "254",
+        "sprite": "10065",
         "types": [
-          "grass"
+          "grass",
+          "dragon"
         ],
         "stats": {
           "hp": 70,
-          "atk": 105,
-          "def": 65,
-          "spa": 85,
+          "atk": 135,
+          "def": 75,
+          "spa": 110,
           "spd": 85,
-          "spe": 120
+          "spe": 145
         }
       }
     ]
@@ -9515,8 +9515,8 @@
         }
       },
       {
-        "name": "sceptile",
-        "alias": null,
+        "name": "sceptile-mega",
+        "alias": "sceptile-mega",
         "level": "82",
         "moves": [
           {
@@ -9578,17 +9578,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "254",
+        "sprite": "10065",
         "types": [
-          "grass"
+          "grass",
+          "dragon"
         ],
         "stats": {
           "hp": 70,
-          "atk": 105,
-          "def": 65,
-          "spa": 85,
+          "atk": 135,
+          "def": 75,
+          "spa": 110,
           "spd": 85,
-          "spe": 120
+          "spe": 145
         }
       }
     ]
@@ -10314,8 +10315,8 @@
         }
       },
       {
-        "name": "scizor",
-        "alias": null,
+        "name": "scizor-mega",
+        "alias": "scizor-mega",
         "level": "25",
         "moves": [
           {
@@ -10377,18 +10378,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "212",
+        "sprite": "10046",
         "types": [
           "bug",
           "steel"
         ],
         "stats": {
           "hp": 70,
-          "atk": 130,
-          "def": 100,
-          "spa": 55,
-          "spd": 80,
-          "spe": 65
+          "atk": 150,
+          "def": 140,
+          "spa": 65,
+          "spd": 100,
+          "spe": 75
         }
       },
       {
@@ -11338,8 +11339,8 @@
         }
       },
       {
-        "name": "gengar",
-        "alias": null,
+        "name": "gengar-mega",
+        "alias": "gengar-mega",
         "level": "44",
         "moves": [
           {
@@ -11401,7 +11402,7 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "94",
+        "sprite": "10038",
         "types": [
           "ghost",
           "poison"
@@ -11409,10 +11410,10 @@
         "stats": {
           "hp": 60,
           "atk": 65,
-          "def": 60,
-          "spa": 130,
-          "spd": 75,
-          "spe": 110
+          "def": 80,
+          "spa": 170,
+          "spd": 95,
+          "spe": 130
         }
       },
       {
@@ -11890,8 +11891,8 @@
         }
       },
       {
-        "name": "gallade",
-        "alias": null,
+        "name": "gallade-mega",
+        "alias": "gallade-mega",
         "level": "59",
         "moves": [
           {
@@ -11953,18 +11954,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "475",
+        "sprite": "10068",
         "types": [
           "psychic",
           "fighting"
         ],
         "stats": {
           "hp": 68,
-          "atk": 125,
-          "def": 65,
+          "atk": 165,
+          "def": 95,
           "spa": 65,
           "spd": 115,
-          "spe": 80
+          "spe": 110
         }
       }
     ]
@@ -12365,8 +12366,8 @@
         }
       },
       {
-        "name": "glalie",
-        "alias": null,
+        "name": "glalie-mega",
+        "alias": "glalie-mega",
         "level": "73",
         "moves": [
           {
@@ -12428,17 +12429,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "362",
+        "sprite": "10074",
         "types": [
           "ice"
         ],
         "stats": {
           "hp": 80,
-          "atk": 80,
+          "atk": 135,
           "def": 80,
-          "spa": 80,
+          "spa": 105,
           "spd": 80,
-          "spe": 80
+          "spe": 100
         }
       }
     ]
@@ -12837,8 +12838,8 @@
         }
       },
       {
-        "name": "aggron",
-        "alias": null,
+        "name": "aggron-mega",
+        "alias": "aggron-mega",
         "level": "73",
         "moves": [
           {
@@ -12900,17 +12901,16 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "306",
+        "sprite": "10053",
         "types": [
-          "steel",
-          "rock"
+          "steel"
         ],
         "stats": {
           "hp": 70,
-          "atk": 110,
-          "def": 180,
+          "atk": 140,
+          "def": 230,
           "spa": 60,
-          "spd": 60,
+          "spd": 80,
           "spe": 50
         }
       }
@@ -13308,8 +13308,8 @@
         }
       },
       {
-        "name": "aggron",
-        "alias": null,
+        "name": "aggron-mega",
+        "alias": "aggron-mega",
         "level": "73",
         "moves": [
           {
@@ -13371,17 +13371,16 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "306",
+        "sprite": "10053",
         "types": [
-          "steel",
-          "rock"
+          "steel"
         ],
         "stats": {
           "hp": 70,
-          "atk": 110,
-          "def": 180,
+          "atk": 140,
+          "def": 230,
           "spa": 60,
-          "spd": 60,
+          "spd": 80,
           "spe": 50
         }
       }
@@ -13781,8 +13780,8 @@
         }
       },
       {
-        "name": "aggron",
-        "alias": null,
+        "name": "aggron-mega",
+        "alias": "aggron-mega",
         "level": "73",
         "moves": [
           {
@@ -13844,17 +13843,16 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "306",
+        "sprite": "10053",
         "types": [
-          "steel",
-          "rock"
+          "steel"
         ],
         "stats": {
           "hp": 70,
-          "atk": 110,
-          "def": 180,
+          "atk": 140,
+          "def": 230,
           "spa": 60,
-          "spd": 60,
+          "spd": 80,
           "spe": 50
         }
       }
@@ -14253,8 +14251,8 @@
         }
       },
       {
-        "name": "aerodactyl",
-        "alias": null,
+        "name": "aerodactyl-mega",
+        "alias": "aerodactyl-mega",
         "level": "-2",
         "moves": [
           {
@@ -14316,18 +14314,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "142",
+        "sprite": "10042",
         "types": [
           "rock",
           "flying"
         ],
         "stats": {
           "hp": 80,
-          "atk": 105,
-          "def": 65,
-          "spa": 60,
-          "spd": 75,
-          "spe": 130
+          "atk": 135,
+          "def": 85,
+          "spa": 70,
+          "spd": 95,
+          "spe": 150
         }
       }
     ]
@@ -14725,8 +14723,8 @@
         }
       },
       {
-        "name": "gyarados",
-        "alias": null,
+        "name": "gyarados-mega",
+        "alias": "gyarados-mega",
         "level": "-2",
         "moves": [
           {
@@ -14788,17 +14786,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "130",
+        "sprite": "10041",
         "types": [
           "water",
-          "flying"
+          "dark"
         ],
         "stats": {
           "hp": 95,
-          "atk": 125,
-          "def": 79,
-          "spa": 60,
-          "spd": 100,
+          "atk": 155,
+          "def": 109,
+          "spa": 70,
+          "spd": 130,
           "spe": 81
         }
       }
@@ -15199,8 +15197,8 @@
         }
       },
       {
-        "name": "manectric",
-        "alias": null,
+        "name": "manectric-mega",
+        "alias": "manectric-mega",
         "level": "-2",
         "moves": [
           {
@@ -15262,17 +15260,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "310",
+        "sprite": "10055",
         "types": [
           "electric"
         ],
         "stats": {
           "hp": 70,
           "atk": 75,
-          "def": 60,
-          "spa": 105,
-          "spd": 60,
-          "spe": 105
+          "def": 80,
+          "spa": 135,
+          "spd": 80,
+          "spe": 135
         }
       }
     ]
@@ -15669,8 +15667,8 @@
         }
       },
       {
-        "name": "venusaur",
-        "alias": null,
+        "name": "venusaur-mega",
+        "alias": "venusaur-mega",
         "level": "-2",
         "moves": [
           {
@@ -15732,17 +15730,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "3",
+        "sprite": "10033",
         "types": [
           "grass",
           "poison"
         ],
         "stats": {
           "hp": 80,
-          "atk": 82,
-          "def": 83,
-          "spa": 100,
-          "spd": 100,
+          "atk": 100,
+          "def": 123,
+          "spa": 122,
+          "spd": 120,
           "spe": 80
         }
       }
@@ -15909,8 +15907,8 @@
         }
       },
       {
-        "name": "swampert",
-        "alias": null,
+        "name": "swampert-mega",
+        "alias": "swampert-mega",
         "level": "85",
         "moves": [
           {
@@ -15972,18 +15970,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "260",
+        "sprite": "10064",
         "types": [
           "water",
           "ground"
         ],
         "stats": {
           "hp": 100,
-          "atk": 110,
-          "def": 90,
-          "spa": 85,
-          "spd": 90,
-          "spe": 60
+          "atk": 150,
+          "def": 110,
+          "spa": 95,
+          "spd": 110,
+          "spe": 70
         }
       },
       {
@@ -16616,8 +16614,8 @@
         }
       },
       {
-        "name": "abomasnow",
-        "alias": null,
+        "name": "abomasnow-mega",
+        "alias": "abomasnow-mega",
         "level": "85",
         "moves": [
           {
@@ -16679,17 +16677,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "460",
+        "sprite": "10060",
         "types": [
           "grass",
           "ice"
         ],
         "stats": {
           "hp": 90,
-          "atk": 92,
-          "def": 75,
-          "spa": 92,
-          "spd": 85,
+          "atk": 132,
+          "def": 105,
+          "spa": 132,
+          "spd": 105,
           "spe": 60
         }
       }
@@ -17090,8 +17088,8 @@
         }
       },
       {
-        "name": "lucario",
-        "alias": null,
+        "name": "lucario-mega",
+        "alias": "lucario-mega",
         "level": "85",
         "moves": [
           {
@@ -17153,18 +17151,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "448",
+        "sprite": "10059",
         "types": [
           "fighting",
           "steel"
         ],
         "stats": {
           "hp": 70,
-          "atk": 110,
-          "def": 70,
-          "spa": 115,
+          "atk": 145,
+          "def": 88,
+          "spa": 140,
           "spd": 70,
-          "spe": 90
+          "spe": 112
         }
       }
     ]
@@ -17564,8 +17562,8 @@
         }
       },
       {
-        "name": "lucario",
-        "alias": null,
+        "name": "lucario-mega",
+        "alias": "lucario-mega",
         "level": "85",
         "moves": [
           {
@@ -17627,18 +17625,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "448",
+        "sprite": "10059",
         "types": [
           "fighting",
           "steel"
         ],
         "stats": {
           "hp": 70,
-          "atk": 110,
-          "def": 70,
-          "spa": 115,
+          "atk": 145,
+          "def": 88,
+          "spa": 140,
           "spd": 70,
-          "spe": 90
+          "spe": 112
         }
       }
     ]
@@ -18510,8 +18508,8 @@
         }
       },
       {
-        "name": "gengar",
-        "alias": null,
+        "name": "gengar-mega",
+        "alias": "gengar-mega",
         "level": "85",
         "moves": [
           {
@@ -18573,7 +18571,7 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "94",
+        "sprite": "10038",
         "types": [
           "ghost",
           "poison"
@@ -18581,10 +18579,10 @@
         "stats": {
           "hp": 60,
           "atk": 65,
-          "def": 60,
-          "spa": 130,
-          "spd": 75,
-          "spe": 110
+          "def": 80,
+          "spa": 170,
+          "spd": 95,
+          "spe": 130
         }
       }
     ]
@@ -18984,8 +18982,8 @@
         }
       },
       {
-        "name": "salamence",
-        "alias": null,
+        "name": "salamence-mega",
+        "alias": "salamence-mega",
         "level": "85",
         "moves": [
           {
@@ -19047,18 +19045,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "373",
+        "sprite": "10089",
         "types": [
           "dragon",
           "flying"
         ],
         "stats": {
           "hp": 95,
-          "atk": 135,
-          "def": 80,
-          "spa": 110,
-          "spd": 80,
-          "spe": 100
+          "atk": 145,
+          "def": 130,
+          "spa": 120,
+          "spd": 90,
+          "spe": 120
         }
       }
     ]
@@ -19458,8 +19456,8 @@
         }
       },
       {
-        "name": "salamence",
-        "alias": null,
+        "name": "salamence-mega",
+        "alias": "salamence-mega",
         "level": "85",
         "moves": [
           {
@@ -19521,18 +19519,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "373",
+        "sprite": "10089",
         "types": [
           "dragon",
           "flying"
         ],
         "stats": {
           "hp": 95,
-          "atk": 135,
-          "def": 80,
-          "spa": 110,
-          "spd": 80,
-          "spe": 100
+          "atk": 145,
+          "def": 130,
+          "spa": 120,
+          "spd": 90,
+          "spe": 120
         }
       }
     ]
@@ -19621,8 +19619,8 @@
         }
       },
       {
-        "name": "metagross",
-        "alias": null,
+        "name": "metagross-mega",
+        "alias": "metagross-mega",
         "level": "85",
         "moves": [
           {
@@ -19684,18 +19682,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "376",
+        "sprite": "10076",
         "types": [
           "steel",
           "psychic"
         ],
         "stats": {
           "hp": 80,
-          "atk": 135,
-          "def": 130,
-          "spa": 95,
-          "spd": 90,
-          "spe": 70
+          "atk": 145,
+          "def": 150,
+          "spa": 105,
+          "spd": 110,
+          "spe": 110
         }
       },
       {
@@ -23694,7 +23692,7 @@
         }
       },
       {
-        "name": "duraludon",
+        "name": "duraludon-mega",
         "alias": null,
         "level": "81",
         "moves": [
@@ -23757,18 +23755,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "884",
+        "sprite": "duraludon-mega",
         "types": [
-          "steel",
-          "dragon"
+          "normal"
         ],
         "stats": {
-          "hp": 85,
-          "atk": 95,
-          "def": 115,
-          "spa": 120,
-          "spd": 50,
-          "spe": 85
+          "hp": 100,
+          "atk": 100,
+          "def": 100,
+          "spa": 100,
+          "spd": 100,
+          "spe": 100
         }
       }
     ]
@@ -26143,8 +26140,8 @@
         }
       },
       {
-        "name": "scizor",
-        "alias": null,
+        "name": "scizor-mega",
+        "alias": "scizor-mega",
         "level": "+0",
         "moves": [
           {
@@ -26206,18 +26203,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "212",
+        "sprite": "10046",
         "types": [
           "bug",
           "steel"
         ],
         "stats": {
           "hp": 70,
-          "atk": 130,
-          "def": 100,
-          "spa": 55,
-          "spd": 80,
-          "spe": 65
+          "atk": 150,
+          "def": 140,
+          "spa": 65,
+          "spd": 100,
+          "spe": 75
         }
       },
       {
@@ -26928,8 +26925,8 @@
         }
       },
       {
-        "name": "altaria",
-        "alias": null,
+        "name": "altaria-mega",
+        "alias": "altaria-mega",
         "level": "+0",
         "moves": [
           {
@@ -26991,16 +26988,16 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "334",
+        "sprite": "10067",
         "types": [
           "dragon",
-          "flying"
+          "fairy"
         ],
         "stats": {
           "hp": 85,
-          "atk": 70,
-          "def": 90,
-          "spa": 70,
+          "atk": 110,
+          "def": 110,
+          "spa": 110,
           "spd": 105,
           "spe": 80
         }
@@ -27401,8 +27398,8 @@
         }
       },
       {
-        "name": "gengar",
-        "alias": null,
+        "name": "gengar-mega",
+        "alias": "gengar-mega",
         "level": "+0",
         "moves": [
           {
@@ -27464,7 +27461,7 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "94",
+        "sprite": "10038",
         "types": [
           "ghost",
           "poison"
@@ -27472,10 +27469,10 @@
         "stats": {
           "hp": 60,
           "atk": 65,
-          "def": 60,
-          "spa": 130,
-          "spd": 75,
-          "spe": 110
+          "def": 80,
+          "spa": 170,
+          "spd": 95,
+          "spe": 130
         }
       }
     ]
@@ -27876,8 +27873,8 @@
         }
       },
       {
-        "name": "gallade",
-        "alias": null,
+        "name": "gallade-mega",
+        "alias": "gallade-mega",
         "level": "+0",
         "moves": [
           {
@@ -27939,18 +27936,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "475",
+        "sprite": "10068",
         "types": [
           "psychic",
           "fighting"
         ],
         "stats": {
           "hp": 68,
-          "atk": 125,
-          "def": 65,
+          "atk": 165,
+          "def": 95,
           "spa": 65,
           "spd": 115,
-          "spe": 80
+          "spe": 110
         }
       }
     ]
@@ -28349,8 +28346,8 @@
         }
       },
       {
-        "name": "glalie",
-        "alias": null,
+        "name": "glalie-mega",
+        "alias": "glalie-mega",
         "level": "+0",
         "moves": [
           {
@@ -28412,17 +28409,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "362",
+        "sprite": "10074",
         "types": [
           "ice"
         ],
         "stats": {
           "hp": 80,
-          "atk": 80,
+          "atk": 135,
           "def": 80,
-          "spa": 80,
+          "spa": 105,
           "spd": 80,
-          "spe": 80
+          "spe": 100
         }
       }
     ]
@@ -28821,8 +28818,8 @@
         }
       },
       {
-        "name": "glalie",
-        "alias": null,
+        "name": "glalie-mega",
+        "alias": "glalie-mega",
         "level": "+0",
         "moves": [
           {
@@ -28884,17 +28881,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "362",
+        "sprite": "10074",
         "types": [
           "ice"
         ],
         "stats": {
           "hp": 80,
-          "atk": 80,
+          "atk": 135,
           "def": 80,
-          "spa": 80,
+          "spa": 105,
           "spd": 80,
-          "spe": 80
+          "spe": 100
         }
       }
     ]
@@ -29293,8 +29290,8 @@
         }
       },
       {
-        "name": "glalie",
-        "alias": null,
+        "name": "glalie-mega",
+        "alias": "glalie-mega",
         "level": "+0",
         "moves": [
           {
@@ -29356,17 +29353,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "362",
+        "sprite": "10074",
         "types": [
           "ice"
         ],
         "stats": {
           "hp": 80,
-          "atk": 80,
+          "atk": 135,
           "def": 80,
-          "spa": 80,
+          "spa": 105,
           "spd": 80,
-          "spe": 80
+          "spe": 100
         }
       }
     ]
@@ -29767,8 +29764,8 @@
         }
       },
       {
-        "name": "aggron",
-        "alias": null,
+        "name": "aggron-mega",
+        "alias": "aggron-mega",
         "level": "+0",
         "moves": [
           {
@@ -29830,17 +29827,16 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "306",
+        "sprite": "10053",
         "types": [
-          "steel",
-          "rock"
+          "steel"
         ],
         "stats": {
           "hp": 70,
-          "atk": 110,
-          "def": 180,
+          "atk": 140,
+          "def": 230,
           "spa": 60,
-          "spd": 60,
+          "spd": 80,
           "spe": 50
         }
       }
@@ -34415,8 +34411,8 @@
         }
       },
       {
-        "name": "kangaskhan",
-        "alias": null,
+        "name": "kangaskhan-mega",
+        "alias": "kangaskhan-mega",
         "level": "47",
         "moves": [
           {
@@ -34478,17 +34474,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "115",
+        "sprite": "10039",
         "types": [
           "normal"
         ],
         "stats": {
           "hp": 105,
-          "atk": 95,
-          "def": 80,
-          "spa": 40,
-          "spd": 80,
-          "spe": 90
+          "atk": 125,
+          "def": 100,
+          "spa": 60,
+          "spd": 100,
+          "spe": 100
         }
       }
     ]
@@ -34811,8 +34807,8 @@
         }
       },
       {
-        "name": "mawile",
-        "alias": null,
+        "name": "mawile-mega",
+        "alias": "mawile-mega",
         "level": "55",
         "moves": [
           {
@@ -34874,23 +34870,23 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "303",
+        "sprite": "10052",
         "types": [
           "steel",
           "fairy"
         ],
         "stats": {
           "hp": 50,
-          "atk": 85,
-          "def": 85,
+          "atk": 105,
+          "def": 125,
           "spa": 55,
-          "spd": 55,
+          "spd": 95,
           "spe": 50
         }
       },
       {
-        "name": "houndoom",
-        "alias": null,
+        "name": "houndoom-mega",
+        "alias": "houndoom-mega",
         "level": "55",
         "moves": [
           {
@@ -34952,18 +34948,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "229",
+        "sprite": "10048",
         "types": [
           "dark",
           "fire"
         ],
         "stats": {
           "hp": 75,
-          "atk": 90,
-          "def": 50,
-          "spa": 110,
-          "spd": 80,
-          "spe": 95
+          "atk": 110,
+          "def": 90,
+          "spa": 140,
+          "spd": 90,
+          "spe": 115
         }
       }
     ]
@@ -35363,8 +35359,8 @@
         }
       },
       {
-        "name": "garchomp",
-        "alias": null,
+        "name": "garchomp-mega",
+        "alias": "garchomp-mega",
         "level": "57",
         "moves": [
           {
@@ -35426,17 +35422,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "445",
+        "sprite": "10058",
         "types": [
           "dragon",
           "ground"
         ],
         "stats": {
           "hp": 108,
-          "atk": 130,
-          "def": 95,
-          "spa": 80,
-          "spd": 85,
+          "atk": 170,
+          "def": 105,
+          "spa": 120,
+          "spd": 95,
           "spe": 102
         }
       }
@@ -35681,8 +35677,8 @@
         }
       },
       {
-        "name": "houndoom",
-        "alias": null,
+        "name": "houndoom-mega",
+        "alias": "houndoom-mega",
         "level": "+0",
         "moves": [
           {
@@ -35742,18 +35738,18 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "229",
+        "sprite": "10048",
         "types": [
           "dark",
           "fire"
         ],
         "stats": {
           "hp": 75,
-          "atk": 90,
-          "def": 50,
-          "spa": 110,
-          "spd": 80,
-          "spe": 95
+          "atk": 110,
+          "def": 90,
+          "spa": 140,
+          "spd": 90,
+          "spe": 115
         }
       },
       {
@@ -36071,8 +36067,8 @@
         }
       },
       {
-        "name": "mawile",
-        "alias": null,
+        "name": "mawile-mega",
+        "alias": "mawile-mega",
         "level": "+0",
         "moves": [
           {
@@ -36134,17 +36130,17 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "303",
+        "sprite": "10052",
         "types": [
           "steel",
           "fairy"
         ],
         "stats": {
           "hp": 50,
-          "atk": 85,
-          "def": 85,
+          "atk": 105,
+          "def": 125,
           "spa": 55,
-          "spd": 55,
+          "spd": 95,
           "spe": 50
         }
       }
@@ -40010,8 +40006,8 @@
     "img": "/leaders/rs-may",
     "pokemon": [
       {
-        "name": "aggron",
-        "alias": null,
+        "name": "aggron-mega",
+        "alias": "aggron-mega",
         "level": "73",
         "moves": [
           {
@@ -40073,17 +40069,16 @@
           "spd": 31,
           "spe": 31
         },
-        "sprite": "306",
+        "sprite": "10053",
         "types": [
-          "steel",
-          "rock"
+          "steel"
         ],
         "stats": {
           "hp": 70,
-          "atk": 110,
-          "def": 180,
+          "atk": 140,
+          "def": 230,
           "spa": 60,
-          "spd": 60,
+          "spd": 80,
           "spe": 50
         }
       },

@@ -1217,6 +1217,7 @@ function calculateMatchup(gen, userMon, rivalMon) {
     const userPokemon = new Pokemon(gen, userNameForCalc, {
       level: userMon.level || 50,
       ability: userAbility,
+      abilityOn: true, // Always enable abilities for proper stat modifiers
       nature: userMon.nature || 'Hardy',
       ivs: userMon.ivs || DEFAULT_IVS,
       evs: userMon.evs || DEFAULT_EVS,
@@ -1278,6 +1279,7 @@ function calculateMatchup(gen, userMon, rivalMon) {
     const rivalPokemon = new Pokemon(gen, rivalNameForCalc, {
       level: parseInt(rivalMon.level) || 50,
       ability: rivalAbilityName || undefined,
+      abilityOn: true, // Always enable abilities for proper stat modifiers
       nature: rivalMon.nature || 'Hardy',
       ivs: rivalMon.ivs || DEFAULT_IVS,
       evs: rivalMon.evs || DEFAULT_EVS,

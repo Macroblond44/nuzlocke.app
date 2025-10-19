@@ -44619,6 +44619,13 @@
       ]
     },
     {
+      "type": "gym",
+      "name": "Route 24",
+      "value": "r3",
+      "group": "rival",
+      "boss": "Gary"
+    },
+    {
       "type": "route",
       "name": "Route 24",
       "encounters": [
@@ -44648,13 +44655,6 @@
         "buizel",
         "murkrow"
       ]
-    },
-    {
-      "type": "gym",
-      "name": "Route 24",
-      "value": "r3",
-      "group": "rival",
-      "boss": "Gary"
     },
     {
       "type": "route",

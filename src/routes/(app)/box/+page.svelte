@@ -233,10 +233,11 @@
 
   // Handle Pokemon updates from editable cards
   function handlePokemonUpdate(pokemonData, updateData) {
-    console.log('Pokemon update:', pokemonData, updateData)
+    console.log('[Box] handlePokemonUpdate called with:', pokemonData, updateData)
     
     // Find the Pokemon in the box
     const pokemonToUpdate = ogbox.find(p => toid(p) === toid(pokemonData))
+    console.log('[Box] pokemonToUpdate found:', pokemonToUpdate)
     
     if (pokemonToUpdate) {
       // Update the Pokemon data
@@ -244,6 +245,7 @@
         ...pokemonToUpdate,
         ...updateData
       }
+      console.log('[Box] updatedPokemon:', updatedPokemon)
       
       // Update in ogbox
       ogbox = ogbox.map(p => 
@@ -251,7 +253,10 @@
       )
       
       // Persist the update
+      console.log('[Box] calling updatePokemon with:', updatedPokemon)
       updatePokemon(updatedPokemon)
+    } else {
+      console.log('[Box] Pokemon not found in ogbox')
     }
   }
 
@@ -453,6 +458,7 @@
                   ...Object.values(Pokemon[p.pokemon]?.baseStats || {})
                 )}
                 moves={p.moves || []}
+                held={p.held || null}
                 ability={p.ability
                   ? {
                       name: p.ability
@@ -470,6 +476,7 @@
                 )}
                 editable={true}
                 gameKey="radred"
+                pokemonData={p}
                 onUpdate={(updateData) => handlePokemonUpdate(p, updateData)}
               >
                 <svelte:fragment slot="badges">

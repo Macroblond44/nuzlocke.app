@@ -44603,6 +44603,23 @@
     },
     {
       "type": "route",
+      "name": "Cerulean City",
+      "encounters": [
+        "chewtle",
+        "clauncher",
+        "wishiwashi",
+        "tatsugiri",
+        "remoraid",
+        "luvdisc",
+        "sharpedo",
+        "octillery",
+        "golduck",
+        "dondozo",
+        "carnivine"
+      ]
+    },
+    {
+      "type": "route",
       "name": "Route 24",
       "encounters": [
         "carvanha",
@@ -44676,23 +44693,6 @@
       "value": "mb2",
       "group": "mini-boss",
       "boss": "Bugsy"
-    },
-    {
-      "type": "route",
-      "name": "Cerulean City",
-      "encounters": [
-        "chewtle",
-        "clauncher",
-        "wishiwashi",
-        "wailmer",
-        "remoraid",
-        "luvdisc",
-        "sharpedo",
-        "octillery",
-        "golduck",
-        "carnivine",
-        "froakie"
-      ]
     },
     {
       "type": "gym",

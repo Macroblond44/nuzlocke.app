@@ -23,6 +23,19 @@
   export let editable = false
   export let gameKey = ''
   export let onUpdate = null
+  export let pokemonData = null // The full Pokemon data object
+
+  // Handle updates from PokemonCard
+  function handleUpdate(updateData) {
+    console.log('[PokemonCardWithMoves] handleUpdate called with:', updateData)
+    console.log('[PokemonCardWithMoves] onUpdate function:', onUpdate)
+    if (onUpdate) {
+      console.log('[PokemonCardWithMoves] calling onUpdate with:', updateData)
+      onUpdate(updateData)
+    } else {
+      console.log('[PokemonCardWithMoves] onUpdate is not defined')
+    }
+  }
 
   let transformedMoves = []
   let loadingMoves = false
@@ -76,6 +89,7 @@
   {editable}
   {gameKey}
   {onUpdate}
+  {pokemonData}
 >
   <svelte:fragment slot="badges">
     <slot name="badges" />

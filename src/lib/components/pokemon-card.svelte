@@ -1,4 +1,25 @@
 <script>
+  import { capitalise, regionise } from '$lib/utils/string'
+  import { isEmpty } from '$lib/utils/obj'
+  import deferStyles from '$lib/utils/defer-styles'
+
+  import { PIcon, Icon, Tooltip } from '$c/core'
+  import { Hand, Edit } from '$icons'
+  import { color } from '$lib/data/colors.ts'
+  import { Wrapper as SettingWrapper } from '$lib/components/Settings'
+  import TypeBadge from '$lib/components/type-badge.svelte'
+  import MoveCard from '$lib/components/move-card.svelte'
+  import StatBlock from '$lib/components/stat-block.svelte'
+  import AbilitySelector from './AbilitySelector.svelte'
+  import MovesSelector from './MovesSelector.svelte'
+  import NatureSelector from './NatureSelector.svelte'
+  import GenderSelector from './GenderSelector.svelte'
+  import ItemSelector from './ItemSelector.svelte'
+  import { UNOWN } from '$utils/rewrites'
+  import { Stars as Pattern } from '$utils/pattern'
+  import { afterUpdate } from 'svelte'
+
+  // Props
   export let sprite,
     fallback,
     name,
@@ -17,36 +38,15 @@
     // New editable props
     editable = false,
     gameKey = '',
-    onUpdate = null
-
-  import { capitalise, regionise } from '$lib/utils/string'
-  import { isEmpty } from '$lib/utils/obj'
-  import deferStyles from '$lib/utils/defer-styles'
-
-  import { PIcon, Icon, Tooltip } from '$c/core'
-
-  import { Hand, Edit } from '$icons'
-
-  import { color } from '$lib/data/colors.ts'
-  import { Wrapper as SettingWrapper } from '$lib/components/Settings'
-
-  import TypeBadge from '$lib/components/type-badge.svelte'
-  import MoveCard from '$lib/components/move-card.svelte'
-  import StatBlock from '$lib/components/stat-block.svelte'
-  import AbilitySelector from './AbilitySelector.svelte'
-  import MovesSelector from './MovesSelector.svelte'
-  import NatureSelector from './NatureSelector.svelte'
-  import GenderSelector from './GenderSelector.svelte'
-
-  import { UNOWN } from '$utils/rewrites'
-  import { Stars as Pattern } from '$utils/pattern'
-  import { afterUpdate } from 'svelte'
+    onUpdate = null,
+    pokemonData = null
 
   // State for editable modals
   let abilityModalOpen = false
   let movesModalOpen = false
   let natureModalOpen = false
   let genderModalOpen = false
+  let itemModalOpen = false
 
   const canonname = name.replace(/-(Alola|Galar)/, '')
 
@@ -87,6 +87,12 @@
     }
   }
 
+  function openItemSelector() {
+    if (editable) {
+      itemModalOpen = true
+    }
+  }
+
   function handleAbilityUpdate(event) {
     const { ability: newAbility } = event.detail
     if (onUpdate) {
@@ -112,6 +118,18 @@
     const { gender: newGender } = event.detail
     if (onUpdate) {
       onUpdate({ gender: newGender })
+    }
+  }
+
+  function handleItemUpdate(event) {
+    console.log('[PokemonCard] handleItemUpdate called with event:', event.detail)
+    const { item: newItem } = event.detail
+    console.log('[PokemonCard] newItem:', newItem)
+    if (onUpdate) {
+      console.log('[PokemonCard] calling onUpdate with item:', newItem)
+      onUpdate({ item: newItem })
+    } else {
+      console.log('[PokemonCard] onUpdate is not defined')
     }
   }
 
@@ -229,14 +247,45 @@
 
           {#if held}
             <div
-              class="pointer-events-auto absolute right-0 -bottom-0.5 z-20 mb-1 flex translate-x-full cursor-help flex-col items-center p-1"
+              class="pointer-events-auto absolute right-0 -bottom-0.5 z-20 mb-1 flex translate-x-full {editable ? 'cursor-pointer' : 'cursor-help'} flex-col items-center p-1 {editable ? 'editable-zone' : ''}"
+              on:click={editable ? openItemSelector : undefined}
+              on:keydown={(e) => editable && e.key === 'Enter' && openItemSelector()}
+              role={editable ? 'button' : undefined}
+              tabindex={editable ? 0 : undefined}
             >
               <Tooltip>
                 {held.name}: {held.effect?.replace(/^Held: +/g, '')}
+                {#if editable}
+                  <br />Click to change item
+                {/if}
               </Tooltip>
               <span>
                 <PIcon type="item" name={held.sprite} />
               </span>
+              <Icon
+                inline={true}
+                icon={Hand}
+                class="-mt-3.5 fill-current dark:text-white"
+              />
+              {#if editable}
+                <Icon icon={Edit} class="absolute -top-1 -right-1 h-3 w-3 opacity-50" />
+              {/if}
+            </div>
+          {:else if editable}
+            <div
+              class="pointer-events-auto absolute right-0 -bottom-0.5 z-20 mb-1 flex translate-x-full cursor-pointer editable-zone flex-col items-center p-1"
+              on:click={openItemSelector}
+              on:keydown={(e) => e.key === 'Enter' && openItemSelector()}
+              role="button"
+              tabindex="0"
+            >
+              <Tooltip>
+                No item held
+                <br />Click to add item
+              </Tooltip>
+              <div class="w-8 h-8 flex items-center justify-center bg-gray-100 dark:bg-gray-600 rounded">
+                <span class="text-gray-500 dark:text-gray-400 text-sm">+</span>
+              </div>
               <Icon
                 inline={true}
                 icon={Hand}
@@ -492,5 +541,12 @@
     open={genderModalOpen}
     on:save={handleGenderUpdate}
     on:close={() => genderModalOpen = false}
+  />
+
+  <ItemSelector
+    pokemonName={name}
+    pokemonData={pokemonData}
+    open={itemModalOpen}
+    on:close={() => itemModalOpen = false}
   />
 {/if}

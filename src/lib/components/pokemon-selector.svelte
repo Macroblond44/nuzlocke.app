@@ -45,7 +45,7 @@
   import RouteRecommendations from './RouteRecommendations.svelte'
   import PokemonConfigModal from './PokemonConfigModal.svelte'
 
-  let selected, nickname, status, nature, ability, hidden, death, gender
+  let selected, nickname, status, nature, ability, hidden, death, gender, held
   let prevstatus = 'loading'
   let showConfigModal = false
   let moves = []
@@ -164,7 +164,7 @@
         nickname = pkmn.nickname
         death = pkmn.death
         gender = pkmn.gender || null
-        console.log('🔍 [pokemon-selector] Loaded from store:', { gender: pkmn.gender })
+        held = pkmn.held || null
         
         if (pkmn.pokemon)
           getPkmn(pkmn.pokemon).then((p) => {
@@ -191,12 +191,12 @@
       ...(hidden ? { hidden: true } : {}),
       ...(status?.id === 5 && death ? { death } : {}),
       ...(moves && moves.length > 0 ? { moves } : {}),
-      ...(gender ? { gender } : {})
+      ...(gender ? { gender } : {}),
+      ...(held ? { held } : {})
     })
 
     // Only patch if NOT currently loading from store (to prevent reverting external changes like evolution)
     if (selected && !oEqual(topatch, resetd) && !isLoadingFromStore) {
-      console.log('🔄 [pokemon-selector] Patching', location, 'with gender:', gender)
       store.update(patch({ [location]: topatch }))
     }
 
@@ -245,7 +245,7 @@
   }
 
   function handleClear() {
-    status = nickname = selected = death = resetd = nature = ability = gender = null
+    status = nickname = selected = death = resetd = nature = ability = gender = held = null
     moves = []
     search = statusSearch = natureSearch = abilitySearch = null
     availableAbilities = []

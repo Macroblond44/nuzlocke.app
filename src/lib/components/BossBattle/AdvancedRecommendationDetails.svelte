@@ -243,10 +243,8 @@
     if (!hasSpecies(pokemonName)) return false
     
     try {
-      console.log(`🔍 [Evolution] Checking evolution for ${pokemonName} at level ${levelCap}`)
       const evolvedForm = getEvolvedFormAtLevel(pokemonName, levelCap)
       const canEvolve = evolvedForm && evolvedForm !== pokemonName
-      console.log(`🔍 [Evolution] ${pokemonName} → ${evolvedForm} (canEvolve: ${canEvolve})`)
       // Can evolve if evolved form exists and is different from current form
       return canEvolve
     } catch (error) {
@@ -495,12 +493,10 @@
 
   // Handle Pokemon updates from editable PokemonCards
   function handlePokemonUpdate(pokemonName, updateData) {
-    
     // Find the Pokemon in userTeam (using the correct structure)
     const pokemonIndex = userTeam.findIndex(p => p.original?.pokemon === pokemonName)
     
     if (pokemonIndex !== -1) {
-      
       // Update the Pokemon data in the original structure
       const updatedPokemon = {
         ...userTeam[pokemonIndex],
@@ -511,7 +507,6 @@
       }
       
       userTeam[pokemonIndex] = updatedPokemon
-      
       
       // Persist the change globally using updatePokemon
       try {
@@ -908,10 +903,11 @@
                     nature={userPokemonData?.original?.nature ? NaturesMap[userPokemonData.original.nature] || { id: userPokemonData.original.nature, label: capitalise(userPokemonData.original.nature), value: [] } : undefined}
                     gender={userPokemonData?.original?.gender || null}
                     stats={pokemonData.baseStats || { hp: 100, atk: 100, def: 100, spa: 100, spd: 100, spe: 100 }}
-                    held={''}
+                    held={userPokemonData?.original?.held || null}
                     maxStat={Math.max(150, ...Object.values(pokemonData.baseStats || {}))}
                     editable={true}
                     gameKey={gameMode || ''}
+                    pokemonData={userPokemonData?.original}
                     onUpdate={(updateData) => handlePokemonUpdate(pokemon.name, updateData)}
                   />
                 {:else}

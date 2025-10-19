@@ -863,7 +863,7 @@
           
           
           
-          {#each filteredRecommendations as pokemon, index (pokemon.name + '-' + currentFilter + '-' + (selectedRivalForFilter || ''))}
+          {#each filteredRecommendations as pokemon, index (index)}
             {@const userPokemonData = userTeam.find(p => p.original?.pokemon === pokemon.name || p.name === pokemon.name)}
             {@const actualPokemonName = userPokemonData?.original?.pokemon || userPokemonData?.pokemon || pokemon.name}
             {@const pokemonData = Pokemon[actualPokemonName]}
